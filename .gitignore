@@ -2,3 +2,4 @@
 *.o
 *.obj
 *.core
+*.out

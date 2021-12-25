@@ -79,7 +79,7 @@ void debug(Game* g){
     for(int j=0;j<g->width;j++){
       printw("%d", g->mines[i*g->width+j]);
     }
-
+    
     printw("\n");
   }
 }
@@ -93,13 +93,13 @@ void print(Game* g){
   init_pair(6,COLOR_CYAN,COLOR_BLACK);
   int length = g->length;
   printw("Flags: %d\n", g->flagstotal-g->flagsfound);
- printw(" ");
-for(int i = 0;i<g->width;i++){
-printw("_");
-}	
-printw("\n");
+  printw(" ");
+  for(int i = 0;i<g->width;i++){
+    printw("_");
+  }	
+  printw("\n");
   for(int i=0;i<g->height;i++){
-	printw("|");
+    printw("|");
     for(int j=0;j<g->width;j++){
       if( i== g->cord.y&&j==g->cord.x)
 	attron(A_REVERSE);		
@@ -110,21 +110,21 @@ printw("\n");
       }else if(g->mines[i*g->width+j]==0){
 	printw("#");
       }else if(g->select[i*g->width+j]==1){
-	 switch(g->mines[i*g->width+j]){
+	switch(g->mines[i*g->width+j]){
 	case 1:  attron(COLOR_PAIR(1));
-		 break;
+	  break;
 	case 2: attron(COLOR_PAIR(2));
-		break;
+	  break;
 	case 3: attron(COLOR_PAIR(3));
-		break;
+	  break;
 	case 4: attron(COLOR_PAIR(4));
-		break;
+	  break;
 	case 5: attron(COLOR_PAIR(5));
-		break;
+	  break;
 	case 6: attron(COLOR_PAIR(6));
-		break;
-
-	 }
+	  break;
+	  
+	}
 	printw("%d", g->mines[i*g->width+j]);
 	attroff(COLOR_PAIRS);
       }else{
@@ -133,14 +133,14 @@ printw("\n");
       if( i== g->cord.y&&j==g->cord.x)
 	attroff(A_REVERSE);  
     }
-	printw("|");
+    printw("|");
     printw("\n");
   }
-printw("|");
-for(int i = 0;i<g->width;i++){
-printw("=");
-}	
-printw("|\n");
+  printw("|");
+  for(int i = 0;i<g->width;i++){
+    printw("=");
+  }	
+  printw("|\n");
 }
 
 int  cmove(Game *g){
@@ -208,7 +208,7 @@ int  test(Game *g){
       int p = g->mines[i*g->width+j];
       if(    g->select[i*g->width+j] > 1|| one){
 	break;
-		  } 
+      } 
       if(p >= 1){
 	one=true;
 	
@@ -225,18 +225,18 @@ int  test(Game *g){
       break;
     }
     if(p>=1)
-    rone=true;
+      rone=true;
     bool one = false;
     for(int i=g->cord.y;i>=0;i--){
       int p = g->mines[i*g->width+j];
       if(  g->select[i*g->width+j] > 1|| one){
 	break;
       } 
-	    if(p >= 1){
-	      one=true;
-	      
-			}
-	    g->select[i*g->width+j]=1;
+      if(p >= 1){
+	one=true;
+	
+      }
+      g->select[i*g->width+j]=1;
     }	
   }
   
@@ -250,40 +250,40 @@ int  test(Game *g){
     if(p>=1)
       lone=true;
     bool one = false;
-	  for(int i=g->cord.y;i<g->height;i++){
-	    int p = g->mines[i*g->width+j];
-	    if(g->select[i*g->width+j] > 1|| one){
-	      break;
-			} 
-	    if(p >= 1){
-	      one=true;
-				
-	    }
-	    g->select[i*g->width+j]=1;
-	  }	
-	}
+    for(int i=g->cord.y;i<g->height;i++){
+      int p = g->mines[i*g->width+j];
+      if(g->select[i*g->width+j] > 1|| one){
+	break;
+      } 
+      if(p >= 1){
+	one=true;
+	
+      }
+      g->select[i*g->width+j]=1;
+    }	
+  }
   
   //left to bottom
   lone= false;
   for(int j=g->cord.x;j>=0;j--){
     int p = g->mines[g->cord.y*g->width+j];
-	  if( g->select[g->cord.y*g->width+j] > 1 || lone){
-	    break;
-	  }
-	  if(p>=1)
-	    lone=true;
-	  bool one = false;
-	  for(int i=g->cord.y;i>=0;i--){
-	    int p = g->mines[i*g->width+j];
-	    if(g->select[i*g->width+j] > 1|| one){
-	      break;
-	    } 
-	    if(p >= 1){
-				     one=true;
-				     
-	    }
-	    g->select[i*g->width+j]=1;
-	  }	
+    if( g->select[g->cord.y*g->width+j] > 1 || lone){
+      break;
+    }
+    if(p>=1)
+      lone=true;
+    bool one = false;
+    for(int i=g->cord.y;i>=0;i--){
+      int p = g->mines[i*g->width+j];
+      if(g->select[i*g->width+j] > 1|| one){
+	break;
+      } 
+      if(p >= 1){
+	one=true;
+	
+      }
+      g->select[i*g->width+j]=1;
+    }	
   }
   return 0;
 }
@@ -309,58 +309,58 @@ int main(int argc, char *argv[]){
   const char* errstr;
   
   while((ch=getopt(argc,argv,"h:w:m:"))!=-1){
-	switch(ch){
-		case 'h':
-			hi=strtonum(optarg,0,250,&errstr);
-			break;
-		case 'w':
-			wt=strtonum(optarg,0,250,&errstr);
-			break;
-		case 'm':
-			mi=strtonum(optarg,0,250,&errstr);
-			break;
-		//default: usaage();
-		argc -= optind;
-		argv += optind;
-		
-
-
-	}
+    switch(ch){
+    case 'h':
+      hi=strtonum(optarg,0,250,&errstr);
+      break;
+    case 'w':
+      wt=strtonum(optarg,0,250,&errstr);
+      break;
+    case 'm':
+      mi=strtonum(optarg,0,250,&errstr);
+      break;
+      //default: usaage();
+      argc -= optind;
+      argv += optind;
+      
+      
+      
+    }
   }
   if(wt==0)
-	  wt=60;
+    wt=60;
   if(hi==0)
-	  hi=30;
+    hi=30;
   if(mi==0)
-	  mi=60;
+    mi=60;
   start_color();
   Game game;
   init(&game, wt, hi, mi);
   while(1){
     clear();
     print(&game);
-	int ret = cmove(&game);
-	if(ret  == -1){ 
-	  break ;
-	}else if(ret == -2){
-	  flag(&game);
-	}else if(ret==-3){
-	  if(test(&game)==-1){
-	    clear();
-	    printw("you lost\n");
-		debug(&game);
-		break;
-	  }
-	}
-	if(checkflags(&game)){
-	  clear();
-	  printw("You found all %d mines!", game.flagstotal);
-	  break;
-	}
-	
+    int ret = cmove(&game);
+    if(ret  == -1){ 
+      break ;
+    }else if(ret == -2){
+      flag(&game);
+    }else if(ret==-3){
+      if(test(&game)==-1){
+	clear();
+	printw("you lost\n");
+	debug(&game);
+	break;
+      }
+    }
+    if(checkflags(&game)){
+      clear();
+      printw("You found all %d mines!", game.flagstotal);
+      break;
+    }
+    
   }
   
   getch();
-  	endwin();	
-	return 0;
+  endwin();	
+  return 0;
 }
