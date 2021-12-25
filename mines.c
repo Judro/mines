@@ -5,6 +5,7 @@
 #include<fcntl.h>
 
 
+
 typedef struct{
   int x;
   int y;
@@ -303,6 +304,7 @@ int checkflags(Game *g){
 
 
 int main(int argc, char *argv[]){
+  pledge("ioctl",NULL);
   initscr();
   int wt,hi,ch,mi, fd;
   wt=hi=mi=0;
