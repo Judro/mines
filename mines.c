@@ -3,6 +3,7 @@
 #include<stdio.h>
 #include<unistd.h>
 #include<fcntl.h>
+#include <time.h>
 
 
 
@@ -38,18 +39,21 @@ void init(Game* g, int width, int height, int  minesamount ){
   int* select = malloc(length*sizeof(int));
   int* floating = malloc(length*sizeof(int));
   double minesp = (double) minesamount / (double) length;
-  for(int i=0;i<length;i++){
-//    if(total >= minesamount) //TODO Verteilung nicht zuverlässig
-//	    break;
-    mines[i]  = 0;
-    select[i] = 0;
-    floating[i]=0;
-    double rand =  drand48();
-    if(rand < minesp){
-      // is mine
-      mines[i] = -1;
-      total += 1;
-    }
+  srand48(time(0));
+  while(total < minesamount){
+  	for(int i=0;i<length;i++){
+  	  mines[i]  = 0;
+  	  select[i] = 0;
+  	  floating[i]=0;
+  	  double rand =  drand48();
+  	  if(rand < minesp){
+		  if(total==minesamount)
+			  continue;
+  	    // is mine
+  	    mines[i] = -1;
+  	    total += 1;
+  	  }
+  	}
   }
  //compute amount of near mines 
   for(int i=0;i<height;i++){
