@@ -40,20 +40,28 @@ void init(Game* g, int width, int height, int  minesamount ){
   int* floating = malloc(length*sizeof(int));
   double minesp = (double) minesamount / (double) length;
   srand48(time(0));
-  while(total < minesamount){
-  	for(int i=0;i<length;i++){
-  	  mines[i]  = 0;
-  	  select[i] = 0;
-  	  floating[i]=0;
-  	  double rand =  drand48();
-  	  if(rand < minesp){
-		  if(total==minesamount)
-			  continue;
-  	    // is mine
-  	    mines[i] = -1;
-  	    total += 1;
-  	  }
-  	}
+  for(int i=0;i<length;i++){
+    mines[i]  = 0;
+    select[i] = 0;
+    floating[i]=0;
+    double rand =  drand48();
+    if(rand < minesp){
+  	  if(total==minesamount)
+  		  continue;
+      mines[i] = -1;
+      total += 1;
+    }
+  }
+  while(total<minesamount){
+  for(int i=0;i<length;i++){
+    double rand =  drand48();
+    if(rand < minesp){
+  	  if(total==minesamount)
+  		  continue;
+      mines[i] = -1;
+      total += 1;
+    }
+  } 
   }
  //compute amount of near mines 
   for(int i=0;i<height;i++){
@@ -102,7 +110,7 @@ void debug(Game* g){
   }
 }
 
-void print(Game* g){
+void print(Game* g, char game_over){
   init_pair(1,COLOR_BLUE,COLOR_BLACK);
   init_pair(2,COLOR_GREEN,COLOR_BLACK);
   init_pair(3,COLOR_RED,COLOR_BLACK);
@@ -126,7 +134,11 @@ void print(Game* g){
       }else if(g->select[i*g->width+j]==1&&g->mines[i*g->width+j]==0){
 	printw(" ");	
       }else if(g->mines[i*g->width+j]==0){
-	printw("#");
+	if(game_over&&g->cord.y==i&&g->cord.x==j){
+	     printw("X"); 
+	 }else{
+	      printw("#");
+	      }
       }else if(g->select[i*g->width+j]==1){
 	switch(g->mines[i*g->width+j]){
 	case 1:  attron(COLOR_PAIR(1));
@@ -146,7 +158,12 @@ void print(Game* g){
 	printw("%d", g->mines[i*g->width+j]);
 	attroff(COLOR_PAIRS);
       }else{
-	printw("#");
+	if(game_over&&g->cord.y==i&&g->cord.x==j){
+	     printw("X"); 
+	 }else{
+	      printw("#");
+	      }
+
       }
       if( i== g->cord.y&&j==g->cord.x)
 	attroff(A_REVERSE);  
@@ -211,14 +228,14 @@ void flag(Game *g){
 
 int unveil(Game *g, int x, int y, int iteration){
 	if(g->mines[y*g->width+x]>=0){
-		if(g->select[y*g->width+x]!=2&&g->select[y*g->width+x]!=1)
+		if(g->select[y*g->width+x]!=2)
 			g->select[y*g->width+x]=1;
-			if(g->mines[y*g->width+x]==0){
-				if(g->floating[y*g->width+x]==0){
-					g->floating[y*g->width+x]=iteration+1;
-					return 1;	
-				}
+		if(g->mines[y*g->width+x]==0){
+			if(g->floating[y*g->width+x]==0){
+				g->floating[y*g->width+x]=iteration+1;
+				return 1;	
 			}
+		}
 	}
 	return 0;
 }
@@ -311,17 +328,17 @@ int main(int argc, char *argv[]){
     }
   }
   if(wt==0)
-    wt=60;
+    wt=40;
   if(hi==0)
-    hi=30;
+    hi=10;
   if(mi==0)
-    mi=60;
+    mi=40;
   start_color();
   Game game;
   init(&game, wt, hi, mi);
   while(1){
     clear();
-    print(&game);
+    print(&game,0);
     int ret = cmove(&game);
     if(ret  == -1){ 
       break ;
@@ -330,8 +347,8 @@ int main(int argc, char *argv[]){
     }else if(ret==-3){
       if(test(&game)==-1){
 	clear();
-	printw("you lost\n");
-	debug(&game);
+	printw("Game over\n");
+	print(&game,1);
 	break;
       }
     }
