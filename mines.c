@@ -4,6 +4,7 @@
 #include<unistd.h>
 #include<fcntl.h>
 #include <time.h>
+#include<limits.h>
 
 
 
@@ -99,8 +100,6 @@ void init(Game* g, int width, int height, int  minesamount ){
 
 void debug(Game* g){
   
-  int length = g->length;
-  int i = 0;
   for(int i=0;i<g->height;i++){
     for(int j=0;j<g->width;j++){
       printw("%d", g->mines[i*g->width+j]);
@@ -117,7 +116,6 @@ void print(Game* g, char game_over){
   init_pair(4,COLOR_MAGENTA,COLOR_BLACK);
   init_pair(5,COLOR_YELLOW,COLOR_BLACK);
   init_pair(6,COLOR_CYAN,COLOR_BLACK);
-  int length = g->length;
   printw("Flags: %d\n", g->flagstotal - g->flagsfound);
   printw(" ");
   for(int i = 0;i<g->width;i++){
@@ -304,7 +302,7 @@ int checkflags(Game *g){
 
 int main(int argc, char *argv[]){
   initscr();
-  int wt,hi,ch,mi, fd;
+  int wt,hi,ch,mi;
   wt=hi=mi=0;
   const char* errstr;
   
