@@ -56,7 +56,7 @@ void init(Game* g, int width, int height, int  minesamount ){
   while(total<minesamount){
   for(int i=0;i<length;i++){
     double rand =  drand48();
-    if(rand < minesp){
+    if(rand < minesp && mines[i]!=-1){
   	  if(total==minesamount)
   		  continue;
       mines[i] = -1;
@@ -313,13 +313,13 @@ int main(int argc, char *argv[]){
   while((ch=getopt(argc,argv,"h:w:m:"))!=-1){
     switch(ch){
     case 'h':
-      hi=strtonum(optarg,0,250,&errstr);
+      hi=strtonum(optarg,0,100,&errstr);
       break;
     case 'w':
-      wt=strtonum(optarg,0,250,&errstr);
+      wt=strtonum(optarg,0,500,&errstr);
       break;
     case 'm':
-      mi=strtonum(optarg,0,250,&errstr);
+      mi=strtonum(optarg,0,50000,&errstr);
       break;
       //default: usaage();
       argc -= optind;
