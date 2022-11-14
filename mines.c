@@ -116,7 +116,7 @@ void print(Game* g, char game_over){
   init_pair(4,COLOR_MAGENTA,COLOR_BLACK);
   init_pair(5,COLOR_YELLOW,COLOR_BLACK);
   init_pair(6,COLOR_CYAN,COLOR_BLACK);
-  printw("Flags: %d\n", g->flagstotal - g->flagsfound);
+  printw(" Flags: %d\n", g->flagstotal - g->flagsfound);
   printw(" ");
   for(int i = 0;i<g->width;i++){
     printw("_");
@@ -135,7 +135,7 @@ void print(Game* g, char game_over){
 	if(game_over&&g->cord.y==i&&g->cord.x==j){
 	     printw("X"); 
 	 }else{
-	      printw("#");
+	      printw("O");
 	      }
       }else if(g->select[i*g->width+j]==1){
 	switch(g->mines[i*g->width+j]){
@@ -159,7 +159,7 @@ void print(Game* g, char game_over){
 	if(game_over&&g->cord.y==i&&g->cord.x==j){
 	     printw("X"); 
 	 }else{
-	      printw("#");
+	      printw("O");
 	      }
 
       }
@@ -345,7 +345,7 @@ int main(int argc, char *argv[]){
     }else if(ret==-3){
       if(test(&game)==-1){
 	clear();
-	printw("Game over\n");
+	printw(" Game over     ");
 	print(&game,1);
 	break;
       }
