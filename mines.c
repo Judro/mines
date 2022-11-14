@@ -14,6 +14,7 @@ typedef struct{
 typedef struct {
   int* mines;
   int* select;
+  int* floating;
   int width;
   int height;
   int length;
@@ -22,24 +23,35 @@ typedef struct {
   int flagsfit;
   Cord cord;
 }Game;
-
+// mines:
+// -1 if mine
+// else amount of near mines
+// select:
+// 2 if marked as mine
+// else if unveiled 1
+// else -1 (or 0)
 
 void init(Game* g, int width, int height, int  minesamount ){
   int length = width * height;
   int total =0;
   int* mines = malloc(length*sizeof(int));
   int* select = malloc(length*sizeof(int));
+  int* floating = malloc(length*sizeof(int));
   double minesp = (double) minesamount / (double) length;
   for(int i=0;i<length;i++){
+//    if(total >= minesamount) //TODO Verteilung nicht zuverlässig
+//	    break;
     mines[i]  = 0;
     select[i] = 0;
+    floating[i]=0;
     double rand =  drand48();
     if(rand < minesp){
+      // is mine
       mines[i] = -1;
       total += 1;
     }
   }
-  
+ //compute amount of near mines 
   for(int i=0;i<height;i++){
     for(int j=0;j<width;j++){
       if(mines[i*width+j] != -1){
@@ -60,6 +72,7 @@ void init(Game* g, int width, int height, int  minesamount ){
   
   g->length=length;
   g->mines=mines;
+  g->floating=floating;
   g->select=select;
   g->width=width;
   g->height=height;
@@ -93,7 +106,7 @@ void print(Game* g){
   init_pair(5,COLOR_YELLOW,COLOR_BLACK);
   init_pair(6,COLOR_CYAN,COLOR_BLACK);
   int length = g->length;
-  printw("Flags: %d\n", g->flagstotal-g->flagsfound);
+  printw("Flags: %d\n", g->flagstotal - g->flagsfound);
   printw(" ");
   for(int i = 0;i<g->width;i++){
     printw("_");
@@ -144,6 +157,7 @@ void print(Game* g){
   printw("|\n");
 }
 
+// controls
 int  cmove(Game *g){
   char ch = getch();
   switch(ch){
@@ -188,104 +202,59 @@ void flag(Game *g){
   }  
 }
 
+// returns -1 if steped on mine
+// else if not flagged  sets select 1 
+
+int unveil(Game *g, int x, int y, int iteration){
+	if(g->mines[y*g->width+x]>=0){
+		if(g->select[y*g->width+x]!=2&&g->select[y*g->width+x]!=1)
+			g->select[y*g->width+x]=1;
+			if(g->mines[y*g->width+x]==0)
+				g->floating[y*g->width+x]=iteration+1;
+			return 1;	
+	}
+	return 0;
+}
+
+int floating_unveil(Game *g, int iteration){
+	int amoun_unveiled =0;
+	for(int i=1;i<g->height-1;i++){
+    		for(int j=1;j<g->width-1;j++){
+			if(g->floating[i*g->width+j]==iteration){
+				for(int k=i-1;k<=i+1;k++){
+					for(int l=j-1;l<=j+1;l++){
+						amoun_unveiled += unveil(g,l,k, iteration);
+					}
+					
+				}	
+			}	
+    		}
+    
+  	}
+	return amoun_unveiled;
+
+}
+
 int  test(Game *g){
-  debug(g);
-  //right to bottom
-  bool rone= false;
-  if(g->mines[g->cord.y*g->width+g->cord.x]==-1){ //TODO when flagged dont return
-    return -1;
-  }
-  
-  
-  for(int j=g->cord.x;j<g->width;j++){
-    int p = g->mines[g->cord.y*g->width+j];
-    if(  g->select[g->cord.y*g->width+j] > 1 || rone){
-      break;
-    }
-    if(p>=1)
-      rone=true;
-    bool one = false;
-    for(int i=g->cord.y;i<g->height;i++){
-      int p = g->mines[i*g->width+j];
-      if(    g->select[i*g->width+j] > 1|| one){
-	break;
-      } 
-      if(p >= 1){
-	one=true;
-	
-      }
-      g->select[i*g->width+j]=1;
-    }	
-  }
-  
-  //right to top
-  rone= false;
-  for(int j=g->cord.x;j<g->width;j++){
-    int p = g->mines[g->cord.y*g->width+j];
-    if( g->select[g->cord.y*g->width+j] > 1 || rone){
-      break;
-    }
-    if(p>=1)
-      rone=true;
-    bool one = false;
-    for(int i=g->cord.y;i>=0;i--){
-      int p = g->mines[i*g->width+j];
-      if(  g->select[i*g->width+j] > 1|| one){
-	break;
-      } 
-      if(p >= 1){
-	one=true;
-	
-      }
-      g->select[i*g->width+j]=1;
-    }	
-  }
-  
-  //left to bottom
-  bool lone= false;
-  for(int j=g->cord.x;j>=0;j--){
-    int p = g->mines[g->cord.y*g->width+j];
-    if( g->select[g->cord.y*g->width+j] > 1 || lone){
-      break;
-    }
-    if(p>=1)
-      lone=true;
-    bool one = false;
-    for(int i=g->cord.y;i<g->height;i++){
-      int p = g->mines[i*g->width+j];
-      if(g->select[i*g->width+j] > 1|| one){
-	break;
-      } 
-      if(p >= 1){
-	one=true;
-	
-      }
-      g->select[i*g->width+j]=1;
-    }	
-  }
-  
-  //left to bottom
-  lone= false;
-  for(int j=g->cord.x;j>=0;j--){
-    int p = g->mines[g->cord.y*g->width+j];
-    if( g->select[g->cord.y*g->width+j] > 1 || lone){
-      break;
-    }
-    if(p>=1)
-      lone=true;
-    bool one = false;
-    for(int i=g->cord.y;i>=0;i--){
-      int p = g->mines[i*g->width+j];
-      if(g->select[i*g->width+j] > 1|| one){
-	break;
-      } 
-      if(p >= 1){
-	one=true;
-	
-      }
-      g->select[i*g->width+j]=1;
-    }	
-  }
+   if(g->mines[g->cord.y*g->width+g->cord.x]==-1){
+   	return -1;
+   }
+   if(g->mines[g->cord.y*g->width+g->cord.x]>0){
+	   g->select[g->cord.y*g->width+g->cord.x]=1;
+	   return 0;
+   }
+   if(g->select[g->cord.y*g->width+g->cord.x]==2){
+	   return 0;
+   }
+   g->floating[g->cord.y*g->width+g->cord.x]=1;
+   for(int i=1;i<=15;i++){
+   	floating_unveil(g,i);
+   }
+   for(int i=0; i<g->length;i++){
+  	g->floating[i]=0; 
+   } 
+   
+
   return 0;
 }
 
@@ -304,7 +273,6 @@ int checkflags(Game *g){
 
 
 int main(int argc, char *argv[]){
-  pledge("ioctl",NULL);
   initscr();
   int wt,hi,ch,mi, fd;
   wt=hi=mi=0;
