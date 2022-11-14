@@ -15,3 +15,6 @@ mines.o: mines.c
 
 clean:
 	rm -f $(OBJS) $(OUT)
+
+install: 
+	cp mines /usr/local/bin
