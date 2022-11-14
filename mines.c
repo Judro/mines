@@ -209,9 +209,12 @@ int unveil(Game *g, int x, int y, int iteration){
 	if(g->mines[y*g->width+x]>=0){
 		if(g->select[y*g->width+x]!=2&&g->select[y*g->width+x]!=1)
 			g->select[y*g->width+x]=1;
-			if(g->mines[y*g->width+x]==0)
-				g->floating[y*g->width+x]=iteration+1;
-			return 1;	
+			if(g->mines[y*g->width+x]==0){
+				if(g->floating[y*g->width+x]==0){
+					g->floating[y*g->width+x]=iteration+1;
+					return 1;	
+				}
+			}
 	}
 	return 0;
 }
@@ -247,8 +250,12 @@ int  test(Game *g){
 	   return 0;
    }
    g->floating[g->cord.y*g->width+g->cord.x]=1;
-   for(int i=1;i<=15;i++){
-   	floating_unveil(g,i);
+   int ui = 1;
+   int tmp =floating_unveil(g,ui);
+   while(tmp > 0){
+   	tmp =0;
+	ui ++;
+	tmp =floating_unveil(g,ui);
    }
    for(int i=0; i<g->length;i++){
   	g->floating[i]=0; 
