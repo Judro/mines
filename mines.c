@@ -221,12 +221,14 @@ int unveil(Game *g, int x, int y, int iteration){
 
 int floating_unveil(Game *g, int iteration){
 	int amoun_unveiled =0;
-	for(int i=1;i<g->height-1;i++){
-    		for(int j=1;j<g->width-1;j++){
+	for(int i=0;i<g->height;i++){
+    		for(int j=0;j<g->width;j++){
 			if(g->floating[i*g->width+j]==iteration){
 				for(int k=i-1;k<=i+1;k++){
 					for(int l=j-1;l<=j+1;l++){
-						amoun_unveiled += unveil(g,l,k, iteration);
+						if(l>=0&&k>=0&&k<g->height&&l<g->width){
+							amoun_unveiled += unveil(g,l,k, iteration);
+						}
 					}
 					
 				}	
