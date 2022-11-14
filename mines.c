@@ -128,7 +128,11 @@ void print(Game* g, char game_over){
       if( i== g->cord.y&&j==g->cord.x)
 	attron(A_REVERSE);		
       if(g->select[i*g->width+j]==2){
-	printw("P");
+	if(game_over&&g->mines[i*g->width+j]!=-1){
+	   printw("X");
+	}else{
+	   printw("P");
+	}
       }else if(g->select[i*g->width+j]==1&&g->mines[i*g->width+j]==0){
 	printw(" ");	
       }else if(g->mines[i*g->width+j]==0){
@@ -260,14 +264,14 @@ int floating_unveil(Game *g, int iteration){
 }
 
 int  test(Game *g){
+   if(g->select[g->cord.y*g->width+g->cord.x]==2){
+	   return 0;
+   }
    if(g->mines[g->cord.y*g->width+g->cord.x]==-1){
    	return -1;
    }
    if(g->mines[g->cord.y*g->width+g->cord.x]>0){
 	   g->select[g->cord.y*g->width+g->cord.x]=1;
-	   return 0;
-   }
-   if(g->select[g->cord.y*g->width+g->cord.x]==2){
 	   return 0;
    }
    g->floating[g->cord.y*g->width+g->cord.x]=1;
