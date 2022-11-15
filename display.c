@@ -1,6 +1,6 @@
 #include "display.h"
-#include "game.h"
 #include <ncurses.h>
+
 void print(Game *g, char game_over) {
   init_pair(1, COLOR_BLUE, COLOR_BLACK);
   init_pair(2, COLOR_GREEN, COLOR_BLACK);
