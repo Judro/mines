@@ -1,3 +1,5 @@
+#ifndef GAME_H
+#define GAME_H
 typedef struct {
   int x;
   int y;
@@ -21,3 +23,5 @@ void g_flag(Game *g);
 int g_unveil(Game *g);
 int checkflags(Game *g);
 void g_kill(Game *g);
+
+#endif
