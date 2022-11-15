@@ -26,7 +26,7 @@ void print(Game *g, char game_over) {
       if (i == g_player_position(g).y && j == g_player_position(g).x)
         attron(A_REVERSE);
       if (g_flaged(g, j, i)) {
-        if (game_over && g_mine(g, j, i)) {
+        if (game_over && !g_mine(g, j, i)) {
           printw("X");
         } else {
           printw("P");
