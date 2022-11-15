@@ -102,12 +102,12 @@ int get_x(Game* g,int* L, int x, int y){
 //	L[y*g->height+x]=v;
 //}
 
-char is_mine(Game* g,int x, int y){
+char g_mine(Game* g,int x, int y){
 	if(get_x(g,g->mines,x,y)==-1)
 		return 1;
 	return 0;
 }
-char is_plain(Game* g, int x, int y){
+char g_plain(Game* g, int x, int y){
 	if(get_x(g,g->mines,x,y)==0){
 		return 1;
 	}
@@ -120,22 +120,22 @@ int amount_near_mines(Game *g,int x, int y){
 	}
 	return 0;
 }
-Cord get_player_position(Game *g){
+Cord g_player_position(Game *g){
 	return g->cord;
 }
-void set_player_position_x(Game *g, int x){
+void g_set_player_position_x(Game *g, int x){
 	g->cord.x=x;
 }
-void set_player_position_y(Game *g,int y){
+void g_set_player_position_y(Game *g,int y){
 	g->cord.y=y;
 }
-char is_unveiled(Game *g, int x, int y){
+char g_unveiled(Game *g, int x, int y){
 	if(get_x(g,g->select,x,y)==1){
 		return 1;	
 	}
 	return 0;
 }
-char is_flaged(Game *g,int x,int y){
+char g_flaged(Game *g,int x,int y){
 	if(get_x(g,g->select,x,y)==2){
 		return 1;	
 	}

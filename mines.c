@@ -25,19 +25,19 @@ void print(Game* g, char game_over){
   for(int i=0;i<g_height(g);i++){
     printw("|");
     for(int j=0;j<g_width(g);j++){
-      if( i==get_player_position(g).y&&j==get_player_position(g).x)
+      if( i==g_player_position(g).y&&j==g_player_position(g).x)
 	attron(A_REVERSE);		
-      if(is_flaged(g,j,i)){
-	if(game_over&&is_mine(g,j,i)){
+      if(g_flaged(g,j,i)){
+	if(game_over&&g_mine(g,j,i)){
 	   printw("X");
 	}else{
 	   printw("P");
 	}
-      }else if(is_unveiled(g,j,i)&&is_plain(g,j,i)){
+      }else if(g_unveiled(g,j,i)&&g_plain(g,j,i)){
 	printw(" ");	
-      }else if(is_plain(g,j,i)){
+      }else if(g_plain(g,j,i)){
 	   printw("O");
-      }else if(is_unveiled(g,j,i)){
+      }else if(g_unveiled(g,j,i)){
 	switch(amount_near_mines(g,j,i)){
 	case 1:  attron(COLOR_PAIR(1));
 	  break;
@@ -56,14 +56,14 @@ void print(Game* g, char game_over){
 	printw("%d", amount_near_mines(g,j,i));
 	attroff(COLOR_PAIRS);
       }else{
-	if(game_over&&get_player_position(g).y==i&&get_player_position(g).x==j){
+	if(game_over&&g_player_position(g).y==i&&g_player_position(g).x==j){
 	     printw("X"); 
 	 }else{
 	      printw("O");
 	      }
 
       }
-      if( i== get_player_position(g).y&&j==get_player_position(g).x)
+      if( i== g_player_position(g).y&&j==g_player_position(g).x)
 	attroff(A_REVERSE);  
     }
     printw("|");
@@ -79,23 +79,23 @@ void print(Game* g, char game_over){
 // controls
 int  cmove(Game *g){
   char ch = getch();
-  Cord old = get_player_position(g);
+  Cord old = g_player_position(g);
   switch(ch){
-  case 'j': set_player_position_y(g,old.y+1);
-    if(get_player_position(g).y==g_height(g))
-      set_player_position_y(g,0);
+  case 'j': g_set_player_position_y(g,old.y+1);
+    if(g_player_position(g).y==g_height(g))
+      g_set_player_position_y(g,0);
     break;
-  case 'k': set_player_position_y(g,old.y-1);
-    if(get_player_position(g).y==-1)
-      set_player_position_y(g,g_height(g) -1);
+  case 'k': g_set_player_position_y(g,old.y-1);
+    if(g_player_position(g).y==-1)
+      g_set_player_position_y(g,g_height(g) -1);
     break;
-  case 'h': set_player_position_x(g,old.x-1);
-    if(get_player_position(g).x==-1)
-      set_player_position_x(g,g_width(g)-1);
+  case 'h': g_set_player_position_x(g,old.x-1);
+    if(g_player_position(g).x==-1)
+      g_set_player_position_x(g,g_width(g)-1);
     break;
-  case 'l': set_player_position_x(g,old.x+1);
-    if(get_player_position(g).x==g_width(g))
-      set_player_position_x(g,0);
+  case 'l': g_set_player_position_x(g,old.x+1);
+    if(g_player_position(g).x==g_width(g))
+      g_set_player_position_x(g,0);
     break;
   case 'q': 
     return -1;
