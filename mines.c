@@ -36,7 +36,7 @@ void print(Game *g, char game_over) {
       } else if (g_plain(g, j, i)) {
         printw("O");
       } else if (g_unveiled(g, j, i)) {
-        switch (amount_near_mines(g, j, i)) {
+        switch (g_amount_near_mines(g, j, i)) {
         case 1:
           attron(COLOR_PAIR(1));
           break;
@@ -56,7 +56,7 @@ void print(Game *g, char game_over) {
           attron(COLOR_PAIR(6));
           break;
         }
-        printw("%d", amount_near_mines(g, j, i));
+        printw("%d", g_amount_near_mines(g, j, i));
         attroff(COLOR_PAIRS);
       } else {
         if (game_over && g_player_position(g).y == i &&
@@ -159,9 +159,9 @@ int main(int argc, char *argv[]) {
     if (ret == -1) {
       break;
     } else if (ret == -2) {
-      flag(game);
+      g_flag(game);
     } else if (ret == -3) {
-      if (test(game) == -1) {
+      if (g_unveil(game) == -1) {
         clear();
         printw(" Game over     ");
         print(game, 1);

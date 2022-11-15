@@ -111,7 +111,7 @@ char g_plain(Game *g, int x, int y) {
   return 0;
 }
 
-int amount_near_mines(Game *g, int x, int y) {
+int g_amount_near_mines(Game *g, int x, int y) {
   if (get_x(g, g->mines, x, y) >= 1) {
     return get_x(g, g->mines, x, y);
   }
@@ -139,7 +139,7 @@ int g_width(Game *g) { return g->width; }
 int g_height(Game *g) { return g->height; }
 
 // TODO refactor me
-void flag(Game *g) {
+void g_flag(Game *g) {
   if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
     g->select[g->cord.y * g->width + g->cord.x] = 0;
     g->flagsfound -= 1;
@@ -184,7 +184,7 @@ int floating_unveil(Game *g, int iteration) {
 }
 
 // TODO refactor me
-int test(Game *g) {
+int g_unveil(Game *g) {
   if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
     return 0;
   }
@@ -209,7 +209,7 @@ int test(Game *g) {
 
   return 0;
 }
-// TODO refactor
+// TODO refactor, rename
 int checkflags(Game *g) {
   int fit = 0;
   for (int i = 0; i < g->length; i++) {
