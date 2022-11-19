@@ -1,6 +1,5 @@
 #include "game.h"
 #include <ncurses.h>
-#include <curses.h>
 int cmove(Game *g) {
   char ch = getch();
   Cord old = g_player_position(g);
