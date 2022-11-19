@@ -6,15 +6,14 @@
 3. `make install`
 
 ### Dependencies
-- libbsd
 - libbsd-devel
-- libncurses 
+- libncurses-devel
 
 ## Starting
 - `mines` 
 - `mines -w 40 -h 10 -m 40`
 
 ## Controls
-- Movement: `hjkl`
+- Movement: `hjkl or ←↓↑→`
 - Place flag: `f`
 - Open tile: `s`
