@@ -10,6 +10,7 @@ typedef struct myGame Game;
 	UNTOUCHED,
 	UNVEILED,
 	FALSE_FLAG,
+	FLAG_NOT_FOUND,
 	FLAG,
 	ONE,
 	TWO,

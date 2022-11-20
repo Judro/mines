@@ -147,8 +147,10 @@ GPrintable* g_printable_gameover(Game* g){
 				gp->fields[i]=FALSE_FLAG;	
 			}
 		}
-		else if(g->select[i]==1){
+		else {
 			switch (g->mines[i]){
+				case -1: gp->fields[i]=FLAG_NOT_FOUND;
+					break;
 				case 0: gp->fields[i]=UNVEILED ;
 					break;
 				case 1: gp->fields[i]=ONE;
@@ -170,9 +172,7 @@ GPrintable* g_printable_gameover(Game* g){
 				default: ;
 
 			}
-		}else{
-			gp->fields[i]=UNTOUCHED;
-		}
+		}	
 	}
 	gp->fields[g->cord.y*g->width+g->cord.x]=FALSE_FLAG;
 	gp->height=g->height;

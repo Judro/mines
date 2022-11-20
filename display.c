@@ -35,6 +35,9 @@ void print(GPrintable * gp){
 			   break;
 		case FALSE_FLAG: printw("X");
 				 break;
+		case FLAG_NOT_FOUND:
+				 printw("+");
+				 break;
 		case ONE: attron(COLOR_PAIR(1)); 
 			   printw("1");
 			  attroff(COLOR_PAIR(1));
