@@ -6,31 +6,31 @@ typedef struct {
 } Cord;
 
 typedef struct myGame Game;
- typedef enum GPrint{
-	UNTOUCHED,
-	UNVEILED,
-	FALSE_FLAG,
-	FLAG_NOT_FOUND,
-	FLAG,
-	ONE,
-	TWO,
-	THREE,
-	FOUR,
-	FIVE,
-	SIX,
-	SEVEN,
-	EIGHT,
+typedef enum GPrint {
+  UNTOUCHED,
+  UNVEILED,
+  FALSE_FLAG,
+  FLAG_NOT_FOUND,
+  FLAG,
+  ONE,
+  TWO,
+  THREE,
+  FOUR,
+  FIVE,
+  SIX,
+  SEVEN,
+  EIGHT,
 } GPrint;
 
-typedef struct GPrintable{
-	Cord player;
-	GPrint* fields;
-	unsigned int width;
-	unsigned int height;
+typedef struct GPrintable {
+  Cord player;
+  GPrint *fields;
+  unsigned int width;
+  unsigned int height;
 } GPrintable;
 
-GPrintable* g_printable(Game*);
-GPrintable* g_printable_gameover(Game*);
+GPrintable *g_printable(Game *);
+GPrintable *g_printable_gameover(Game *);
 void g_gprintable_kill(GPrintable *);
 Game *g_new(int width, int height, int minesamount);
 Cord g_player_position(Game *g);

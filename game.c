@@ -94,97 +94,111 @@ void g_kill(Game *g) {
   free(g);
 }
 
-GPrintable* g_printable(Game* g){
-	GPrintable* gp = calloc(1,sizeof(GPrintable));
-	GPrint* gpr = calloc(g->length,sizeof(GPrintable));
-	gp->fields=gpr;
-	gp->player=g->cord;
-	for(int i=0;i<g->length;i++){
-		if(g->select[i]==2){
-			gp->fields[i]=FLAG;	
-		}
-		else if(g->select[i]==1){
-			switch (g->mines[i]){
-				case 0: gp->fields[i]=UNVEILED ;
-					break;
-				case 1: gp->fields[i]=ONE;
-					break;
-				case 2: gp->fields[i]=TWO;
-					break;
-				case 3: gp->fields[i]=THREE;
-					break;
-				case 4: gp->fields[i]=FOUR;
-					break;
-				case 5: gp->fields[i]=FIVE;
-					break;
-				case 6: gp->fields[i]=SIX;
-					break;
-				case 7: gp->fields[i]=SEVEN;
-					break;
-				case 8: gp->fields[i]=EIGHT;
-					break;
-				default: ;
-
-			}
-		}else{
-			gp->fields[i]=UNTOUCHED;
-		}
-	}
-	gp->height=g->height;
-	gp->width=g->width;
-	return gp;
+GPrintable *g_printable(Game *g) {
+  GPrintable *gp = calloc(1, sizeof(GPrintable));
+  GPrint *gpr = calloc(g->length, sizeof(GPrintable));
+  gp->fields = gpr;
+  gp->player = g->cord;
+  for (int i = 0; i < g->length; i++) {
+    if (g->select[i] == 2) {
+      gp->fields[i] = FLAG;
+    } else if (g->select[i] == 1) {
+      switch (g->mines[i]) {
+      case 0:
+        gp->fields[i] = UNVEILED;
+        break;
+      case 1:
+        gp->fields[i] = ONE;
+        break;
+      case 2:
+        gp->fields[i] = TWO;
+        break;
+      case 3:
+        gp->fields[i] = THREE;
+        break;
+      case 4:
+        gp->fields[i] = FOUR;
+        break;
+      case 5:
+        gp->fields[i] = FIVE;
+        break;
+      case 6:
+        gp->fields[i] = SIX;
+        break;
+      case 7:
+        gp->fields[i] = SEVEN;
+        break;
+      case 8:
+        gp->fields[i] = EIGHT;
+        break;
+      default:;
+      }
+    } else {
+      gp->fields[i] = UNTOUCHED;
+    }
+  }
+  gp->height = g->height;
+  gp->width = g->width;
+  return gp;
 }
-GPrintable* g_printable_gameover(Game* g){
-	GPrintable* gp = calloc(1,sizeof(GPrintable));
-	GPrint* gpr = calloc(g->length,sizeof(GPrintable));
-	gp->fields=gpr;
-	gp->player=g->cord;
-	for(int i=0;i<g->length;i++){
-		if(g->select[i]==2){
-			if(g->mines[i]==-1){
-				gp->fields[i]=FLAG;	
-			}else {
-				gp->fields[i]=FALSE_FLAG;	
-			}
-		}
-		else {
-			switch (g->mines[i]){
-				case -1: gp->fields[i]=FLAG_NOT_FOUND;
-					break;
-				case 0: gp->fields[i]=UNVEILED ;
-					break;
-				case 1: gp->fields[i]=ONE;
-					break;
-				case 2: gp->fields[i]=TWO;
-					break;
-				case 3: gp->fields[i]=THREE;
-					break;
-				case 4: gp->fields[i]=FOUR;
-					break;
-				case 5: gp->fields[i]=FIVE;
-					break;
-				case 6: gp->fields[i]=SIX;
-					break;
-				case 7: gp->fields[i]=SEVEN;
-					break;
-				case 8: gp->fields[i]=EIGHT;
-					break;
-				default: ;
-
-			}
-		}	
-	}
-	gp->fields[g->cord.y*g->width+g->cord.x]=FALSE_FLAG;
-	gp->height=g->height;
-	gp->width=g->width;
-	return gp;
+GPrintable *g_printable_gameover(Game *g) {
+  GPrintable *gp = calloc(1, sizeof(GPrintable));
+  GPrint *gpr = calloc(g->length, sizeof(GPrintable));
+  gp->fields = gpr;
+  gp->player = g->cord;
+  for (int i = 0; i < g->length; i++) {
+    if (g->select[i] == 2) {
+      if (g->mines[i] == -1) {
+        gp->fields[i] = FLAG;
+      } else {
+        gp->fields[i] = FALSE_FLAG;
+      }
+    } else {
+      switch (g->mines[i]) {
+      case -1:
+        gp->fields[i] = FLAG_NOT_FOUND;
+        break;
+      case 0:
+        gp->fields[i] = UNVEILED;
+        break;
+      case 1:
+        gp->fields[i] = ONE;
+        break;
+      case 2:
+        gp->fields[i] = TWO;
+        break;
+      case 3:
+        gp->fields[i] = THREE;
+        break;
+      case 4:
+        gp->fields[i] = FOUR;
+        break;
+      case 5:
+        gp->fields[i] = FIVE;
+        break;
+      case 6:
+        gp->fields[i] = SIX;
+        break;
+      case 7:
+        gp->fields[i] = SEVEN;
+        break;
+      case 8:
+        gp->fields[i] = EIGHT;
+        break;
+      default:;
+      }
+    }
+  }
+  gp->fields[g->cord.y * g->width + g->cord.x] = FALSE_FLAG;
+  gp->height = g->height;
+  gp->width = g->width;
+  return gp;
 }
 
-void g_gprintable_kill(GPrintable * gp){
-	free(gp->fields);
-	free(gp);
+void g_gprintable_kill(GPrintable *gp) {
+  free(gp->fields);
+  free(gp);
 }
-
 
 Cord g_player_position(Game *g) { return g->cord; }
 void g_set_player_position_x(Game *g, int x) { g->cord.x = x; }

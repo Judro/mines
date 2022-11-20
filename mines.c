@@ -1,6 +1,6 @@
+#include "controls.h"
 #include "display.h"
 #include "game.h"
-#include "controls.h"
 #include <fcntl.h>
 #include <limits.h>
 #include <ncurses.h>
@@ -8,8 +8,6 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-
-
 
 int main(int argc, char *argv[]) {
   initscr();
@@ -43,9 +41,9 @@ int main(int argc, char *argv[]) {
   Game *game = g_new(wt, hi, mi);
   while (1) {
     clear();
-    print_header(g_flags_total(game)-g_flags_found(game));
-    GPrintable* gp = g_printable(game);
-    print(gp); 
+    print_header(g_flags_total(game) - g_flags_found(game));
+    GPrintable *gp = g_printable(game);
+    print(gp);
     g_gprintable_kill(gp);
     int ret = cmove(game);
     if (ret == -1) {
@@ -56,9 +54,9 @@ int main(int argc, char *argv[]) {
       if (g_unveil(game) == -1) {
         clear();
         printw(" Game over     \n");
-    	GPrintable* gp = g_printable_gameover(game);
+        GPrintable *gp = g_printable_gameover(game);
         print(gp);
-	free(gp);
+        free(gp);
         break;
       }
     }
