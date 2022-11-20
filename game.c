@@ -94,51 +94,106 @@ void g_kill(Game *g) {
   free(g);
 }
 
-int get_x(Game *g, int *L, int x, int y) { return L[y * g->width + x]; }
-// void set_x(int* L,int x, int y, int v){
-//	L[y*g->height+x]=v;
-// }
+GPrintable* g_printable(Game* g){
+	GPrintable* gp = calloc(1,sizeof(GPrintable));
+	GPrint* gpr = calloc(g->length,sizeof(GPrintable));
+	gp->fields=gpr;
+	gp->player=g->cord;
+	for(int i=0;i<g->length;i++){
+		if(g->select[i]==2){
+			gp->fields[i]=FLAG;	
+		}
+		else if(g->select[i]==1){
+			switch (g->mines[i]){
+				case 0: gp->fields[i]=UNVEILED ;
+					break;
+				case 1: gp->fields[i]=ONE;
+					break;
+				case 2: gp->fields[i]=TWO;
+					break;
+				case 3: gp->fields[i]=THREE;
+					break;
+				case 4: gp->fields[i]=FOUR;
+					break;
+				case 5: gp->fields[i]=FIVE;
+					break;
+				case 6: gp->fields[i]=SIX;
+					break;
+				case 7: gp->fields[i]=SEVEN;
+					break;
+				case 8: gp->fields[i]=EIGHT;
+					break;
+				default: ;
 
-char g_mine(Game *g, int x, int y) {
-  if (get_x(g, g->mines, x, y) == -1)
-    return 1;
-  return 0;
+			}
+		}else{
+			gp->fields[i]=UNTOUCHED;
+		}
+	}
+	gp->height=g->height;
+	gp->width=g->width;
+	return gp;
 }
-char g_plain(Game *g, int x, int y) {
-  if (get_x(g, g->mines, x, y) == 0) {
-    return 1;
-  }
-  return 0;
+GPrintable* g_printable_gameover(Game* g){
+	GPrintable* gp = calloc(1,sizeof(GPrintable));
+	GPrint* gpr = calloc(g->length,sizeof(GPrintable));
+	gp->fields=gpr;
+	gp->player=g->cord;
+	for(int i=0;i<g->length;i++){
+		if(g->select[i]==2){
+			if(g->mines[i]==-1){
+				gp->fields[i]=FLAG;	
+			}else {
+				gp->fields[i]=FALSE_FLAG;	
+			}
+		}
+		else if(g->select[i]==1){
+			switch (g->mines[i]){
+				case 0: gp->fields[i]=UNVEILED ;
+					break;
+				case 1: gp->fields[i]=ONE;
+					break;
+				case 2: gp->fields[i]=TWO;
+					break;
+				case 3: gp->fields[i]=THREE;
+					break;
+				case 4: gp->fields[i]=FOUR;
+					break;
+				case 5: gp->fields[i]=FIVE;
+					break;
+				case 6: gp->fields[i]=SIX;
+					break;
+				case 7: gp->fields[i]=SEVEN;
+					break;
+				case 8: gp->fields[i]=EIGHT;
+					break;
+				default: ;
+
+			}
+		}else{
+			gp->fields[i]=UNTOUCHED;
+		}
+	}
+	gp->fields[g->cord.y*g->width+g->cord.x]=FALSE_FLAG;
+	gp->height=g->height;
+	gp->width=g->width;
+	return gp;
 }
 
-int g_amount_near_mines(Game *g, int x, int y) {
-  if (get_x(g, g->mines, x, y) >= 1) {
-    return get_x(g, g->mines, x, y);
-  }
-  return 0;
+void g_gprintable_kill(GPrintable * gp){
+	free(gp->fields);
+	free(gp);
 }
+
+
 Cord g_player_position(Game *g) { return g->cord; }
 void g_set_player_position_x(Game *g, int x) { g->cord.x = x; }
 void g_set_player_position_y(Game *g, int y) { g->cord.y = y; }
-char g_unveiled(Game *g, int x, int y) {
-  if (get_x(g, g->select, x, y) == 1) {
-    return 1;
-  }
-  return 0;
-}
-char g_flaged(Game *g, int x, int y) {
-  if (get_x(g, g->select, x, y) == 2) {
-    return 1;
-  }
-  return 0;
-}
-
 int g_flags_total(Game *g) { return g->flagstotal; }
 int g_flags_found(Game *g) { return g->flagsfound; }
 int g_width(Game *g) { return g->width; }
 int g_height(Game *g) { return g->height; }
 
-// TODO refactor me
 void g_flag(Game *g) {
   if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
     g->select[g->cord.y * g->width + g->cord.x] = 0;
@@ -149,7 +204,6 @@ void g_flag(Game *g) {
   }
 }
 
-// TODO refactor me
 int unveil(Game *g, int x, int y, int iteration) {
   if (g->mines[y * g->width + x] >= 0) {
     if (g->select[y * g->width + x] != 2)
@@ -164,7 +218,6 @@ int unveil(Game *g, int x, int y, int iteration) {
   return 0;
 }
 
-// TODO refactor me
 int floating_unveil(Game *g, int iteration) {
   int amoun_unveiled = 0;
   for (int i = 0; i < g->height; i++) {
@@ -183,7 +236,6 @@ int floating_unveil(Game *g, int iteration) {
   return amoun_unveiled;
 }
 
-// TODO refactor me
 int g_unveil(Game *g) {
   if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
     return 0;
@@ -209,7 +261,6 @@ int g_unveil(Game *g) {
 
   return 0;
 }
-// TODO refactor, rename
 int checkflags(Game *g) {
   int fit = 0;
   for (int i = 0; i < g->length; i++) {

@@ -43,7 +43,10 @@ int main(int argc, char *argv[]) {
   Game *game = g_new(wt, hi, mi);
   while (1) {
     clear();
-    print(game, 0);
+    print_header(g_flags_total(game)-g_flags_found(game));
+    GPrintable* gp = g_printable(game);
+    print(gp); 
+    g_gprintable_kill(gp);
     int ret = cmove(game);
     if (ret == -1) {
       break;
@@ -52,8 +55,10 @@ int main(int argc, char *argv[]) {
     } else if (ret == -3) {
       if (g_unveil(game) == -1) {
         clear();
-        printw(" Game over     ");
-        print(game, 1);
+        printw(" Game over     \n");
+    	GPrintable* gp = g_printable_gameover(game);
+        print(gp);
+	free(gp);
         break;
       }
     }

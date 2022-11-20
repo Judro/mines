@@ -6,15 +6,35 @@ typedef struct {
 } Cord;
 
 typedef struct myGame Game;
+ typedef enum GPrint{
+	UNTOUCHED,
+	UNVEILED,
+	FALSE_FLAG,
+	FLAG,
+	ONE,
+	TWO,
+	THREE,
+	FOUR,
+	FIVE,
+	SIX,
+	SEVEN,
+	EIGHT,
+} GPrint;
+
+typedef struct GPrintable{
+	Cord player;
+	GPrint* fields;
+	unsigned int width;
+	unsigned int height;
+} GPrintable;
+
+GPrintable* g_printable(Game*);
+GPrintable* g_printable_gameover(Game*);
+void g_gprintable_kill(GPrintable *);
 Game *g_new(int width, int height, int minesamount);
-char g_mine(Game *g, int x, int y);
-char g_plain(Game *g, int x, int y);
-int g_amount_near_mines(Game *g, int x, int y);
 Cord g_player_position(Game *g);
 void g_set_player_position_x(Game *g, int x);
 void g_set_player_position_y(Game *g, int y);
-char g_unveiled(Game *g, int x, int y);
-char g_flaged(Game *g, int x, int y);
 int g_flags_total(Game *g);
 int g_flags_found(Game *g);
 int g_width(Game *g);
