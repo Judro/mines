@@ -1,20 +1,19 @@
-OBJS	= mines.o game.o display.o controls.o menu.o
-SOURCE	= mines.c game.c display.c controls.c menu.c
-HEADER	= 
-OUT	= mines
+SRCS =$(wildcard src/*.c)
+OBJS	= $(patsubst src/%.c, obj/%.o, $(SRCS))
 CC	 = gcc
-FLAGS	 = -g -c -Wall
-LFLAGS	 = -lbsd -lncurses
+FLAGS	 = -Wall -O2
+LFLAGS	 = -lncurses
+BIN = bin/mines
 
-all: $(OBJS)
-	$(CC) -g $(OBJS) -o $(OUT) $(LFLAGS)
+all:$(BIN)
 
-mines.o: mines.c
-	$(CC) $(FLAGS) mines.c 
-
+$(BIN): $(OBJS)
+	$(CC) $(FLAGS) $(OBJS) -o $@ $(LFLAGS) 
+obj/%.o: src/%.c
+	$(CC) $(FLAGS)  -c $< -o $@
 
 clean:
-	rm -f $(OBJS) $(OUT)
+	$(RM) -r bin/* obj/*
 
 install: 
-	cp mines /usr/local/bin
+	cp bin/mines /usr/local/bin
