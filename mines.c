@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
         printw(" Game over     \n");
         GPrintable *gp = g_printable_gameover(game);
         print(gp);
-        free(gp);
+        g_gprintable_kill(gp);
         break;
       }
     }
