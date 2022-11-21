@@ -8,10 +8,6 @@
 ### Dependencies
 - libncurses-devel
 
-## Starting
-- `mines` 
-- `mines -w 40 -h 10 -m 40`
-
 ## Controls
 - Movement: `hjkl or ←↓↑→`
 - Place flag: `f`
