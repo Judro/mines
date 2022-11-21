@@ -6,7 +6,6 @@
 3. `make install`
 
 ### Dependencies
-- libbsd-devel
 - libncurses-devel
 
 ## Starting

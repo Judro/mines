@@ -1,5 +1,5 @@
-OBJS	= mines.o game.o display.o controls.o
-SOURCE	= mines.c game.c display.c controls.c
+OBJS	= mines.o game.o display.o controls.o menu.o
+SOURCE	= mines.c game.c display.c controls.c menu.c
 HEADER	= 
 OUT	= mines
 CC	 = gcc
