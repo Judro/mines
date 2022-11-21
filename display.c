@@ -85,9 +85,9 @@ void print(GPrintable *gp) {
     if (i == (gp->player.y * gp->width + gp->player.x))
       attroff(A_REVERSE);
   }
-  printw("|\n|");
+  printw("|\n'");
   for (int i = 0; i < gp->width; i++) {
     printw("=");
   }
-  printw("|\n");
+  printw("'\n");
 }
