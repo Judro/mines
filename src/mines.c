@@ -12,6 +12,10 @@ int main(int argc, char *argv[]) {
   start_color();
   curs_set(0);
   Game *game = select_mode();
+  if (game == NULL) {
+    goto end;
+  }
+start:
   while (1) {
     clear();
     print_header(g_flags_total(game) - g_flags_found(game));
@@ -39,9 +43,12 @@ int main(int argc, char *argv[]) {
       break;
     }
   }
-
-  getch();
-  endwin();
   g_kill(game);
+  game = select_mode();
+  if (game != NULL)
+    goto start;
+  getch();
+end:
+  endwin();
   return 0;
 }

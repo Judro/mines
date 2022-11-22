@@ -33,7 +33,7 @@ void m_print(Menu *menu) {
   printw(" - quit with <q>\n");
 }
 
-void control(Menu *menu) {
+char control(Menu *menu) {
   char ch = getch();
   switch (ch) {
   case 'j':
@@ -53,8 +53,11 @@ void control(Menu *menu) {
   case 's':
     menu->selected = 1;
     break;
+  case 'q':
+    return -1;
   default:
   }
+  return 0;
 }
 Game *select_mode() {
   Menu menu;
@@ -64,7 +67,9 @@ Game *select_mode() {
     clear();
 
     m_print(&menu);
-    control(&menu);
+    char ret = control(&menu);
+    if (ret == -1)
+      return NULL;
     if (menu.selected == 1) {
       switch (menu.pos) {
       case 0:
