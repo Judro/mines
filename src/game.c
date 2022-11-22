@@ -19,9 +19,7 @@ typedef struct myGame {
 } Game;
 
 Game *g_new(int width, int height, int minesamount) {
-  Game game;
-  Game *g = malloc(sizeof(Game));
-  *g = game;
+  Game *g = calloc(1,sizeof(Game));
   int length = width * height;
   int total = 0;
   int *mines = malloc(length * sizeof(int));
