@@ -37,7 +37,13 @@ start:
         printw(" Game over     \n");
         GPrintable *gp = g_printable_gameover(game);
         print(gp);
+        printw("Press <q> to get back to the menu\n");
         g_gprintable_kill(gp);
+        while (1) {
+          ret = cmove(game, window);
+          if (ret == -1)
+            break;
+        }
         break;
       }
     }
@@ -48,7 +54,6 @@ start:
     }
   }
   g_kill(game);
-  getch();
   game = select_mode();
   if (game != NULL)
     goto start;
