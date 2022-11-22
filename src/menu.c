@@ -56,6 +56,7 @@ char control(Menu *menu) {
   case 'q':
     return -1;
   default:
+    break;
   }
   return 0;
 }
@@ -81,6 +82,7 @@ Game *select_mode() {
       case 3:
         return g_new(33, 15, 99);
       default:
+	break;
       }
       return g_new(2, 2, 2);
     }

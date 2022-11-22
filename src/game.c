@@ -133,7 +133,8 @@ GPrintable *g_printable(Game *g) {
       case 8:
         gp->fields[i] = EIGHT;
         break;
-      default:;
+      default:
+	break;
       }
     } else {
       gp->fields[i] = UNTOUCHED;
@@ -187,7 +188,8 @@ GPrintable *g_printable_gameover(Game *g) {
       case 8:
         gp->fields[i] = EIGHT;
         break;
-      default:;
+      default:
+	break;
       }
     }
   }
