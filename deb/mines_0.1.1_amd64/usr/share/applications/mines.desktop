@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=0.1
+Encoding=UTF-8
+Type=Application
+NoDisplay=false
+Terminal=true
+Exec=mines %f
+Icon=mines
+Name=Mines
+Comment=A Terminal based Minesweeper implementation
+Categories=Game

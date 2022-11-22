@@ -1,0 +1,6 @@
+Package: mines
+Version: 0.1
+Architecture: amd64
+Depends: libc6 (>= 2.34), libncurses6 (>= 6), libtinfo6 (>= 6)
+Maintainer: Judro
+Description: A terminal based Minesweeper implementation with vim like key bindings
