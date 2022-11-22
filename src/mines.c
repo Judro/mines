@@ -44,10 +44,10 @@ start:
     }
   }
   g_kill(game);
+  getch();
   game = select_mode();
   if (game != NULL)
     goto start;
-  getch();
 end:
   endwin();
   return 0;
