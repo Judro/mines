@@ -1,6 +1,7 @@
 #include "game.h"
 #include <ncurses.h>
-int cmove(Game *g) {
+int cmove(Game *g, WINDOW *window) {
+  nodelay(window, 1);
   char ch = getch();
   Cord old = g_player_position(g);
   switch (ch) {

@@ -6,9 +6,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 int main(int argc, char *argv[]) {
-  initscr();
+  WINDOW *window = initscr();
   start_color();
   curs_set(0);
   Game *game = select_mode();
@@ -17,7 +18,7 @@ int main(int argc, char *argv[]) {
   }
 start:
   while (1) {
-    clear();
+    erase();
     time_t current;
     time(&current);
     print_header(g_flags_total(game) - g_flags_found(game), g_start(game),
@@ -25,14 +26,14 @@ start:
     GPrintable *gp = g_printable(game);
     print(gp);
     g_gprintable_kill(gp);
-    int ret = cmove(game);
+    int ret = cmove(game, window);
     if (ret == -1) {
       break;
     } else if (ret == -2) {
       g_flag(game);
     } else if (ret == -3) {
       if (g_unveil(game) == -1) {
-        clear();
+        erase();
         printw(" Game over     \n");
         GPrintable *gp = g_printable_gameover(game);
         print(gp);
@@ -41,7 +42,7 @@ start:
       }
     }
     if (checkflags(game)) {
-      clear();
+      erase();
       printw("You found all %d mines!", g_flags_total(game));
       break;
     }

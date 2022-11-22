@@ -64,7 +64,7 @@ Game *select_mode() {
   menu.pos = 0;
   menu.selected = 0;
   for (;;) {
-    clear();
+    erase();
 
     m_print(&menu);
     char ret = control(&menu);
