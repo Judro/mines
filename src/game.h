@@ -1,5 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
+#include <time.h>
 typedef struct {
   int x;
   int y;
@@ -40,6 +41,7 @@ int g_flags_total(Game *g);
 int g_flags_found(Game *g);
 int g_width(Game *g);
 int g_height(Game *g);
+time_t g_start(Game *);
 void g_flag(Game *g);
 int g_unveil(Game *g);
 int checkflags(Game *g);

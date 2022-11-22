@@ -18,7 +18,10 @@ int main(int argc, char *argv[]) {
 start:
   while (1) {
     clear();
-    print_header(g_flags_total(game) - g_flags_found(game));
+    time_t current;
+    time(&current);
+    print_header(g_flags_total(game) - g_flags_found(game), g_start(game),
+                 current);
     GPrintable *gp = g_printable(game);
     print(gp);
     g_gprintable_kill(gp);

@@ -15,11 +15,12 @@ typedef struct myGame {
   int flagstotal;
   int flagsfound;
   int flagsfit;
+  time_t started;
   Cord cord;
 } Game;
 
 Game *g_new(int width, int height, int minesamount) {
-  Game *g = calloc(1,sizeof(Game));
+  Game *g = calloc(1, sizeof(Game));
   int length = width * height;
   int total = 0;
   int *mines = malloc(length * sizeof(int));
@@ -82,6 +83,9 @@ Game *g_new(int width, int height, int minesamount) {
   c.x = 0;
   c.y = 0;
   g->cord = c;
+  time_t start;
+  time(&start);
+  g->started = start;
   return g;
 }
 
@@ -205,6 +209,7 @@ int g_flags_total(Game *g) { return g->flagstotal; }
 int g_flags_found(Game *g) { return g->flagsfound; }
 int g_width(Game *g) { return g->width; }
 int g_height(Game *g) { return g->height; }
+time_t g_start(Game *g) { return g->started; }
 
 void g_flag(Game *g) {
   if (g->select[g->cord.y * g->width + g->cord.x] == 2) {

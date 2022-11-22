@@ -1,8 +1,10 @@
 #include "display.h"
 #include <ncurses.h>
+#include <time.h>
 
-void print_header(unsigned int mines_left) {
-  printw(" Mines left: %d\n", mines_left);
+void print_header(unsigned int mines_left, time_t start, time_t current) {
+  printw(" [%ld:%ld] Mines left: %d\n", (current - start) / 60,
+         (current - start) % 60, mines_left);
 }
 
 void print(GPrintable *gp) {
