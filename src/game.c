@@ -6,9 +6,9 @@
 #include <time.h>
 #include <unistd.h>
 typedef struct myGame {
-  int *mines;
-  int *select;
-  int *floating;
+  char *mines;
+  char *select;
+  char *floating;
   int width;
   int height;
   int length;
@@ -23,9 +23,9 @@ Game *g_new(int width, int height, int minesamount) {
   Game *g = calloc(1, sizeof(Game));
   int length = width * height;
   int total = 0;
-  int *mines = malloc(length * sizeof(int));
-  int *select = malloc(length * sizeof(int));
-  int *floating = malloc(length * sizeof(int));
+  char *mines = malloc(length * sizeof(char));
+  char *select = malloc(length * sizeof(char));
+  char *floating = malloc(length * sizeof(char));
   double minesp = (double)minesamount / (double)length;
   srand48(time(0));
   for (int i = 0; i < length; i++) {
@@ -134,7 +134,7 @@ GPrintable *g_printable(Game *g) {
         gp->fields[i] = EIGHT;
         break;
       default:
-	break;
+        break;
       }
     } else {
       gp->fields[i] = UNTOUCHED;
@@ -189,7 +189,7 @@ GPrintable *g_printable_gameover(Game *g) {
         gp->fields[i] = EIGHT;
         break;
       default:
-	break;
+        break;
       }
     }
   }
