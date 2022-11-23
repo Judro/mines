@@ -52,6 +52,8 @@ start:
       printw("You found all %d mines!", g_flags_total(game));
       break;
     }
+    // sleeps 0.01 seconds
+    usleep(10000);
   }
   g_kill(game);
   game = select_mode();
