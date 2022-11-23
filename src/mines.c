@@ -37,7 +37,7 @@ start:
         printw(" Game over     \n");
         GPrintable *gp = g_printable_gameover(game);
         print(gp);
-        printw("Press <q> to get back to the menu\n");
+        printw("\n Press <q> to get back to the menu\n");
         g_gprintable_kill(gp);
         while (1) {
           ret = cmove(game, window);
@@ -49,7 +49,17 @@ start:
     }
     if (checkflags(game)) {
       erase();
-      printw("You found all %d mines!", g_flags_total(game));
+      printw(" You found all %d mines in [%ld:%ld]:\n", g_flags_total(game),
+             (current - g_start(game)) / 60, (current - g_start(game)) % 60);
+      GPrintable *gp = g_printable_gameover(game);
+      print(gp);
+      printw("\n Press <q> to get back to the menu\n");
+      g_gprintable_kill(gp);
+      while (1) {
+        ret = cmove(game, window);
+        if (ret == -1)
+          break;
+      }
       break;
     }
     // sleeps 0.01 seconds
