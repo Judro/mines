@@ -16,15 +16,20 @@ int main(int argc, char *argv[]) {
   if (game == NULL) {
     goto end;
   }
+
 start:
   while (1) {
     erase();
     time_t current;
     time(&current);
-    print_header(g_flags_total(game) - g_flags_found(game), g_start(game),
-                 current);
+    char *tm = get_top_margin(getmaxy(window) / 2 - ((g_height(game) + 5) / 2));
+    char *lm = get_left_margin(getmaxx(window) / 2 - ((g_width(game) + 2) / 2));
+    printw(tm);
     GPrintable *gp = g_printable(game);
-    print(gp);
+    GPrintableH *gph = g_printableH(game);
+    print(gp, lm);
+    print_header(gph, lm);
+    free(gph);
     g_gprintable_kill(gp);
     int ret = cmove(game, window);
     if (ret == -1) {
@@ -34,10 +39,14 @@ start:
     } else if (ret == -3) {
       if (g_unveil(game) == -1) {
         erase();
+        printw(tm);
+        printw(lm);
         printw(" Game over     \n");
         GPrintable *gp = g_printable_gameover(game);
-        print(gp);
-        printw("\n Press <q> to get back to the menu\n");
+        print(gp, lm);
+        printw("\n");
+        printw(lm);
+        printw(" Press <q>\n");
         g_gprintable_kill(gp);
         while (1) {
           ret = cmove(game, window);
@@ -49,11 +58,16 @@ start:
     }
     if (checkflags(game)) {
       erase();
-      printw(" You found all %d mines in [%ld:%ld]:\n", g_flags_total(game),
-             (current - g_start(game)) / 60, (current - g_start(game)) % 60);
+      printw(tm);
+      printw(lm);
+      printw(" Congratulations!\n");
       GPrintable *gp = g_printable_gameover(game);
-      print(gp);
-      printw("\n Press <q> to get back to the menu\n");
+      print(gp, lm);
+      printw(lm);
+      char *hm = get_left_margin(g_width(game) - 16);
+      printw(" Press <q>%s[%02ld:%02ld]\n", hm, (current - g_start(game)) / 60,
+             (current - g_start(game)) % 60);
+      free(hm);
       g_gprintable_kill(gp);
       while (1) {
         ret = cmove(game, window);
@@ -62,6 +76,8 @@ start:
       }
       break;
     }
+    free(lm);
+    free(tm);
     // sleeps 0.01 seconds
     usleep(10000);
   }

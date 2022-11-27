@@ -1,19 +1,39 @@
 #include "display.h"
 #include <ncurses.h>
+#include <stdlib.h>
 #include <time.h>
 
-void print_header(unsigned int mines_left, time_t start, time_t current) {
-  printw(" [%ld:%ld] Mines left: %d\n", (current - start) / 60,
-         (current - start) % 60, mines_left);
+char *get_top_margin(unsigned int l) {
+  char *ret = calloc(l + 1, sizeof(char));
+  for (int i = 0; i < l; i++) {
+    ret[i] = '\n';
+  }
+  return ret;
+}
+char *get_left_margin(unsigned int l) {
+  char *ret = calloc(l + 1, sizeof(char));
+  for (int i = 0; i < l; i++) {
+    ret[i] = ' ';
+  }
+  return ret;
 }
 
-void print(GPrintable *gp) {
+void print_header(GPrintableH *gph, char *lm) {
+  char *wm = get_left_margin(gph->width - 10);
+  printw(lm);
+  printw(" %s[%02d %02ld:%02ld]\n", wm, gph->mines, gph->time / 60,
+         gph->time % 60);
+  free(wm);
+}
+
+void print(GPrintable *gp, char *lm) {
   init_pair(1, COLOR_BLUE, COLOR_BLACK);
   init_pair(2, COLOR_GREEN, COLOR_BLACK);
   init_pair(3, COLOR_RED, COLOR_BLACK);
   init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
   init_pair(5, COLOR_YELLOW, COLOR_BLACK);
   init_pair(6, COLOR_CYAN, COLOR_BLACK);
+  printw(lm);
   printw(" ");
   for (int i = 0; i < gp->width; i++) {
     printw("_");
@@ -22,8 +42,10 @@ void print(GPrintable *gp) {
   for (int i = 0; i < gp->width * gp->height; i++) {
     if (i % gp->width == 0 && i > 0)
       printw("|\n");
-    if (i % gp->width == 0)
+    if (i % gp->width == 0) {
+      printw(lm);
       printw("|");
+    }
     if (i == (gp->player.y * gp->width + gp->player.x))
       attron(A_REVERSE);
 
@@ -87,7 +109,9 @@ void print(GPrintable *gp) {
     if (i == (gp->player.y * gp->width + gp->player.x))
       attroff(A_REVERSE);
   }
-  printw("|\n'");
+  printw("|\n");
+  printw(lm);
+  printw("'");
   for (int i = 0; i < gp->width; i++) {
     printw("=");
   }

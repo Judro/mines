@@ -82,7 +82,7 @@ Game *select_mode() {
       case 3:
         return g_new(33, 15, 99);
       default:
-	break;
+        break;
       }
       return g_new(2, 2, 2);
     }

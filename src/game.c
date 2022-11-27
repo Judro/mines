@@ -199,6 +199,16 @@ GPrintable *g_printable_gameover(Game *g) {
   return gp;
 }
 
+GPrintableH *g_printableH(Game *g) {
+  GPrintableH *gp = calloc(1, sizeof(GPrintable));
+  time_t current;
+  time(&current);
+  gp->mines = g->flagstotal - g->flagsfound;
+  gp->time = current - g->started;
+  gp->width = g->width;
+  return gp;
+}
+
 void g_gprintable_kill(GPrintable *gp) {
   free(gp->fields);
   free(gp);

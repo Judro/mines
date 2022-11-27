@@ -2,6 +2,8 @@
 #include <time.h>
 #ifndef DISPLAY_H
 #define DISPLAY_H
-void print(GPrintable *);
-void print_header(unsigned int, time_t start, time_t current);
+char *get_top_margin(unsigned int);
+char *get_left_margin(unsigned int);
+void print(GPrintable *, char *);
+void print_header(GPrintableH *, char *);
 #endif

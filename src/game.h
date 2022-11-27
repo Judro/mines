@@ -30,8 +30,15 @@ typedef struct GPrintable {
   unsigned int height;
 } GPrintable;
 
+typedef struct GPrintableH {
+  unsigned int mines;
+  time_t time;
+  unsigned int width;
+} GPrintableH;
+
 GPrintable *g_printable(Game *);
 GPrintable *g_printable_gameover(Game *);
+GPrintableH *g_printableH(Game *);
 void g_gprintable_kill(GPrintable *);
 Game *g_new(int width, int height, int minesamount);
 Cord g_player_position(Game *g);
