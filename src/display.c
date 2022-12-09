@@ -38,30 +38,32 @@ void print(GPrintable *gp, char *lm) {
   init_pair(5, COLOR_YELLOW, COLOR_BLACK);
   init_pair(6, COLOR_CYAN, COLOR_BLACK);
   printw(lm);
-  printw(" ");
+  printw("┌");
   for (int i = 0; i < gp->width; i++) {
-    printw("_");
+    printw("─");
   }
-  printw("\n");
+  printw("┐\n");
   for (int i = 0; i < gp->width * gp->height; i++) {
     if (i % gp->width == 0 && i > 0)
-      printw("|\n");
+      printw("│\n");
     if (i % gp->width == 0) {
       printw(lm);
-      printw("|");
+      printw("│");
     }
     if (i == (gp->player.y * gp->width + gp->player.x))
       attron(A_REVERSE);
 
     switch (gp->fields[i]) {
     case UNTOUCHED:
-      printw("0");
+      printw("░");
       break;
     case UNVEILED:
       printw(" ");
       break;
     case FLAG:
-      printw("P");
+      attron(COLOR_PAIR(6));
+      printw("⚑");
+      attroff(COLOR_PAIR(6));
       break;
     case FALSE_FLAG:
       printw("X");
@@ -95,29 +97,29 @@ void print(GPrintable *gp, char *lm) {
       attroff(COLOR_PAIR(5));
       break;
     case SIX:
-      attron(COLOR_PAIR(6));
+      attron(COLOR_PAIR(4));
       printw("6");
-      attroff(COLOR_PAIR(6));
+      attroff(COLOR_PAIR(4));
       break;
     case SEVEN:
-      attron(COLOR_PAIR(7));
+      attron(COLOR_PAIR(5));
       printw("7");
-      attroff(COLOR_PAIR(7));
+      attroff(COLOR_PAIR(5));
       break;
     case EIGHT:
-      attron(COLOR_PAIR(8));
+      attron(COLOR_PAIR(5));
       printw("8");
-      attroff(COLOR_PAIR(8));
+      attroff(COLOR_PAIR(5));
       break;
     }
     if (i == (gp->player.y * gp->width + gp->player.x))
       attroff(A_REVERSE);
   }
-  printw("|\n");
+  printw("│\n");
   printw(lm);
-  printw("'");
+  printw("└");
   for (int i = 0; i < gp->width; i++) {
-    printw("=");
+    printw("─");
   }
-  printw("'\n");
+  printw("┘\n");
 }

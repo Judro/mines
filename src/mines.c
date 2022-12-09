@@ -2,6 +2,7 @@
 #include "display.h"
 #include "game.h"
 #include "menu.h"
+#include <locale.h>
 #include <ncurses.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,6 +10,7 @@
 #include <unistd.h>
 
 int main(int argc, char *argv[]) {
+  setlocale(LC_CTYPE, "en_US.UTF-8");
   WINDOW *window = initscr();
   start_color();
   curs_set(0);
