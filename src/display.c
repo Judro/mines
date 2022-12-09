@@ -4,6 +4,8 @@
 #include <time.h>
 
 char *get_top_margin(unsigned int l) {
+  if (l > 1000)
+    l = 1;
   char *ret = calloc(l + 1, sizeof(char));
   for (int i = 0; i < l; i++) {
     ret[i] = '\n';
@@ -11,6 +13,8 @@ char *get_top_margin(unsigned int l) {
   return ret;
 }
 char *get_left_margin(unsigned int l) {
+  if (l > 1000)
+    l = 1;
   char *ret = calloc(l + 1, sizeof(char));
   for (int i = 0; i < l; i++) {
     ret[i] = ' ';
