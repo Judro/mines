@@ -24,13 +24,11 @@ start:
     erase();
     time_t current;
     time(&current);
-    char *tm = get_top_margin(getmaxy(window) / 2 - ((g_height(game) + 5) / 2));
-    char *lm = get_left_margin(getmaxx(window) / 2 - ((g_width(game) + 2) / 2));
-    printw(tm);
+    print_top_margin(getmaxy(window), g_height(game));
     GPrintable *gp = g_printable(game);
     GPrintableH *gph = g_printableH(game);
-    print(gp, lm);
-    print_header(gph, lm);
+    print(gp, getmaxx(window), g_width(game));
+    print_header(gph, getmaxx(window), g_width(game));
     free(gph);
     g_gprintable_kill(gp);
     int ret = cmove(game, window);
@@ -41,13 +39,13 @@ start:
     } else if (ret == -3) {
       if (g_unveil(game) == -1) {
         erase();
-        printw(tm);
-        printw(lm);
+        print_top_margin(getmaxy(window), g_height(game));
+        print_left_margin(getmaxx(window), g_width(game));
         printw(" Game over     \n");
         GPrintable *gp = g_printable_gameover(game);
-        print(gp, lm);
+        print(gp, getmaxx(window), g_width(game));
         printw("\n");
-        printw(lm);
+        print_left_margin(getmaxx(window), g_width(game));
         printw(" Press <q>\n");
         g_gprintable_kill(gp);
         while (1) {
@@ -60,12 +58,12 @@ start:
     }
     if (checkflags(game)) {
       erase();
-      printw(tm);
-      printw(lm);
+      print_top_margin(getmaxy(window), g_height(game));
+      print_left_margin(getmaxx(window), g_width(game));
       printw(" Congratulations!\n");
       GPrintable *gp = g_printable_gameover(game);
-      print(gp, lm);
-      printw(lm);
+      print(gp, getmaxx(window), g_width(game));
+      print_left_margin(getmaxx(window), g_width(game));
       char *hm = get_left_margin(g_width(game) - 16);
       printw(" Press <q>%s[%02ld:%02ld]\n", hm, (current - g_start(game)) / 60,
              (current - g_start(game)) % 60);
@@ -78,8 +76,6 @@ start:
       }
       break;
     }
-    free(lm);
-    free(tm);
     // sleeps 0.01 seconds
     usleep(10000);
   }

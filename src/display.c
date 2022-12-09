@@ -3,6 +3,17 @@
 #include <stdlib.h>
 #include <time.h>
 
+void print_top_margin(unsigned int terminal_y, unsigned int game_y) {
+  char *tm = get_top_margin(terminal_y / 2 - ((game_y + 5) / 2));
+  printw("%s", tm);
+  free(tm);
+}
+void print_left_margin(unsigned int terminal_x, unsigned int game_x) {
+  char *lm = get_left_margin(terminal_x / 2 - ((game_x + 2) / 2));
+  printw("%s", lm);
+  free(lm);
+}
+
 char *get_top_margin(unsigned int l) {
   if (l > 1000)
     l = 1;
@@ -22,22 +33,23 @@ char *get_left_margin(unsigned int l) {
   return ret;
 }
 
-void print_header(GPrintableH *gph, char *lm) {
+void print_header(GPrintableH *gph, unsigned int terminal_x,
+                  unsigned int game_x) {
   char *wm = get_left_margin(gph->width - 10);
-  printw(lm);
+  print_left_margin(terminal_x, game_x);
   printw(" %s[%02d %02ld:%02ld]\n", wm, gph->mines, gph->time / 60,
          gph->time % 60);
   free(wm);
 }
 
-void print(GPrintable *gp, char *lm) {
+void print(GPrintable *gp, unsigned int terminal_x, unsigned int game_x) {
   init_pair(1, COLOR_BLUE, COLOR_BLACK);
   init_pair(2, COLOR_GREEN, COLOR_BLACK);
   init_pair(3, COLOR_RED, COLOR_BLACK);
   init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
   init_pair(5, COLOR_YELLOW, COLOR_BLACK);
   init_pair(6, COLOR_CYAN, COLOR_BLACK);
-  printw(lm);
+  print_left_margin(terminal_x, game_x);
   printw("┌");
   for (int i = 0; i < gp->width; i++) {
     printw("─");
@@ -47,7 +59,7 @@ void print(GPrintable *gp, char *lm) {
     if (i % gp->width == 0 && i > 0)
       printw("│\n");
     if (i % gp->width == 0) {
-      printw(lm);
+      print_left_margin(terminal_x, game_x);
       printw("│");
     }
     if (i == (gp->player.y * gp->width + gp->player.x))
@@ -116,7 +128,7 @@ void print(GPrintable *gp, char *lm) {
       attroff(A_REVERSE);
   }
   printw("│\n");
-  printw(lm);
+  print_left_margin(terminal_x, game_x);
   printw("└");
   for (int i = 0; i < gp->width; i++) {
     printw("─");
