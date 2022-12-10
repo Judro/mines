@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   WINDOW *window = initscr();
   start_color();
   curs_set(0);
-  Game *game = select_mode();
+  Game *game = select_mode(getmaxx(window), getmaxy(window));
   if (game == NULL) {
     goto end;
   }
@@ -80,7 +80,7 @@ start:
     usleep(10000);
   }
   g_kill(game);
-  game = select_mode();
+  game = select_mode(getmaxx(window), getmaxy(window));
   if (game != NULL)
     goto start;
 end:
