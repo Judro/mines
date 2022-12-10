@@ -1,5 +1,5 @@
 Package: mines
-Version: 0.2
+Version: 0.3
 Architecture: amd64
 Depends: libc6 (>= 2.34), libncurses6 (>= 6), libtinfo6 (>= 6)
 Maintainer: Judro
