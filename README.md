@@ -1,4 +1,7 @@
 # MINES
+![GitHub](https://img.shields.io/github/license/Judro/mines)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Judro/mines)
+
 <div>
 <img src="https://github.com/Judro/mines/blob/main/img/menu.png" alt="menu" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game.png" alt="game" width="250px">
