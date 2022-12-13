@@ -14,7 +14,7 @@ int main(int argc, char *argv[]) {
   WINDOW *window = initscr();
   start_color();
   curs_set(0);
-  Game *game = select_mode(getmaxx(window), getmaxy(window));
+  GameInstance game = select_mode(getmaxx(window), getmaxy(window));
   if (game == NULL) {
     goto end;
   }
@@ -79,7 +79,7 @@ start:
     // sleeps 0.01 seconds
     usleep(10000);
   }
-  g_kill(game);
+  deleteGameInstance(game);
   game = select_mode(getmaxx(window), getmaxy(window));
   if (game != NULL)
     goto start;

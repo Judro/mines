@@ -6,7 +6,7 @@ typedef struct {
   int y;
 } Cord;
 
-typedef struct myGame Game;
+typedef struct Game *GameInstance;
 typedef enum GPrint {
   UNTOUCHED,
   UNVEILED,
@@ -36,22 +36,22 @@ typedef struct GPrintableH {
   unsigned int width;
 } GPrintableH;
 
-GPrintable *g_printable(Game *);
-GPrintable *g_printable_gameover(Game *);
-GPrintableH *g_printableH(Game *);
+GPrintable *g_printable(GameInstance);
+GPrintable *g_printable_gameover(GameInstance);
+GPrintableH *g_printableH(GameInstance);
 void g_gprintable_kill(GPrintable *);
-Game *g_new(int width, int height, int minesamount);
-Cord g_player_position(Game *g);
-void g_set_player_position_x(Game *g, int x);
-void g_set_player_position_y(Game *g, int y);
-int g_flags_total(Game *g);
-int g_flags_found(Game *g);
-int g_width(Game *g);
-int g_height(Game *g);
-time_t g_start(Game *);
-void g_flag(Game *g);
-int g_unveil(Game *g);
-int checkflags(Game *g);
-void g_kill(Game *g);
+GameInstance createGameInstance(int, int, int);
+Cord g_player_position(GameInstance);
+void g_set_player_position_x(GameInstance, int);
+void g_set_player_position_y(GameInstance, int);
+int g_flags_total(GameInstance);
+int g_flags_found(GameInstance);
+int g_width(GameInstance);
+int g_height(GameInstance);
+time_t g_start(GameInstance);
+void g_flag(GameInstance);
+int g_unveil(GameInstance);
+int checkflags(GameInstance);
+void deleteGameInstance(GameInstance);
 
 #endif

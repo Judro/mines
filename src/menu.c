@@ -86,7 +86,8 @@ char control(Menu *menu) {
   }
   return 0;
 }
-Game *select_mode(unsigned int terminal_width, unsigned int terminal_height) {
+GameInstance select_mode(unsigned int terminal_width,
+                         unsigned int terminal_height) {
   Menu menu;
   menu.pos = 0;
   menu.selected = 0;
@@ -100,21 +101,21 @@ Game *select_mode(unsigned int terminal_width, unsigned int terminal_height) {
     if (menu.selected == 1) {
       switch (menu.pos) {
       case 0:
-        return g_new(20, 5, 7);
+        return createGameInstance(20, 5, 7);
       case 1:
-        return g_new(18, 7, 15);
+        return createGameInstance(18, 7, 15);
       case 2:
-        return g_new(40, 10, 40);
+        return createGameInstance(40, 10, 40);
       case 3:
-        return g_new(33, 15, 99);
+        return createGameInstance(33, 15, 99);
       case 4:
         print_help();
         return select_mode(terminal_width, terminal_height);
       default:
         break;
       }
-      return g_new(2, 2, 2);
+      return createGameInstance(2, 2, 2);
     }
   }
-  return g_new(2, 2, 2);
+  return createGameInstance(2, 2, 2);
 }

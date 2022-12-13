@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
-typedef struct myGame {
+typedef struct Game {
   char *mines;
   char *select;
   char *floating;
@@ -17,10 +17,10 @@ typedef struct myGame {
   int flagsfit;
   time_t started;
   Cord cord;
-} Game;
+} *GameInstance;
 
-Game *g_new(int width, int height, int minesamount) {
-  Game *g = calloc(1, sizeof(Game));
+GameInstance createGameInstance(int width, int height, int minesamount) {
+  GameInstance g = calloc(1, sizeof(struct Game));
   int length = width * height;
   int total = 0;
   char *mines = malloc(length * sizeof(char));
@@ -89,14 +89,14 @@ Game *g_new(int width, int height, int minesamount) {
   return g;
 }
 
-void g_kill(Game *g) {
+void deleteGameInstance(GameInstance g) {
   free(g->mines);
   free(g->select);
   free(g->floating);
   free(g);
 }
 
-GPrintable *g_printable(Game *g) {
+GPrintable *g_printable(GameInstance g) {
   GPrintable *gp = calloc(1, sizeof(GPrintable));
   GPrint *gpr = calloc(g->length, sizeof(GPrintable));
   gp->fields = gpr;
@@ -144,7 +144,7 @@ GPrintable *g_printable(Game *g) {
   gp->width = g->width;
   return gp;
 }
-GPrintable *g_printable_gameover(Game *g) {
+GPrintable *g_printable_gameover(GameInstance g) {
   GPrintable *gp = calloc(1, sizeof(GPrintable));
   GPrint *gpr = calloc(g->length, sizeof(GPrintable));
   gp->fields = gpr;
@@ -199,7 +199,7 @@ GPrintable *g_printable_gameover(Game *g) {
   return gp;
 }
 
-GPrintableH *g_printableH(Game *g) {
+GPrintableH *g_printableH(GameInstance g) {
   GPrintableH *gp = calloc(1, sizeof(GPrintable));
   time_t current;
   time(&current);
@@ -214,16 +214,16 @@ void g_gprintable_kill(GPrintable *gp) {
   free(gp);
 }
 
-Cord g_player_position(Game *g) { return g->cord; }
-void g_set_player_position_x(Game *g, int x) { g->cord.x = x; }
-void g_set_player_position_y(Game *g, int y) { g->cord.y = y; }
-int g_flags_total(Game *g) { return g->flagstotal; }
-int g_flags_found(Game *g) { return g->flagsfound; }
-int g_width(Game *g) { return g->width; }
-int g_height(Game *g) { return g->height; }
-time_t g_start(Game *g) { return g->started; }
+Cord g_player_position(GameInstance g) { return g->cord; }
+void g_set_player_position_x(GameInstance g, int x) { g->cord.x = x; }
+void g_set_player_position_y(GameInstance g, int y) { g->cord.y = y; }
+int g_flags_total(GameInstance g) { return g->flagstotal; }
+int g_flags_found(GameInstance g) { return g->flagsfound; }
+int g_width(GameInstance g) { return g->width; }
+int g_height(GameInstance g) { return g->height; }
+time_t g_start(GameInstance g) { return g->started; }
 
-void g_flag(Game *g) {
+void g_flag(GameInstance g) {
   if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
     g->select[g->cord.y * g->width + g->cord.x] = 0;
     g->flagsfound -= 1;
@@ -233,7 +233,7 @@ void g_flag(Game *g) {
   }
 }
 
-int unveil(Game *g, int x, int y, int iteration) {
+int unveil_iteration(GameInstance g, int x, int y, int iteration) {
   if (g->mines[y * g->width + x] >= 0) {
     if (g->select[y * g->width + x] != 2)
       g->select[y * g->width + x] = 1;
@@ -247,7 +247,7 @@ int unveil(Game *g, int x, int y, int iteration) {
   return 0;
 }
 
-int floating_unveil(Game *g, int iteration) {
+int floating_unveil(GameInstance g, int iteration) {
   int amoun_unveiled = 0;
   for (int i = 0; i < g->height; i++) {
     for (int j = 0; j < g->width; j++) {
@@ -255,7 +255,7 @@ int floating_unveil(Game *g, int iteration) {
         for (int k = i - 1; k <= i + 1; k++) {
           for (int l = j - 1; l <= j + 1; l++) {
             if (l >= 0 && k >= 0 && k < g->height && l < g->width) {
-              amoun_unveiled += unveil(g, l, k, iteration);
+              amoun_unveiled += unveil_iteration(g, l, k, iteration);
             }
           }
         }
@@ -265,7 +265,7 @@ int floating_unveil(Game *g, int iteration) {
   return amoun_unveiled;
 }
 
-int g_unveil(Game *g) {
+int g_unveil(GameInstance g) {
   if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
     return 0;
   }
@@ -290,7 +290,7 @@ int g_unveil(Game *g) {
 
   return 0;
 }
-int checkflags(Game *g) {
+int checkflags(GameInstance g) {
   int fit = 0;
   for (int i = 0; i < g->length; i++) {
     if (g->mines[i] == -1 && g->select[i] == 2)
