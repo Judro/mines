@@ -1,4 +1,7 @@
 # MINES
+![GitHub](https://img.shields.io/github/license/Judro/mines)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Judro/mines)
+
 <div>
 <img src="https://github.com/Judro/mines/blob/main/img/menu.png" alt="menu" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game.png" alt="game" width="250px">
@@ -6,7 +9,7 @@
 </div>
 
 ## Installation
-install the deb file: [mines_0.2.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.2.0/mines_0.2.0_amd64.deb)
+install the deb file: [mines_0.3.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.3.0/mines_0.3.0_amd64.deb)
 
 ## Controls
 - Movement: `hjkl or ←↓↑→`
