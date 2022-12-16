@@ -25,12 +25,12 @@ start:
     time_t current;
     time(&current);
     print_top_margin(getmaxy(window), g_height(game));
-    GPrintable *gp = g_printable(game);
-    GPrintableH *gph = g_printableH(game);
+    PrintableInstance gp = createPrintable(game);
+    PrintableHeaderInstance gph = createPrintableHeader(game);
     print(gp, getmaxx(window), g_width(game));
     print_header(gph, getmaxx(window), g_width(game));
     free(gph);
-    g_gprintable_kill(gp);
+    deletePrintable(gp);
     int ret = cmove(game, window);
     if (ret == -1) {
       break;
@@ -42,12 +42,12 @@ start:
         print_top_margin(getmaxy(window), g_height(game));
         print_left_margin(getmaxx(window), g_width(game));
         printw(" Game over     \n");
-        GPrintable *gp = g_printable_gameover(game);
+        PrintableInstance gp = createPrintableGameover(game);
         print(gp, getmaxx(window), g_width(game));
         printw("\n");
         print_left_margin(getmaxx(window), g_width(game));
         printw(" Press <q>\n");
-        g_gprintable_kill(gp);
+        deletePrintable(gp);
         while (1) {
           ret = cmove(game, window);
           if (ret == -1)
@@ -61,14 +61,14 @@ start:
       print_top_margin(getmaxy(window), g_height(game));
       print_left_margin(getmaxx(window), g_width(game));
       printw(" Congratulations!\n");
-      GPrintable *gp = g_printable_gameover(game);
+      PrintableInstance gp = createPrintableGameover(game);
       print(gp, getmaxx(window), g_width(game));
       print_left_margin(getmaxx(window), g_width(game));
       char *hm = get_left_margin(g_width(game) - 16);
       printw(" Press <q>%s[%02ld:%02ld]\n", hm, (current - g_start(game)) / 60,
              (current - g_start(game)) % 60);
       free(hm);
-      g_gprintable_kill(gp);
+      deletePrintable(gp);
       while (1) {
         ret = cmove(game, window);
         if (ret == -1)

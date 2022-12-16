@@ -96,9 +96,9 @@ void deleteGameInstance(GameInstance g) {
   free(g);
 }
 
-GPrintable *g_printable(GameInstance g) {
-  GPrintable *gp = calloc(1, sizeof(GPrintable));
-  GPrint *gpr = calloc(g->length, sizeof(GPrintable));
+PrintableInstance createPrintable(GameInstance g) {
+  PrintableInstance gp = calloc(1, sizeof(struct GPrintable));
+  GPrint *gpr = calloc(g->length, sizeof(GPrint));
   gp->fields = gpr;
   gp->player = g->cord;
   for (int i = 0; i < g->length; i++) {
@@ -144,9 +144,9 @@ GPrintable *g_printable(GameInstance g) {
   gp->width = g->width;
   return gp;
 }
-GPrintable *g_printable_gameover(GameInstance g) {
-  GPrintable *gp = calloc(1, sizeof(GPrintable));
-  GPrint *gpr = calloc(g->length, sizeof(GPrintable));
+PrintableInstance createPrintableGameover(GameInstance g) {
+  PrintableInstance gp = calloc(1, sizeof(struct GPrintable));
+  GPrint *gpr = calloc(g->length, sizeof(GPrint));
   gp->fields = gpr;
   gp->player = g->cord;
   for (int i = 0; i < g->length; i++) {
@@ -199,8 +199,8 @@ GPrintable *g_printable_gameover(GameInstance g) {
   return gp;
 }
 
-GPrintableH *g_printableH(GameInstance g) {
-  GPrintableH *gp = calloc(1, sizeof(GPrintable));
+PrintableHeaderInstance createPrintableHeader(GameInstance g) {
+  PrintableHeaderInstance gp = calloc(1, sizeof(struct GPrintableH));
   time_t current;
   time(&current);
   gp->mines = g->flagstotal - g->flagsfound;
@@ -209,7 +209,7 @@ GPrintableH *g_printableH(GameInstance g) {
   return gp;
 }
 
-void g_gprintable_kill(GPrintable *gp) {
+void deletePrintable(PrintableInstance gp) {
   free(gp->fields);
   free(gp);
 }

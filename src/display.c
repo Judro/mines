@@ -33,7 +33,7 @@ char *get_left_margin(unsigned int l) {
   return ret;
 }
 
-void print_header(GPrintableH *gph, unsigned int terminal_x,
+void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
                   unsigned int game_x) {
   char *wm = get_left_margin(gph->width - 10);
   print_left_margin(terminal_x, game_x);
@@ -42,7 +42,7 @@ void print_header(GPrintableH *gph, unsigned int terminal_x,
   free(wm);
 }
 
-void print(GPrintable *gp, unsigned int terminal_x, unsigned int game_x) {
+void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
   init_pair(1, COLOR_BLUE, COLOR_BLACK);
   init_pair(2, COLOR_GREEN, COLOR_BLACK);
   init_pair(3, COLOR_RED, COLOR_BLACK);

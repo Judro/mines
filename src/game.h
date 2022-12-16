@@ -28,18 +28,18 @@ typedef struct GPrintable {
   GPrint *fields;
   unsigned int width;
   unsigned int height;
-} GPrintable;
+} *PrintableInstance;
 
 typedef struct GPrintableH {
   unsigned int mines;
   time_t time;
   unsigned int width;
-} GPrintableH;
+} *PrintableHeaderInstance;
 
-GPrintable *g_printable(GameInstance);
-GPrintable *g_printable_gameover(GameInstance);
-GPrintableH *g_printableH(GameInstance);
-void g_gprintable_kill(GPrintable *);
+PrintableInstance createPrintable(GameInstance);
+PrintableInstance createPrintableGameover(GameInstance);
+PrintableHeaderInstance createPrintableHeader(GameInstance);
+void deletePrintable(PrintableInstance);
 GameInstance createGameInstance(int, int, int);
 Cord g_player_position(GameInstance);
 void g_set_player_position_x(GameInstance, int);
