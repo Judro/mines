@@ -13,7 +13,7 @@ void m_print(Menu *menu, unsigned int terminal_width,
   for (int i = 0; i < lml; i++) {
     lm[i] = ' ';
   }
-  lm[lml] = '\0';
+  lm[lml - 1] = '\0';
   for (int i = 0; i < (terminal_height - 10) / 2; i++) {
     printw("\n");
   }
@@ -44,6 +44,7 @@ void m_print(Menu *menu, unsigned int terminal_width,
     printw("%s│       Help       │\n", lm);
   }
   printw("%s└──────────────────┘\n", lm);
+  free(lm);
 }
 
 void print_help() {
