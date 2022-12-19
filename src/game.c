@@ -41,6 +41,7 @@ GameInstance createGameInstance(int width, int height, int minesamount) {
     }
   }
   while (total < minesamount) {
+    minesp = (double)(minesamount - total) / (double)length;
     for (int i = 0; i < length; i++) {
       double rand = drand48();
       if (rand < minesp && mines[i] != -1) {
