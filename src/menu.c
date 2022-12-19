@@ -8,7 +8,7 @@ typedef struct Menu {
 
 void m_print(Menu *menu, unsigned int terminal_width,
              unsigned int terminal_height) {
-  int lml = (terminal_width - 22) / 2 + 1;
+  int lml = (terminal_width - 20) / 2 + 1;
   char *lm = malloc(lml * sizeof(char));
   for (int i = 0; i < lml; i++) {
     lm[i] = ' ';
