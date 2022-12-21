@@ -12,8 +12,8 @@
 
 time_t fps_timestamp;
 int fps_frame_counter = 0;
-int fps = 0;
-int sleep_time = 0;
+int fps = 60;
+int sleep_time = 10000;
 
 void limit_fps() {
   time_t current;
