@@ -9,7 +9,7 @@
 </div>
 
 ## Installation
-install the deb file: [mines_0.3.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.3.0/mines_0.3.0_amd64.deb)
+install the deb file: [mines_0.3.1_amd64.deb](https://github.com/Judro/mines/releases/download/v0.3.1/mines_0.3.1_amd64.deb)
 
 ## Controls
 - Movement: `hjkl or ←↓↑→`
