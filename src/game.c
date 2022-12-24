@@ -5,49 +5,74 @@
 #include <stdlib.h>
 #include <time.h>
 #include <unistd.h>
+
+#define MINE 0b0010000
+#define UNVLD 0b0100000
+#define FLAGGED 0b1000000
+
 typedef struct Game {
   char *mines;
-  char *select;
-  char *floating;
   int width;
   int height;
   int length;
   int flagstotal;
   int flagsfound;
-  int flagsfit;
   time_t started;
   Cord cord;
 } *GameInstance;
 
-GameInstance createGameInstance(int width, int height, int minesamount) {
+char is_mine(char c) {
+  char m = MINE;
+  if (c & m)
+    return 1;
+  return 0;
+}
+
+char is_flagged(char c) {
+  char f = FLAGGED;
+  if (c & f)
+    return 1;
+  return 0;
+}
+
+char is_blank(char c) {
+  if (c & 0b1111)
+    return 0;
+  return 1;
+}
+
+char is_unveiled(char c) {
+  char u = UNVLD;
+  if (c & u)
+    return 1;
+  return 0;
+}
+
+GameInstance createGameInstance(int width, int height, int amount_mines) {
   GameInstance g = calloc(1, sizeof(struct Game));
   int length = width * height;
   int total = 0;
   char *mines = malloc(length * sizeof(char));
-  char *select = malloc(length * sizeof(char));
-  char *floating = malloc(length * sizeof(char));
-  double minesp = (double)minesamount / (double)length;
+  double minesp = (double)amount_mines / (double)length;
   srand48(time(0));
   for (int i = 0; i < length; i++) {
     mines[i] = 0;
-    select[i] = 0;
-    floating[i] = 0;
     double rand = drand48();
     if (rand < minesp) {
-      if (total == minesamount)
+      if (total == amount_mines)
         continue;
-      mines[i] = -1;
+      mines[i] = MINE;
       total += 1;
     }
   }
-  while (total < minesamount) {
-    minesp = (double)(minesamount - total) / (double)length;
+  while (total < amount_mines) {
+    minesp = (double)(amount_mines - total) / (double)length;
     for (int i = 0; i < length; i++) {
       double rand = drand48();
-      if (rand < minesp && mines[i] != -1) {
-        if (total == minesamount)
+      if (rand < minesp && !is_mine(mines[i])) {
+        if (total == amount_mines)
           continue;
-        mines[i] = -1;
+        mines[i] = MINE;
         total += 1;
       }
     }
@@ -55,12 +80,12 @@ GameInstance createGameInstance(int width, int height, int minesamount) {
   // compute amount of near mines
   for (int i = 0; i < height; i++) {
     for (int j = 0; j < width; j++) {
-      if (mines[i * width + j] != -1) {
+      if (!is_mine(mines[i * width + j])) {
         int mcount = 0;
         for (int k = i - 1; k <= i + 1; k++) {
           for (int l = j - 1; l <= j + 1; l++) {
             if (k >= 0 && k < height && l >= 0 && l < width) {
-              if (mines[k * width + l] == -1) {
+              if (is_mine(mines[k * width + l])) {
                 mcount++;
               }
             }
@@ -73,13 +98,10 @@ GameInstance createGameInstance(int width, int height, int minesamount) {
 
   g->length = length;
   g->mines = mines;
-  g->floating = floating;
-  g->select = select;
   g->width = width;
   g->height = height;
   g->flagstotal = total;
   g->flagsfound = 0;
-  g->flagsfit = 0;
   Cord c;
   c.x = 0;
   c.y = 0;
@@ -92,8 +114,6 @@ GameInstance createGameInstance(int width, int height, int minesamount) {
 
 void deleteGameInstance(GameInstance g) {
   free(g->mines);
-  free(g->select);
-  free(g->floating);
   free(g);
 }
 
@@ -103,10 +123,10 @@ PrintableInstance createPrintable(GameInstance g) {
   gp->fields = gpr;
   gp->player = g->cord;
   for (int i = 0; i < g->length; i++) {
-    if (g->select[i] == 2) {
+    if (is_flagged(g->mines[i])) {
       gp->fields[i] = FLAG;
-    } else if (g->select[i] == 1) {
-      switch (g->mines[i]) {
+    } else if (is_unveiled(g->mines[i])) {
+      switch (g->mines[i] & 0b1111) {
       case 0:
         gp->fields[i] = UNVEILED;
         break;
@@ -151,17 +171,18 @@ PrintableInstance createPrintableGameover(GameInstance g) {
   gp->fields = gpr;
   gp->player = g->cord;
   for (int i = 0; i < g->length; i++) {
-    if (g->select[i] == 2) {
-      if (g->mines[i] == -1) {
+    if (is_flagged(g->mines[i])) {
+      if (is_mine(g->mines[i])) {
         gp->fields[i] = FLAG;
       } else {
         gp->fields[i] = FALSE_FLAG;
       }
     } else {
-      switch (g->mines[i]) {
-      case -1:
+      if (is_mine(g->mines[i])) {
         gp->fields[i] = FLAG_NOT_FOUND;
-        break;
+        continue;
+      }
+      switch (g->mines[i] & 0b1111) {
       case 0:
         gp->fields[i] = UNVEILED;
         break;
@@ -225,76 +246,52 @@ int g_height(GameInstance g) { return g->height; }
 time_t g_start(GameInstance g) { return g->started; }
 
 void g_flag(GameInstance g) {
-  if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
-    g->select[g->cord.y * g->width + g->cord.x] = 0;
+  if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {
+    g->mines[g->cord.y * g->width + g->cord.x] ^= FLAGGED;
     g->flagsfound -= 1;
   } else {
-    g->select[g->cord.y * g->width + g->cord.x] = 2;
+    g->mines[g->cord.y * g->width + g->cord.x] |= FLAGGED;
     g->flagsfound += 1;
   }
 }
 
-int unveil_iteration(GameInstance g, int x, int y, int iteration) {
-  if (g->mines[y * g->width + x] >= 0) {
-    if (g->select[y * g->width + x] != 2)
-      g->select[y * g->width + x] = 1;
-    if (g->mines[y * g->width + x] == 0) {
-      if (g->floating[y * g->width + x] == 0) {
-        g->floating[y * g->width + x] = iteration + 1;
-        return 1;
-      }
+void unveil_recursive(GameInstance game, Cord position) {
+  if (is_unveiled(game->mines[position.y * game->width + position.x]))
+    return;
+  game->mines[position.y * game->width + position.x] |= UNVLD;
+  if (!is_blank(game->mines[position.y * game->width + position.x])) {
+    return;
+  }
+  for (int y = position.y - 1; y <= position.y + 1; y++) {
+    for (int x = position.x - 1; x <= position.x + 1; x++) {
+      if (x < 0 || y < 0 || x >= game->width || y >= game->height)
+        continue;
+      Cord cord;
+      cord.x = x;
+      cord.y = y;
+      unveil_recursive(game, cord);
     }
   }
-  return 0;
-}
-
-int floating_unveil(GameInstance g, int iteration) {
-  int amoun_unveiled = 0;
-  for (int i = 0; i < g->height; i++) {
-    for (int j = 0; j < g->width; j++) {
-      if (g->floating[i * g->width + j] == iteration) {
-        for (int k = i - 1; k <= i + 1; k++) {
-          for (int l = j - 1; l <= j + 1; l++) {
-            if (l >= 0 && k >= 0 && k < g->height && l < g->width) {
-              amoun_unveiled += unveil_iteration(g, l, k, iteration);
-            }
-          }
-        }
-      }
-    }
-  }
-  return amoun_unveiled;
 }
 
 int g_unveil(GameInstance g) {
-  if (g->select[g->cord.y * g->width + g->cord.x] == 2) {
+  if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {
     return 0;
   }
-  if (g->mines[g->cord.y * g->width + g->cord.x] == -1) {
+  if (is_mine(g->mines[g->cord.y * g->width + g->cord.x])) {
     return -1;
   }
   if (g->mines[g->cord.y * g->width + g->cord.x] > 0) {
-    g->select[g->cord.y * g->width + g->cord.x] = 1;
+    g->mines[g->cord.y * g->width + g->cord.x] |= UNVLD;
     return 0;
   }
-  g->floating[g->cord.y * g->width + g->cord.x] = 1;
-  int ui = 1;
-  int tmp = floating_unveil(g, ui);
-  while (tmp > 0) {
-    tmp = 0;
-    ui++;
-    tmp = floating_unveil(g, ui);
-  }
-  for (int i = 0; i < g->length; i++) {
-    g->floating[i] = 0;
-  }
-
+  unveil_recursive(g, g->cord);
   return 0;
 }
 int checkflags(GameInstance g) {
   int fit = 0;
   for (int i = 0; i < g->length; i++) {
-    if (g->mines[i] == -1 && g->select[i] == 2)
+    if (is_mine(g->mines[i]) && is_flagged(g->mines[i]))
       fit += 1;
   }
   if (fit == g->flagstotal)
