@@ -250,6 +250,8 @@ void g_flag(GameInstance g) {
     g->mines[g->cord.y * g->width + g->cord.x] ^= FLAGGED;
     g->flagsfound -= 1;
   } else {
+    if (g->flagsfound == g->flagstotal)
+      return;
     g->mines[g->cord.y * g->width + g->cord.x] |= FLAGGED;
     g->flagsfound += 1;
   }
