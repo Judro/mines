@@ -35,7 +35,7 @@ void print_gameover(GameInstance game, WINDOW *window) {
   char ret = 0;
   while (1) {
     erase();
-    print_top_margin(getmaxy(window), g_height(game));
+    print_top_margin(getmaxy(window), g_height(game) + 2);
     print_left_margin(getmaxx(window), g_width(game));
     printw(" Game over     \n");
     PrintableInstance gp = createPrintableGameover(game);
