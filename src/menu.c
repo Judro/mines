@@ -1,4 +1,5 @@
 #include "menu.h"
+#include "custom_game.h"
 #include <ncurses.h>
 #include <stdlib.h>
 typedef struct Menu {
@@ -39,6 +40,11 @@ void m_print(Menu *menu, unsigned int terminal_width,
     printw("%s│      Expert      │\n", lm);
   }
   if (menu->pos == 4) {
+    printw("%s│    > Custom <    │\n", lm);
+  } else {
+    printw("%s│      Custom      │\n", lm);
+  }
+  if (menu->pos == 5) {
     printw("%s│     > Help <     │\n", lm);
   } else {
     printw("%s│       Help       │\n", lm);
@@ -65,7 +71,7 @@ char control(Menu *menu) {
   switch (ch) {
   case 'j':
   case 0x42:
-    if (menu->pos + 1 < 5)
+    if (menu->pos + 1 < 6)
       menu->pos += 1;
     break;
   case 'k':
@@ -110,6 +116,8 @@ GameInstance select_mode(unsigned int terminal_width,
       case 3:
         return createGameInstance(33, 15, 99);
       case 4:
+        return get_custom_game(terminal_width, terminal_height);
+      case 5:
         print_help();
         return select_mode(terminal_width, terminal_height);
       default:
