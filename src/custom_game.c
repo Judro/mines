@@ -11,7 +11,7 @@ typedef struct CGMenu {
 
 void cm_print(CustomGameMenu *menu, unsigned terminal_width,
               unsigned terminal_height) {
-  int lml = (terminal_width - 22) / 2 + 1;
+  int lml = (terminal_width - 23) / 2 + 1;
   char *lm = malloc(lml * sizeof(char));
   for (int i = 0; i < lml; i++) {
     lm[i] = ' ';
@@ -20,23 +20,23 @@ void cm_print(CustomGameMenu *menu, unsigned terminal_width,
   for (int i = 0; i < (terminal_height - 10) / 2; i++) {
     printw("\n");
   }
-  printw("%s┌──────────────────┐\n", lm);
+  printw("%s┌─────────────────────┐\n", lm);
   if (menu->cursor_position == 0) {
-    printw("%s│  > width  =  %2d  │\n", lm, menu->width);
+    printw("%s│  > width  = <%3d >  │\n", lm, menu->width);
   } else {
-    printw("%s│    width  =  %2d  │\n", lm, menu->width);
+    printw("%s│    width  =  %3d    │\n", lm, menu->width);
   }
   if (menu->cursor_position == 1) {
-    printw("%s│  > height =  %2d  │\n", lm, menu->height);
+    printw("%s│  > height = <%3d >  │\n", lm, menu->height);
   } else {
-    printw("%s│    height =  %2d  │\n", lm, menu->height);
+    printw("%s│    height =  %3d    │\n", lm, menu->height);
   }
   if (menu->cursor_position == 2) {
-    printw("%s│  > mines  = %3d  │\n", lm, menu->mines);
+    printw("%s│  > mines  = <%3d >  │\n", lm, menu->mines);
   } else {
-    printw("%s│    mines  = %3d  │\n", lm, menu->mines);
+    printw("%s│    mines  =  %3d    │\n", lm, menu->mines);
   }
-  printw("%s└──────────────────┘\n", lm);
+  printw("%s└─────────────────────┘\n", lm);
   free(lm);
 }
 char custom_game_control(CustomGameMenu *menu) {
