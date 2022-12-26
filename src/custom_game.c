@@ -97,7 +97,6 @@ char custom_game_control(CustomGameMenu *menu) {
     return 1;
     break;
   case 'q':
-  case 0x1B:
     return -1;
   default:
     break;
