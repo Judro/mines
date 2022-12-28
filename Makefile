@@ -1,6 +1,6 @@
 SRCS =$(wildcard src/*.c)
 OBJS	= $(patsubst src/%.c, obj/%.o, $(SRCS))
-CC	 = clang
+CC	 = gcc
 FLAGS	 = -Wall -O2
 LFLAGS	 = -lncursesw
 BIN = bin/mines
