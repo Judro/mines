@@ -74,13 +74,13 @@ char custom_game_control() {
     switch (custom_game_menu.cursor_position) {
     case 0:
       custom_game_menu.width--;
-      if (custom_game_menu.width > 10000)
-        custom_game_menu.width = 0;
+      if (custom_game_menu.width > 10000 || custom_game_menu.width < 18)
+        custom_game_menu.width = 18;
       break;
     case 1:
       custom_game_menu.height--;
-      if (custom_game_menu.height > 10000)
-        custom_game_menu.height = 0;
+      if (custom_game_menu.height > 10000 || custom_game_menu.height < 4)
+        custom_game_menu.height = 4;
       break;
     case 2:
       custom_game_menu.mines--;
