@@ -17,6 +17,7 @@ typedef struct Game {
   int length;
   int flagstotal;
   int flagsfound;
+  GState state;
   time_t started;
   Cord cord;
 } *GameInstance;
@@ -102,6 +103,7 @@ GameInstance createGameInstance(int width, int height, int amount_mines) {
   g->height = height;
   g->flagstotal = total;
   g->flagsfound = 0;
+  g->state = Playing;
   Cord c;
   c.x = 0;
   c.y = 0;
@@ -228,6 +230,7 @@ PrintableHeaderInstance createPrintableHeader(GameInstance g) {
   gp->mines = g->flagstotal - g->flagsfound;
   gp->time = current - g->started;
   gp->width = g->width;
+  gp->state = g->state;
   return gp;
 }
 
@@ -281,6 +284,7 @@ int g_unveil(GameInstance g) {
     return 0;
   }
   if (is_mine(g->mines[g->cord.y * g->width + g->cord.x])) {
+    g->state = Lost;
     return -1;
   }
   if (g->mines[g->cord.y * g->width + g->cord.x] > 0) {
@@ -296,7 +300,9 @@ int checkflags(GameInstance g) {
     if (is_mine(g->mines[i]) && is_flagged(g->mines[i]))
       fit += 1;
   }
-  if (fit == g->flagstotal)
+  if (fit == g->flagstotal) {
+    g->state = Won;
     return 1;
+  }
   return 0;
 }

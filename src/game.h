@@ -7,6 +7,13 @@ typedef struct {
 } Cord;
 
 typedef struct Game *GameInstance;
+
+typedef enum GState {
+  Playing,
+  Won,
+  Lost,
+} GState;
+
 typedef enum GPrint {
   UNTOUCHED,
   UNVEILED,
@@ -31,6 +38,7 @@ typedef struct GPrintable {
 } *PrintableInstance;
 
 typedef struct GPrintableH {
+  GState state;
   unsigned int mines;
   time_t time;
   unsigned int width;

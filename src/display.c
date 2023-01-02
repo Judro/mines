@@ -35,11 +35,36 @@ char *get_left_margin(unsigned int l) {
 
 void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
                   unsigned int game_x) {
-  char *wm = get_left_margin(gph->width - 10);
   print_left_margin(terminal_x, game_x);
-  printw(" %s[%02d %02ld:%02ld]\n", wm, gph->mines, gph->time / 60,
-         gph->time % 60);
-  free(wm);
+  printw("│");
+  printw(" %03d │", gph->mines);
+  for (int i = 0; i < gph->width - 16; i++) {
+    if (i == (gph->width - 16) / 2) {
+      switch (gph->state) {
+      case Playing:
+        printw("🙂");
+        break;
+      case Won:
+        printw("🤠");
+        break;
+      case Lost:
+        printw("🙁");
+      }
+      continue;
+    }
+    printw(" ");
+  }
+  printw(" │ %02ld:%02ld │\n", gph->time / 60, gph->time % 60);
+  print_left_margin(terminal_x, game_x);
+  printw("└");
+  for (int i = 0; i < gph->width; i++) {
+    if (i == 5 || i == gph->width - 8) {
+      printw("┴");
+      continue;
+    }
+    printw("─");
+  }
+  printw("┘\n");
 }
 
 void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
@@ -129,9 +154,13 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
   }
   printw("│\n");
   print_left_margin(terminal_x, game_x);
-  printw("└");
+  printw("├");
   for (int i = 0; i < gp->width; i++) {
+    if (i == 5 || i == gp->width - 8) {
+      printw("┬");
+      continue;
+    }
     printw("─");
   }
-  printw("┘\n");
+  printw("┤\n");
 }
