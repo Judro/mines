@@ -35,7 +35,7 @@ void print_gameover(GameInstance game, WINDOW *window) {
   char ret = 0;
   erase();
   PrintableHeaderInstance gph = createPrintableHeader(game);
-  print_top_margin(getmaxy(window), g_height(game));
+  print_top_margin(getmaxy(window), g_height(game) + 2);
   PrintableInstance gp = createPrintableGameover(game);
   print(gp, getmaxx(window), g_width(game));
   print_header(gph, getmaxx(window), g_width(game));
@@ -54,7 +54,7 @@ void print_victory(GameInstance game, WINDOW *window) {
   time(&current);
   char ret = 0;
   erase();
-  print_top_margin(getmaxy(window), g_height(game));
+  print_top_margin(getmaxy(window), g_height(game) + 2);
   PrintableInstance gp = createPrintableGameover(game);
   PrintableHeaderInstance gph = createPrintableHeader(game);
   print(gp, getmaxx(window), g_width(game));
@@ -71,7 +71,7 @@ void print_victory(GameInstance game, WINDOW *window) {
 
 void print_game(GameInstance game, WINDOW *window) {
   erase();
-  print_top_margin(getmaxy(window), g_height(game));
+  print_top_margin(getmaxy(window), g_height(game) + 2);
   PrintableInstance gp = createPrintable(game);
   PrintableHeaderInstance gph = createPrintableHeader(game);
   print(gp, getmaxx(window), g_width(game));
