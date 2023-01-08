@@ -37,10 +37,10 @@ void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
                   unsigned int game_x) {
   print_left_margin(terminal_x, game_x);
   printw("│");
-  int mtw = 16;
+  int mtw = 15;
   if (gph->width >= 25) {
     printw("  %03d  │", gph->mines);
-    mtw = 18;
+    mtw = 17;
   } else {
     printw(" %03d │", gph->mines);
   }
@@ -48,13 +48,13 @@ void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
     if (i == (gph->width - mtw) / 2) {
       switch (gph->state) {
       case Playing:
-        printw("🙂");
+        printw(" ");
         break;
       case Won:
-        printw("🤠");
+        printw("☆");
         break;
       case Lost:
-        printw("🙁");
+        printw("☠");
       }
       continue;
     }
@@ -108,7 +108,7 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
       break;
     case FLAG:
       attron(COLOR_PAIR(6));
-      printw("⚑");
+      printw("+");
       attroff(COLOR_PAIR(6));
       break;
     case FALSE_FLAG:
