@@ -114,6 +114,7 @@ start:
     limit_fps();
   }
   deleteGameInstance(game);
+  nodelay(window, 0);
   game = select_mode(getmaxx(window), getmaxy(window));
   if (game != NULL)
     goto start;
