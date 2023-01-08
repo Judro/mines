@@ -100,12 +100,14 @@ start:
     } else if (ret == -2) {
       g_flag(game);
     } else if (ret == -3) {
-      if (g_unveil(game) == -1) {
+      g_unveil(game);
+      if (g_state(game) == Lost) {
         print_gameover(game, window);
         break;
       }
     }
-    if (checkflags(game)) {
+    g_checkflags(game);
+    if (g_state(game) == Won) {
       print_victory(game, window);
       break;
     }

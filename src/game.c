@@ -17,6 +17,7 @@ typedef struct Game {
   int length;
   int flagstotal;
   int flagsfound;
+  int unveiled;
   GState state;
   time_t started;
   Cord cord;
@@ -103,6 +104,7 @@ GameInstance createGameInstance(int width, int height, int amount_mines) {
   g->height = height;
   g->flagstotal = total;
   g->flagsfound = 0;
+  g->unveiled = 0;
   g->state = Playing;
   Cord c;
   c.x = 0;
@@ -239,6 +241,7 @@ void deletePrintable(PrintableInstance gp) {
   free(gp);
 }
 
+GState g_state(GameInstance game) { return game->state; }
 Cord g_player_position(GameInstance g) { return g->cord; }
 void g_set_player_position_x(GameInstance g, int x) { g->cord.x = x; }
 void g_set_player_position_y(GameInstance g, int y) { g->cord.y = y; }
@@ -264,6 +267,9 @@ void unveil_recursive(GameInstance game, Cord position) {
   if (is_unveiled(game->mines[position.y * game->width + position.x]))
     return;
   game->mines[position.y * game->width + position.x] |= UNVLD;
+  game->unveiled++;
+  if (game->unveiled + game->flagstotal == game->width * game->height)
+    game->state = Won;
   if (!is_blank(game->mines[position.y * game->width + position.x])) {
     return;
   }
@@ -279,30 +285,29 @@ void unveil_recursive(GameInstance game, Cord position) {
   }
 }
 
-int g_unveil(GameInstance g) {
+void g_unveil(GameInstance g) {
   if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {
-    return 0;
+    return;
   }
   if (is_mine(g->mines[g->cord.y * g->width + g->cord.x])) {
     g->state = Lost;
-    return -1;
+    return;
   }
   if (g->mines[g->cord.y * g->width + g->cord.x] > 0) {
     g->mines[g->cord.y * g->width + g->cord.x] |= UNVLD;
-    return 0;
+    g->unveiled++;
+    if (g->unveiled + g->flagstotal == g->width * g->height)
+      g->state = Won;
+    return;
   }
   unveil_recursive(g, g->cord);
-  return 0;
 }
-int checkflags(GameInstance g) {
+void g_checkflags(GameInstance g) {
   int fit = 0;
   for (int i = 0; i < g->length; i++) {
     if (is_mine(g->mines[i]) && is_flagged(g->mines[i]))
       fit += 1;
   }
-  if (fit == g->flagstotal) {
+  if (fit == g->flagstotal)
     g->state = Won;
-    return 1;
-  }
-  return 0;
 }

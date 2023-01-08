@@ -44,6 +44,7 @@ typedef struct GPrintableH {
   unsigned int width;
 } *PrintableHeaderInstance;
 
+GState g_state(GameInstance);
 PrintableInstance createPrintable(GameInstance);
 PrintableInstance createPrintableGameover(GameInstance);
 PrintableHeaderInstance createPrintableHeader(GameInstance);
@@ -58,8 +59,8 @@ int g_width(GameInstance);
 int g_height(GameInstance);
 time_t g_start(GameInstance);
 void g_flag(GameInstance);
-int g_unveil(GameInstance);
-int checkflags(GameInstance);
+void g_unveil(GameInstance);
+void g_checkflags(GameInstance);
 void deleteGameInstance(GameInstance);
 
 #endif
