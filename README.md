@@ -4,12 +4,13 @@
 [![build](https://github.com/Judro/mines/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/Judro/mines/actions/workflows/c-cpp.yml)
 <div>
 <img src="https://github.com/Judro/mines/blob/main/img/menu.png" alt="menu" width="250px">
+<img src="https://github.com/Judro/mines/blob/main/img/custom_menu.png" alt="custom menu" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game.png" alt="game" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game_over.png" alt="game over" width="250px">
 </div>
 
 ## Installation
-install the deb file: [mines_0.4.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.4.0/mines_0.4.0_amd64.deb)
+install the deb file: [mines_0.5.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.5.0/mines_0.5.0_amd64.deb)
 
 ## Controls
 - Movement: `hjkl or ←↓↑→`
