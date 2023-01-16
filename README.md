@@ -4,7 +4,7 @@
 [![build](https://github.com/Judro/mines/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/Judro/mines/actions/workflows/c-cpp.yml)
 <div>
 <img src="https://github.com/Judro/mines/blob/main/img/menu.png" alt="menu" width="250px">
-<img src="https://github.com/Judro/mines/blob/main/img/custom_menu.png" alt="custom menu" width="250px">
+<img src="https://github.com/Judro/mines/blob/main/img/custom_game.png" alt="custom menu" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game.png" alt="game" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game_over.png" alt="game over" width="250px">
 </div>
