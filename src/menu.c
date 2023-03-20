@@ -112,9 +112,9 @@ GameInstance select_mode(unsigned int terminal_width,
       case 1:
         return createGameInstance(18, 7, 15);
       case 2:
-        return createGameInstance(40, 10, 40);
+        return createGameInstance(40, 10, 46);
       case 3:
-        return createGameInstance(33, 15, 99);
+        return createGameInstance(33, 15, 105);
       case 4:
         return get_custom_game(terminal_width, terminal_height);
       case 5:
