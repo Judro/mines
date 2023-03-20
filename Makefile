@@ -17,5 +17,5 @@ clean:
 
 install: 
 	cp bin/mines /usr/local/bin
-	cp deb/mines_0.4.0_amd64/usr/share/applications/mines.desktop /usr/share/applications/
-	cp deb/mines_0.4.0_amd64/usr/share/icons/hicolor/128x128/apps/mines.png /usr/share/icons/hicolor/128x128/apps/
+	cp deb/mines_0.5.1_amd64/usr/share/applications/mines.desktop /usr/share/applications/
+	cp deb/mines_0.5.1_amd64/usr/share/icons/hicolor/128x128/apps/mines.png /usr/share/icons/hicolor/128x128/apps/
