@@ -252,6 +252,8 @@ int g_height(GameInstance g) { return g->height; }
 time_t g_start(GameInstance g) { return g->started; }
 
 void g_flag(GameInstance g) {
+  if (is_unveiled(g->mines[g->cord.y * g->width + g->cord.x]))
+    return;
   if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {
     g->mines[g->cord.y * g->width + g->cord.x] ^= FLAGGED;
     g->flagsfound -= 1;
