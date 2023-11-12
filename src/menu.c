@@ -55,10 +55,12 @@ void m_print(Menu *menu, unsigned int terminal_width,
 
 void print_help() {
   erase();
-  printw("- Movement:   <hjkl> <←↓↑→>\n");
-  printw("- Place flag: <f>\n");
-  printw("- Open tile:  <s>\n");
-  printw("- Quit:       <q>\n");
+  printw("- Movement:                 <hjkl>\n");
+  printw("                            <←↓↑→>>\n");
+  printw("- Place flag:               <f>\n");
+  printw("- Open tile:                <s>\n");
+  printw("- Quit:                     <q>\n");
+  printw("- Emphazise importen cells: <e>\n");
   for (;;) {
     char ch = getch();
     if (ch == 'q')

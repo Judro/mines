@@ -81,6 +81,8 @@ void print_game(GameInstance game, WINDOW *window) {
 }
 
 int main(int argc, char *argv[]) {
+  extern char g_helper_mode;
+  g_helper_mode = 1;
   time(&fps_timestamp);
   setlocale(LC_CTYPE, "en_US.UTF-8");
   WINDOW *window = initscr();

@@ -77,6 +77,8 @@ void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
 }
 
 void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
+  char is_in_radius = 0;
+  extern char g_helper_mode;
   init_pair(1, COLOR_BLUE, COLOR_BLACK);
   init_pair(2, COLOR_GREEN, COLOR_BLACK);
   init_pair(3, COLOR_RED, COLOR_BLACK);
@@ -90,18 +92,39 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
   }
   printw("┐\n");
   for (int i = 0; i < gp->width * gp->height; i++) {
-    if (i % gp->width == 0 && i > 0)
+    if (i % gp->width == 0 && i > 0) {
       printw("│\n");
+    }
     if (i % gp->width == 0) {
       print_left_margin(terminal_x, game_x);
       printw("│");
     }
     if (i == (gp->player.y * gp->width + gp->player.x))
-      attron(A_REVERSE);
+      attron(A_STANDOUT);
+    if ((i == gp->player.y * gp->width + gp->player.x + 1 ||
+         i == gp->player.y * gp->width + gp->player.x - 1 ||
+         i == gp->player.y * gp->width + gp->player.x + 1 + gp->width ||
+         i == gp->player.y * gp->width + gp->player.x - 1 + gp->width ||
+         i == gp->player.y * gp->width + gp->player.x + 1 - gp->width ||
+         i == gp->player.y * gp->width + gp->player.x - 1 - gp->width ||
+         i == gp->player.y * gp->width + gp->player.x - gp->width ||
+         i == gp->player.y * gp->width + gp->player.x + gp->width) &&
+        i % gp->width >= 0 && abs(i % gp->width - gp->player.x) < 2 &&
+        g_helper_mode) {
+      is_in_radius = 1;
+      attron(A_BOLD);
+    } else {
+      attroff(A_BOLD);
+      is_in_radius = 0;
+    }
 
     switch (gp->fields[i]) {
     case UNTOUCHED:
-      printw("░");
+      if (is_in_radius) {
+        printw("▒");
+      } else {
+        printw("░");
+      }
       break;
     case UNVEILED:
       printw(" ");
@@ -159,7 +182,7 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
       break;
     }
     if (i == (gp->player.y * gp->width + gp->player.x))
-      attroff(A_REVERSE);
+      attroff(A_STANDOUT);
   }
   printw("│\n");
   print_left_margin(terminal_x, game_x);

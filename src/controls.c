@@ -1,6 +1,7 @@
 #include "game.h"
 #include <ncurses.h>
 int cmove(GameInstance g, WINDOW *window) {
+  extern char g_helper_mode;
   nodelay(window, 1);
   char ch = getch();
   Cord old = g_player_position(g);
@@ -39,6 +40,8 @@ int cmove(GameInstance g, WINDOW *window) {
     return -2;
   case 's':
     return -3;
+  case 'e':
+    g_helper_mode ^= 1;
   }
   return 0;
 }
