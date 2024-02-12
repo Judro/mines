@@ -62,7 +62,7 @@ void print_help() {
   printw("- Place flag:               <f>\n");
   printw("- Open tile:                <s>\n");
   printw("- Quit:                     <q>\n");
-  printw("- Emphazise importen cells: <e>\n");
+  printw("- Emphazise important cells: <e>\n");
   for (;;) {
     char ch = getch();
     if (ch == 'q')
