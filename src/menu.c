@@ -7,6 +7,8 @@ typedef struct Menu {
   char selected;
 } Menu;
 
+unsigned int last_selected = 0;
+
 void m_print(Menu *menu, unsigned int terminal_width,
              unsigned int terminal_height) {
   int lml = (terminal_width - 20) / 2 + 1;
@@ -98,7 +100,7 @@ char control(Menu *menu) {
 GameInstance select_mode(unsigned int terminal_width,
                          unsigned int terminal_height) {
   Menu menu;
-  menu.pos = 0;
+  menu.pos = last_selected;
   menu.selected = 0;
   for (;;) {
     erase();
@@ -108,6 +110,7 @@ GameInstance select_mode(unsigned int terminal_width,
     if (ret == -1)
       return NULL;
     if (menu.selected == 1) {
+			last_selected = menu.pos;
       switch (menu.pos) {
       case 0:
         return createGameInstance(20, 5, 7);
