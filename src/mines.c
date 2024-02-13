@@ -88,6 +88,7 @@ int main(int argc, char *argv[]) {
   WINDOW *window = initscr();
   start_color();
   curs_set(0);
+  noecho();
   GameInstance game = select_mode(getmaxx(window), getmaxy(window));
   if (game == NULL) {
     goto end;
