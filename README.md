@@ -24,3 +24,6 @@ install the deb file: [mines_0.6.0_amd64.deb](https://github.com/Judro/mines/rel
 
 ### Dependencies
 - libncurses-devel
+
+### Contributing
+This project was my playground to learn C, so don't expect the cleanest code or the most optimized solutions. I might have done things differently if I had to redo it! If you're keen to chip in, feel free to send over your ideas or pull requests
