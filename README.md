@@ -10,7 +10,7 @@
 </div>
 
 ## Installation
-install the deb file: [mines_0.6.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.6.0/mines_0.6.0_amd64.deb)
+(Ubuntu / Linux Mint)install the deb file: [mines_0.6.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.6.0/mines_0.6.0_amd64.deb)
 
 ## Controls
 - Movement: `hjkl or ←↓↑→`
@@ -21,6 +21,8 @@ install the deb file: [mines_0.6.0_amd64.deb](https://github.com/Judro/mines/rel
 1. install dependencies
 2. `make`
 3. `make install`
+
+(If linking fails, consider replacing `-lncursesw` with `-lncurses` in the `Makefile`)
 
 ### Dependencies
 - libncurses-devel
