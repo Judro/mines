@@ -121,124 +121,125 @@ void deleteGameInstance(GameInstance g) {
   free(g);
 }
 
-PrintableInstance createPrintable(GameInstance g) {
-  PrintableInstance gp = calloc(1, sizeof(struct GPrintable));
-  CellType *gpr = calloc(g->length, sizeof(CellType));
-  gp->cells = gpr;
-  gp->player = g->cord;
+GameView createView(GameInstance g) {
+  GameView view = calloc(1, sizeof(struct GameView));
+  CellType *cells = calloc(g->length, sizeof(CellType));
+  view->cells = cells;
+  view->player = g->cord;
+  time_t current;
+  time(&current);
+  view->mines = g->flagstotal - g->flagsfound;
+  view->time = current - g->started;
+  view->width = g->width;
+  view->state = g->state;
   for (int i = 0; i < g->length; i++) {
     if (is_flagged(g->mines[i])) {
-      gp->cells[i] = FLAG;
+      view->cells[i] = FLAG;
     } else if (is_unveiled(g->mines[i])) {
       switch (g->mines[i] & 0b1111) {
       case 0:
-        gp->cells[i] = UNVEILED;
+        view->cells[i] = UNVEILED;
         break;
       case 1:
-        gp->cells[i] = ONE;
+        view->cells[i] = ONE;
         break;
       case 2:
-        gp->cells[i] = TWO;
+        view->cells[i] = TWO;
         break;
       case 3:
-        gp->cells[i] = THREE;
+        view->cells[i] = THREE;
         break;
       case 4:
-        gp->cells[i] = FOUR;
+        view->cells[i] = FOUR;
         break;
       case 5:
-        gp->cells[i] = FIVE;
+        view->cells[i] = FIVE;
         break;
       case 6:
-        gp->cells[i] = SIX;
+        view->cells[i] = SIX;
         break;
       case 7:
-        gp->cells[i] = SEVEN;
+        view->cells[i] = SEVEN;
         break;
       case 8:
-        gp->cells[i] = EIGHT;
+        view->cells[i] = EIGHT;
         break;
       default:
         break;
       }
     } else {
-      gp->cells[i] = UNTOUCHED;
+      view->cells[i] = UNTOUCHED;
     }
   }
-  gp->height = g->height;
-  gp->width = g->width;
-  return gp;
+  view->height = g->height;
+  view->width = g->width;
+  return view;
 }
-PrintableInstance createPrintableGameover(GameInstance g) {
-  PrintableInstance gp = calloc(1, sizeof(struct GPrintable));
-  CellType *gpr = calloc(g->length, sizeof(CellType));
-  gp->cells = gpr;
-  gp->player = g->cord;
+GameView createViewGameover(GameInstance g) {
+  GameView view = calloc(1, sizeof(struct GameView));
+  CellType *cells = calloc(g->length, sizeof(CellType));
+  view->cells = cells;
+  view->player = g->cord;
+  time_t current;
+  time(&current);
+  view->mines = g->flagstotal - g->flagsfound;
+  view->time = current - g->started;
+  view->width = g->width;
+  view->state = g->state;
   for (int i = 0; i < g->length; i++) {
     if (is_flagged(g->mines[i])) {
       if (is_mine(g->mines[i])) {
-        gp->cells[i] = FLAG;
+        view->cells[i] = FLAG;
       } else {
-        gp->cells[i] = FALSE_FLAG;
+        view->cells[i] = FALSE_FLAG;
       }
     } else {
       if (is_mine(g->mines[i])) {
-        gp->cells[i] = FLAG_NOT_FOUND;
+        view->cells[i] = FLAG_NOT_FOUND;
         continue;
       }
       switch (g->mines[i] & 0b1111) {
       case 0:
-        gp->cells[i] = UNVEILED;
+        view->cells[i] = UNVEILED;
         break;
       case 1:
-        gp->cells[i] = ONE;
+        view->cells[i] = ONE;
         break;
       case 2:
-        gp->cells[i] = TWO;
+        view->cells[i] = TWO;
         break;
       case 3:
-        gp->cells[i] = THREE;
+        view->cells[i] = THREE;
         break;
       case 4:
-        gp->cells[i] = FOUR;
+        view->cells[i] = FOUR;
         break;
       case 5:
-        gp->cells[i] = FIVE;
+        view->cells[i] = FIVE;
         break;
       case 6:
-        gp->cells[i] = SIX;
+        view->cells[i] = SIX;
         break;
       case 7:
-        gp->cells[i] = SEVEN;
+        view->cells[i] = SEVEN;
         break;
       case 8:
-        gp->cells[i] = EIGHT;
+        view->cells[i] = EIGHT;
         break;
       default:
         break;
       }
     }
   }
-  gp->cells[g->cord.y * g->width + g->cord.x] = FALSE_FLAG;
-  gp->height = g->height;
-  gp->width = g->width;
-  return gp;
+  view->cells[g->cord.y * g->width + g->cord.x] = FALSE_FLAG;
+  view->height = g->height;
+  view->width = g->width;
+  return view;
 }
 
-PrintableHeaderInstance createPrintableHeader(GameInstance g) {
-  PrintableHeaderInstance gp = calloc(1, sizeof(struct GPrintableH));
-  time_t current;
-  time(&current);
-  gp->mines = g->flagstotal - g->flagsfound;
-  gp->time = current - g->started;
-  gp->width = g->width;
-  gp->state = g->state;
-  return gp;
-}
-
-void deletePrintable(PrintableInstance gp) {
-  free(gp->cells);
-  free(gp);
+void deleteView(GameView view) {
+  free(view->cells);
+  free(view);
 }
 
 GState g_state(GameInstance game) { return game->state; }

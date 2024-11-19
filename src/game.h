@@ -14,7 +14,6 @@ typedef enum GState {
   Lost,
 } GState;
 
-//GPrint
 typedef enum CellType  {
   UNTOUCHED,
   UNVEILED,
@@ -31,25 +30,21 @@ typedef enum CellType  {
   EIGHT,
 } CellType;
 
-typedef struct GPrintable {
-  Cord player;
-  CellType *cells;
-  unsigned int width;
-  unsigned int height;
-} *PrintableInstance;
 
-typedef struct GPrintableH {
-  GState state;
-  unsigned int mines;
-  time_t time;
-  unsigned int width;
-} *PrintableHeaderInstance;
+typedef struct GameView {
+	CellType *cells;
+	Cord player;
+	unsigned width;
+	unsigned height;
+	GState state;
+	unsigned mines;
+	time_t time;
+} *GameView;
 
 GState g_state(GameInstance);
-PrintableInstance createPrintable(GameInstance);
-PrintableInstance createPrintableGameover(GameInstance);
-PrintableHeaderInstance createPrintableHeader(GameInstance);
-void deletePrintable(PrintableInstance);
+GameView createView(GameInstance);
+GameView createViewGameover(GameInstance);
+void deleteView(GameView);
 GameInstance createGameInstance(int, int, int);
 Cord g_player_position(GameInstance);
 void g_set_player_position_x(GameInstance, int);

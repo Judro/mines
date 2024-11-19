@@ -33,20 +33,20 @@ char *get_left_margin(unsigned int l) {
   return ret;
 }
 
-void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
+void print_header(GameView view, unsigned int terminal_x,
                   unsigned int game_x) {
   print_left_margin(terminal_x, game_x);
   printw("│");
   int mtw = 15;
-  if (gph->width >= 25) {
-    printw("  %03d  │", gph->mines);
+  if (view->width >= 25) {
+    printw("  %03d  │", view->mines);
     mtw = 17;
   } else {
-    printw(" %03d │", gph->mines);
+    printw(" %03d │", view->mines);
   }
-  for (int i = 0; i < gph->width - mtw; i++) {
-    if (i == (gph->width - mtw) / 2) {
-      switch (gph->state) {
+  for (int i = 0; i < view->width - mtw; i++) {
+    if (i == (view->width - mtw) / 2) {
+      switch (view->state) {
       case Playing:
         printw(" ");
         break;
@@ -60,14 +60,14 @@ void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
     }
     printw(" ");
   }
-  printw(" │ %02ld:%02ld │\n", gph->time / 60, gph->time % 60);
+  printw(" │ %02ld:%02ld │\n", view->time / 60, view->time % 60);
   print_left_margin(terminal_x, game_x);
   printw("└");
   int mrb = 5;
-  if (gph->width >= 25)
+  if (view->width >= 25)
     mrb = 7;
-  for (int i = 0; i < gph->width; i++) {
-    if (i == mrb || i == gph->width - 8) {
+  for (int i = 0; i < view->width; i++) {
+    if (i == mrb || i == view->width - 8) {
       printw("┴");
       continue;
     }
@@ -76,7 +76,7 @@ void print_header(PrintableHeaderInstance gph, unsigned int terminal_x,
   printw("┘\n");
 }
 
-void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
+void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
   char is_in_radius = 0;
   extern char g_helper_mode;
   init_pair(1, COLOR_BLUE, COLOR_BLACK);
@@ -87,29 +87,29 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
   init_pair(6, COLOR_CYAN, COLOR_BLACK);
   print_left_margin(terminal_x, game_x);
   printw("┌");
-  for (int i = 0; i < gp->width; i++) {
+  for (int i = 0; i < view->width; i++) {
     printw("─");
   }
   printw("┐\n");
-  for (int i = 0; i < gp->width * gp->height; i++) {
-    if (i % gp->width == 0 && i > 0) {
+  for (int i = 0; i < view->width * view->height; i++) {
+    if (i % view->width == 0 && i > 0) {
       printw("│\n");
     }
-    if (i % gp->width == 0) {
+    if (i % view->width == 0) {
       print_left_margin(terminal_x, game_x);
       printw("│");
     }
-    if (i == (gp->player.y * gp->width + gp->player.x))
+    if (i == (view->player.y * view->width + view->player.x))
       attron(A_STANDOUT);
-    if ((i == gp->player.y * gp->width + gp->player.x + 1 ||
-         i == gp->player.y * gp->width + gp->player.x - 1 ||
-         i == gp->player.y * gp->width + gp->player.x + 1 + gp->width ||
-         i == gp->player.y * gp->width + gp->player.x - 1 + gp->width ||
-         i == gp->player.y * gp->width + gp->player.x + 1 - gp->width ||
-         i == gp->player.y * gp->width + gp->player.x - 1 - gp->width ||
-         i == gp->player.y * gp->width + gp->player.x - gp->width ||
-         i == gp->player.y * gp->width + gp->player.x + gp->width) &&
-        i % gp->width >= 0 && abs(i % gp->width - gp->player.x) < 2 &&
+    if ((i == view->player.y * view->width + view->player.x + 1 ||
+         i == view->player.y * view->width + view->player.x - 1 ||
+         i == view->player.y * view->width + view->player.x + 1 + view->width ||
+         i == view->player.y * view->width + view->player.x - 1 + view->width ||
+         i == view->player.y * view->width + view->player.x + 1 - view->width ||
+         i == view->player.y * view->width + view->player.x - 1 - view->width ||
+         i == view->player.y * view->width + view->player.x - view->width ||
+         i == view->player.y * view->width + view->player.x + view->width) &&
+        i % view->width >= 0 && abs(i % view->width - view->player.x) < 2 &&
         g_helper_mode) {
       is_in_radius = 1;
       attron(A_BOLD);
@@ -118,7 +118,7 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
       is_in_radius = 0;
     }
 
-    switch (gp->cells[i]) {
+    switch (view->cells[i]) {
     case UNTOUCHED:
       if (is_in_radius) {
         printw("▒");
@@ -181,21 +181,22 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
       attroff(COLOR_PAIR(5));
       break;
     }
-    if (i == (gp->player.y * gp->width + gp->player.x))
+    if (i == (view->player.y * view->width + view->player.x))
       attroff(A_STANDOUT);
   }
   printw("│\n");
   print_left_margin(terminal_x, game_x);
   printw("├");
   int mrb = 5;
-  if (gp->width >= 25)
+  if (view->width >= 25)
     mrb = 7;
-  for (int i = 0; i < gp->width; i++) {
-    if (i == mrb || i == gp->width - 8) {
+  for (int i = 0; i < view->width; i++) {
+    if (i == mrb || i == view->width - 8) {
       printw("┬");
       continue;
     }
     printw("─");
   }
   printw("┤\n");
+  print_header(view, terminal_x, game_x);
 }

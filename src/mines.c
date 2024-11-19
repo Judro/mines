@@ -34,13 +34,10 @@ void limit_fps() {
 void print_gameover(GameInstance game, WINDOW *window) {
   char ret = 0;
   erase();
-  PrintableHeaderInstance gph = createPrintableHeader(game);
+  GameView view = createViewGameover(game);
   print_top_margin(getmaxy(window), g_height(game) + 2);
-  PrintableInstance gp = createPrintableGameover(game);
-  print(gp, getmaxx(window), g_width(game));
-  print_header(gph, getmaxx(window), g_width(game));
-  deletePrintable(gp);
-  free(gph);
+  print(view, getmaxx(window), g_width(game));
+  deleteView(view);
   while (1) {
     ret = cmove(game, window);
     if (ret == -1)
@@ -55,12 +52,9 @@ void print_victory(GameInstance game, WINDOW *window) {
   char ret = 0;
   erase();
   print_top_margin(getmaxy(window), g_height(game) + 2);
-  PrintableInstance gp = createPrintableGameover(game);
-  PrintableHeaderInstance gph = createPrintableHeader(game);
-  print(gp, getmaxx(window), g_width(game));
-  print_header(gph, getmaxx(window), g_width(game));
-  deletePrintable(gp);
-  free(gph);
+  GameView view = createViewGameover(game);
+  print(view, getmaxx(window), g_width(game));
+  deleteView(view);
   while (1) {
     ret = cmove(game, window);
     if (ret == -1)
@@ -72,12 +66,9 @@ void print_victory(GameInstance game, WINDOW *window) {
 void print_game(GameInstance game, WINDOW *window) {
   erase();
   print_top_margin(getmaxy(window), g_height(game) + 2);
-  PrintableInstance gp = createPrintable(game);
-  PrintableHeaderInstance gph = createPrintableHeader(game);
-  print(gp, getmaxx(window), g_width(game));
-  print_header(gph, getmaxx(window), g_width(game));
-  free(gph);
-  deletePrintable(gp);
+  GameView view = createView(game);
+  print(view, getmaxx(window), g_width(game));
+  deleteView(view);
 }
 
 int main(int argc, char *argv[]) {
