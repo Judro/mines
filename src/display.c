@@ -118,7 +118,7 @@ void print(PrintableInstance gp, unsigned int terminal_x, unsigned int game_x) {
       is_in_radius = 0;
     }
 
-    switch (gp->fields[i]) {
+    switch (gp->cells[i]) {
     case UNTOUCHED:
       if (is_in_radius) {
         printw("▒");

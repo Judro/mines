@@ -123,46 +123,46 @@ void deleteGameInstance(GameInstance g) {
 
 PrintableInstance createPrintable(GameInstance g) {
   PrintableInstance gp = calloc(1, sizeof(struct GPrintable));
-  GPrint *gpr = calloc(g->length, sizeof(GPrint));
-  gp->fields = gpr;
+  CellType *gpr = calloc(g->length, sizeof(CellType));
+  gp->cells = gpr;
   gp->player = g->cord;
   for (int i = 0; i < g->length; i++) {
     if (is_flagged(g->mines[i])) {
-      gp->fields[i] = FLAG;
+      gp->cells[i] = FLAG;
     } else if (is_unveiled(g->mines[i])) {
       switch (g->mines[i] & 0b1111) {
       case 0:
-        gp->fields[i] = UNVEILED;
+        gp->cells[i] = UNVEILED;
         break;
       case 1:
-        gp->fields[i] = ONE;
+        gp->cells[i] = ONE;
         break;
       case 2:
-        gp->fields[i] = TWO;
+        gp->cells[i] = TWO;
         break;
       case 3:
-        gp->fields[i] = THREE;
+        gp->cells[i] = THREE;
         break;
       case 4:
-        gp->fields[i] = FOUR;
+        gp->cells[i] = FOUR;
         break;
       case 5:
-        gp->fields[i] = FIVE;
+        gp->cells[i] = FIVE;
         break;
       case 6:
-        gp->fields[i] = SIX;
+        gp->cells[i] = SIX;
         break;
       case 7:
-        gp->fields[i] = SEVEN;
+        gp->cells[i] = SEVEN;
         break;
       case 8:
-        gp->fields[i] = EIGHT;
+        gp->cells[i] = EIGHT;
         break;
       default:
         break;
       }
     } else {
-      gp->fields[i] = UNTOUCHED;
+      gp->cells[i] = UNTOUCHED;
     }
   }
   gp->height = g->height;
@@ -171,55 +171,55 @@ PrintableInstance createPrintable(GameInstance g) {
 }
 PrintableInstance createPrintableGameover(GameInstance g) {
   PrintableInstance gp = calloc(1, sizeof(struct GPrintable));
-  GPrint *gpr = calloc(g->length, sizeof(GPrint));
-  gp->fields = gpr;
+  CellType *gpr = calloc(g->length, sizeof(CellType));
+  gp->cells = gpr;
   gp->player = g->cord;
   for (int i = 0; i < g->length; i++) {
     if (is_flagged(g->mines[i])) {
       if (is_mine(g->mines[i])) {
-        gp->fields[i] = FLAG;
+        gp->cells[i] = FLAG;
       } else {
-        gp->fields[i] = FALSE_FLAG;
+        gp->cells[i] = FALSE_FLAG;
       }
     } else {
       if (is_mine(g->mines[i])) {
-        gp->fields[i] = FLAG_NOT_FOUND;
+        gp->cells[i] = FLAG_NOT_FOUND;
         continue;
       }
       switch (g->mines[i] & 0b1111) {
       case 0:
-        gp->fields[i] = UNVEILED;
+        gp->cells[i] = UNVEILED;
         break;
       case 1:
-        gp->fields[i] = ONE;
+        gp->cells[i] = ONE;
         break;
       case 2:
-        gp->fields[i] = TWO;
+        gp->cells[i] = TWO;
         break;
       case 3:
-        gp->fields[i] = THREE;
+        gp->cells[i] = THREE;
         break;
       case 4:
-        gp->fields[i] = FOUR;
+        gp->cells[i] = FOUR;
         break;
       case 5:
-        gp->fields[i] = FIVE;
+        gp->cells[i] = FIVE;
         break;
       case 6:
-        gp->fields[i] = SIX;
+        gp->cells[i] = SIX;
         break;
       case 7:
-        gp->fields[i] = SEVEN;
+        gp->cells[i] = SEVEN;
         break;
       case 8:
-        gp->fields[i] = EIGHT;
+        gp->cells[i] = EIGHT;
         break;
       default:
         break;
       }
     }
   }
-  gp->fields[g->cord.y * g->width + g->cord.x] = FALSE_FLAG;
+  gp->cells[g->cord.y * g->width + g->cord.x] = FALSE_FLAG;
   gp->height = g->height;
   gp->width = g->width;
   return gp;
@@ -237,7 +237,7 @@ PrintableHeaderInstance createPrintableHeader(GameInstance g) {
 }
 
 void deletePrintable(PrintableInstance gp) {
-  free(gp->fields);
+  free(gp->cells);
   free(gp);
 }
 

@@ -14,7 +14,8 @@ typedef enum GState {
   Lost,
 } GState;
 
-typedef enum GPrint {
+//GPrint
+typedef enum CellType  {
   UNTOUCHED,
   UNVEILED,
   FALSE_FLAG,
@@ -28,11 +29,11 @@ typedef enum GPrint {
   SIX,
   SEVEN,
   EIGHT,
-} GPrint;
+} CellType;
 
 typedef struct GPrintable {
   Cord player;
-  GPrint *fields;
+  CellType *cells;
   unsigned int width;
   unsigned int height;
 } *PrintableInstance;

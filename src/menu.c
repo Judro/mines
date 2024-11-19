@@ -60,7 +60,7 @@ void print_help() {
   printw("- Movement:                 <hjkl>\n");
   printw("                            <←↓↑→>>\n");
   printw("- Place flag:               <f>\n");
-  printw("- Open tile:                <s>\n");
+  printw("- Open cell:                <s>\n");
   printw("- Quit:                     <q>\n");
   printw("- Emphazise important cells: <e>\n");
   for (;;) {
