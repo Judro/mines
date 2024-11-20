@@ -8,11 +8,11 @@ typedef struct {
 
 typedef struct Game *GameInstance;
 
-typedef enum GState {
+typedef enum GameState {
   Playing,
   Won,
   Lost,
-} GState;
+} GameState;
 
 typedef enum CellType  {
   UNTOUCHED,
@@ -36,12 +36,12 @@ typedef struct GameView {
 	Cord player;
 	unsigned width;
 	unsigned height;
-	GState state;
+	GameState state;
 	unsigned mines;
 	time_t time;
 } *GameView;
 
-GState g_state(GameInstance);
+GameState g_state(GameInstance);
 GameView createView(GameInstance);
 GameView createViewGameover(GameInstance);
 void deleteView(GameView);

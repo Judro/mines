@@ -18,7 +18,7 @@ typedef struct Game {
   int flagstotal;
   int flagsfound;
   int unveiled;
-  GState state;
+  GameState state;
   time_t started;
   Cord cord;
 } *GameInstance;
@@ -242,7 +242,7 @@ void deleteView(GameView view) {
   free(view);
 }
 
-GState g_state(GameInstance game) { return game->state; }
+GameState g_state(GameInstance game) { return game->state; }
 Cord g_player_position(GameInstance g) { return g->cord; }
 void g_set_player_position_x(GameInstance g, int x) { g->cord.x = x; }
 void g_set_player_position_y(GameInstance g, int y) { g->cord.y = y; }
