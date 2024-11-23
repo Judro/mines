@@ -34,7 +34,12 @@ void limit_fps() {
 void print_game(GameInstance game, WINDOW *window) {
   erase();
   print_top_margin(getmaxy(window), field_height(game) + 2);
-  GameView view = createView(game);
+  GameView view;
+  if(game_state(game) == Lost) {
+    view = createViewGameover(game);
+  } else {
+    view = createView(game);
+  }
   print(view, getmaxx(window), field_width(game));
   deleteView(view);
 }
@@ -56,37 +61,24 @@ int main(int argc, char *argv[]) {
 start:
   while (1) {
     print_game(game, window);
-    int ret = cmove(game, window);
-    if (ret == -1) {
-      break;
-    } else if (ret == -2) {
-      flag_cell(game);
-    } else if (ret == -3) {
-      unveil_cell(game);
-      if (game_state(game) == Lost) {
-        print_game(game, window);
-	while (1) {
-    	  ret = cmove(game, window);
-    	  if (ret == -1)
-      	    break;
-    	  limit_fps();
-        }
-        break;
-      }
-    }
     validate_flags(game);
-    if (game_state(game) == Won) {
+    if (cmove(game, window) == -1)
+      break;
+    switch (game_state(game)){
+      case Playing:
+	   break;
+      case Lost:
+      case Won:
       print_game(game, window);
       while (1) {
-        ret = cmove(game, window);
-        if (ret == -1)
-          break;
-        limit_fps();
+    	if (cmove(game, window) == -1)
+      	  goto new_game;
+    	limit_fps();
       }
-      break;
     }
     limit_fps();
   }
+new_game:
   deleteGameInstance(game);
   nodelay(window, 0);
   game = select_mode(getmaxx(window), getmaxy(window));

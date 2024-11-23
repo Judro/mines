@@ -37,9 +37,9 @@ int cmove(GameInstance g, WINDOW *window) {
   case 'q':
     return -1;
   case 'f':
-    return -2;
+    flag_cell(g); 
   case 's':
-    return -3;
+    unveil_cell(g);
   case 'e':
     g_helper_mode ^= 1;
   }
