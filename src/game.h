@@ -41,22 +41,19 @@ typedef struct GameView {
 	time_t time;
 } *GameView;
 
-GameState g_state(GameInstance);
+GameState game_state(GameInstance);
 GameView createView(GameInstance);
 GameView createViewGameover(GameInstance);
 void deleteView(GameView);
 GameInstance createGameInstance(int, int, int);
-Cord g_player_position(GameInstance);
-void g_set_player_position_x(GameInstance, int);
-void g_set_player_position_y(GameInstance, int);
-int g_flags_total(GameInstance);
-int g_flags_found(GameInstance);
-int g_width(GameInstance);
-int g_height(GameInstance);
-time_t g_start(GameInstance);
-void g_flag(GameInstance);
-void g_unveil(GameInstance);
-void g_checkflags(GameInstance);
+Cord player_position(GameInstance);
+void set_player_position_x(GameInstance, int);
+void set_player_position_y(GameInstance, int);
+int field_width(GameInstance);
+int field_height(GameInstance);
+void flag_cell(GameInstance);
+void unveil_cell(GameInstance);
+void validate_flags(GameInstance);
 void deleteGameInstance(GameInstance);
 
 #endif

@@ -35,8 +35,8 @@ void print_gameover(GameInstance game, WINDOW *window) {
   char ret = 0;
   erase();
   GameView view = createViewGameover(game);
-  print_top_margin(getmaxy(window), g_height(game) + 2);
-  print(view, getmaxx(window), g_width(game));
+  print_top_margin(getmaxy(window), field_height(game) + 2);
+  print(view, getmaxx(window), field_width(game));
   deleteView(view);
   while (1) {
     ret = cmove(game, window);
@@ -51,9 +51,9 @@ void print_victory(GameInstance game, WINDOW *window) {
   time(&current);
   char ret = 0;
   erase();
-  print_top_margin(getmaxy(window), g_height(game) + 2);
+  print_top_margin(getmaxy(window), field_height(game) + 2);
   GameView view = createViewGameover(game);
-  print(view, getmaxx(window), g_width(game));
+  print(view, getmaxx(window), field_width(game));
   deleteView(view);
   while (1) {
     ret = cmove(game, window);
@@ -65,9 +65,9 @@ void print_victory(GameInstance game, WINDOW *window) {
 
 void print_game(GameInstance game, WINDOW *window) {
   erase();
-  print_top_margin(getmaxy(window), g_height(game) + 2);
+  print_top_margin(getmaxy(window), field_height(game) + 2);
   GameView view = createView(game);
-  print(view, getmaxx(window), g_width(game));
+  print(view, getmaxx(window), field_width(game));
   deleteView(view);
 }
 
@@ -92,16 +92,16 @@ start:
     if (ret == -1) {
       break;
     } else if (ret == -2) {
-      g_flag(game);
+      flag_cell(game);
     } else if (ret == -3) {
-      g_unveil(game);
-      if (g_state(game) == Lost) {
+      unveil_cell(game);
+      if (game_state(game) == Lost) {
         print_gameover(game, window);
         break;
       }
     }
-    g_checkflags(game);
-    if (g_state(game) == Won) {
+    validate_flags(game);
+    if (game_state(game) == Won) {
       print_victory(game, window);
       break;
     }

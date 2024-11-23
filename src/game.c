@@ -242,17 +242,14 @@ void deleteView(GameView view) {
   free(view);
 }
 
-GameState g_state(GameInstance game) { return game->state; }
-Cord g_player_position(GameInstance g) { return g->cord; }
-void g_set_player_position_x(GameInstance g, int x) { g->cord.x = x; }
-void g_set_player_position_y(GameInstance g, int y) { g->cord.y = y; }
-int g_flags_total(GameInstance g) { return g->flagstotal; }
-int g_flags_found(GameInstance g) { return g->flagsfound; }
-int g_width(GameInstance g) { return g->width; }
-int g_height(GameInstance g) { return g->height; }
-time_t g_start(GameInstance g) { return g->started; }
+GameState game_state(GameInstance game) { return game->state; }
+Cord player_position(GameInstance g) { return g->cord; }
+void set_player_position_x(GameInstance g, int x) { g->cord.x = x; }
+void set_player_position_y(GameInstance g, int y) { g->cord.y = y; }
+int field_width(GameInstance g) { return g->width; }
+int field_height(GameInstance g) { return g->height; }
 
-void g_flag(GameInstance g) {
+void flag_cell(GameInstance g) {
   if (is_unveiled(g->mines[g->cord.y * g->width + g->cord.x]))
     return;
   if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {
@@ -288,7 +285,7 @@ void unveil_recursive(GameInstance game, Cord position) {
   }
 }
 
-void g_unveil(GameInstance g) {
+void unveil_cell(GameInstance g) {
   if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {
     return;
   }
@@ -305,7 +302,7 @@ void g_unveil(GameInstance g) {
   }
   unveil_recursive(g, g->cord);
 }
-void g_checkflags(GameInstance g) {
+void validate_flags(GameInstance g) {
   int fit = 0;
   for (int i = 0; i < g->length; i++) {
     if (is_mine(g->mines[i]) && is_flagged(g->mines[i]))
