@@ -31,38 +31,6 @@ void limit_fps() {
   usleep(sleep_time);
 }
 
-void print_gameover(GameInstance game, WINDOW *window) {
-  char ret = 0;
-  erase();
-  GameView view = createViewGameover(game);
-  print_top_margin(getmaxy(window), field_height(game) + 2);
-  print(view, getmaxx(window), field_width(game));
-  deleteView(view);
-  while (1) {
-    ret = cmove(game, window);
-    if (ret == -1)
-      break;
-    limit_fps();
-  }
-}
-
-void print_victory(GameInstance game, WINDOW *window) {
-  time_t current;
-  time(&current);
-  char ret = 0;
-  erase();
-  print_top_margin(getmaxy(window), field_height(game) + 2);
-  GameView view = createViewGameover(game);
-  print(view, getmaxx(window), field_width(game));
-  deleteView(view);
-  while (1) {
-    ret = cmove(game, window);
-    if (ret == -1)
-      break;
-    limit_fps();
-  }
-}
-
 void print_game(GameInstance game, WINDOW *window) {
   erase();
   print_top_margin(getmaxy(window), field_height(game) + 2);
@@ -96,13 +64,25 @@ start:
     } else if (ret == -3) {
       unveil_cell(game);
       if (game_state(game) == Lost) {
-        print_gameover(game, window);
+        print_game(game, window);
+	while (1) {
+    	  ret = cmove(game, window);
+    	  if (ret == -1)
+      	    break;
+    	  limit_fps();
+        }
         break;
       }
     }
     validate_flags(game);
     if (game_state(game) == Won) {
-      print_victory(game, window);
+      print_game(game, window);
+      while (1) {
+        ret = cmove(game, window);
+        if (ret == -1)
+          break;
+        limit_fps();
+      }
       break;
     }
     limit_fps();
