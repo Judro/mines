@@ -3,18 +3,9 @@
 #include <stdlib.h>
 #include <time.h>
 
-void print_top_margin(unsigned int terminal_y, unsigned int game_y) {
-  char *tm = get_top_margin(terminal_y / 2 - ((game_y + 5) / 2));
-  printw("%s", tm);
-  free(tm);
-}
-void print_left_margin(unsigned int terminal_x, unsigned int game_x) {
-  char *lm = get_left_margin(terminal_x / 2 - ((game_x + 2) / 2));
-  printw("%s", lm);
-  free(lm);
-}
 
-char *get_top_margin(unsigned int l) {
+
+char *generate_top_margin(unsigned int l) {
   if (l > 1000)
     l = 1;
   char *ret = calloc(l + 1, sizeof(char));
@@ -23,7 +14,7 @@ char *get_top_margin(unsigned int l) {
   }
   return ret;
 }
-char *get_left_margin(unsigned int l) {
+char *generate_left_margin(unsigned int l) {
   if (l > 1000)
     l = 1;
   char *ret = calloc(l + 1, sizeof(char));
@@ -31,6 +22,17 @@ char *get_left_margin(unsigned int l) {
     ret[i] = ' ';
   }
   return ret;
+}
+
+void print_top_margin(unsigned int terminal_y, unsigned int game_y) {
+  char *tm = generate_top_margin(terminal_y / 2 - ((game_y + 5) / 2));
+  printw("%s", tm);
+  free(tm);
+}
+void print_left_margin(unsigned int terminal_x, unsigned int game_x) {
+  char *lm = generate_left_margin(terminal_x / 2 - ((game_x + 2) / 2));
+  printw("%s", lm);
+  free(lm);
 }
 
 void print_header(GameView view, unsigned int terminal_x,
