@@ -3,8 +3,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-
-
 char *generate_top_margin(unsigned int l) {
   if (l > 1000)
     l = 1;
@@ -35,8 +33,7 @@ void print_left_margin(unsigned int terminal_x, unsigned int game_x) {
   free(lm);
 }
 
-void print_header(GameView view, unsigned int terminal_x,
-                  unsigned int game_x) {
+void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
   print_left_margin(terminal_x, game_x);
   printw("│");
   int mtw = 15;

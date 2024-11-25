@@ -35,7 +35,7 @@ void print_game(GameInstance game, WINDOW *window) {
   erase();
   print_top_margin(getmaxy(window), field_height(game) + 2);
   GameView view;
-  if(game_state(game) == Lost) {
+  if (game_state(game) == Lost) {
     view = createViewGameover(game);
   } else {
     view = createView(game);
@@ -64,16 +64,16 @@ start:
     validate_flags(game);
     if (cmove(game, window) == -1)
       break;
-    switch (game_state(game)){
-      case Playing:
-	   break;
-      case Lost:
-      case Won:
+    switch (game_state(game)) {
+    case Playing:
+      break;
+    case Lost:
+    case Won:
       print_game(game, window);
       while (1) {
-    	if (cmove(game, window) == -1)
-      	  goto new_game;
-    	limit_fps();
+        if (cmove(game, window) == -1)
+          goto new_game;
+        limit_fps();
       }
     }
     limit_fps();

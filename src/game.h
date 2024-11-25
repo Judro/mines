@@ -14,7 +14,7 @@ typedef enum GameState {
   Lost,
 } GameState;
 
-typedef enum CellType  {
+typedef enum CellType {
   UNTOUCHED,
   UNVEILED,
   FALSE_FLAG,
@@ -30,15 +30,14 @@ typedef enum CellType  {
   EIGHT,
 } CellType;
 
-
 typedef struct GameView {
-	CellType *cells;
-	Cord player;
-	unsigned width;
-	unsigned height;
-	GameState state;
-	unsigned mines;
-	time_t time;
+  CellType *cells;
+  Cord player;
+  unsigned width;
+  unsigned height;
+  GameState state;
+  unsigned mines;
+  time_t time;
 } *GameView;
 
 GameState game_state(GameInstance);

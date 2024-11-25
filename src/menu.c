@@ -110,7 +110,7 @@ GameInstance select_mode(unsigned int terminal_width,
     if (ret == -1)
       return NULL;
     if (menu.selected == 1) {
-			last_selected = menu.pos;
+      last_selected = menu.pos;
       switch (menu.pos) {
       case 0:
         return createGameInstance(20, 5, 7);
