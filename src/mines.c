@@ -2,6 +2,7 @@
 #include "controls.h"
 #include "display.h"
 #include "game.h"
+#include "highscore.h"
 #include "menu.h"
 #include <locale.h>
 #include <ncurses.h>
@@ -45,6 +46,7 @@ void print_game(GameInstance game, WINDOW *window) {
 }
 
 int main(int argc, char *argv[]) {
+  init_state_files();
   extern char g_helper_mode;
   g_helper_mode = 1;
   time(&fps_timestamp);
