@@ -61,7 +61,7 @@ void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
   }
   printw(" │ %02ld:%02ld │\n", view->time / 60, view->time % 60);
   print_left_margin(terminal_x, game_x);
-  printw("└");
+  printw("╰");
   int mrb = 5;
   if (view->width >= 25)
     mrb = 7;
@@ -72,7 +72,7 @@ void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
     }
     printw("─");
   }
-  printw("┘\n");
+  printw("╯\n");
 }
 
 void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
@@ -85,11 +85,11 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
   init_pair(5, COLOR_YELLOW, COLOR_BLACK);
   init_pair(6, COLOR_CYAN, COLOR_BLACK);
   print_left_margin(terminal_x, game_x);
-  printw("┌");
+  printw("╭");
   for (int i = 0; i < view->width; i++) {
     printw("─");
   }
-  printw("┐\n");
+  printw("╮\n");
   for (int i = 0; i < view->width * view->height; i++) {
     if (i % view->width == 0 && i > 0) {
       printw("│\n");

@@ -21,7 +21,7 @@ void cm_print(unsigned terminal_width, unsigned terminal_height) {
   for (int i = 0; i < (terminal_height - 10) / 2; i++) {
     printw("\n");
   }
-  printw("%s┌───────────────────┐\n", lm);
+  printw("%s╭───────────────────╮\n", lm);
   if (custom_game_menu.cursor_position == 0) {
     printw("%s│  width  = <%3d >  │\n", lm, custom_game_menu.width);
   } else {
@@ -37,7 +37,7 @@ void cm_print(unsigned terminal_width, unsigned terminal_height) {
   } else {
     printw("%s│  mines  =  %3d    │\n", lm, custom_game_menu.mines);
   }
-  printw("%s└───────────────────┘\n", lm);
+  printw("%s╰───────────────────╯\n", lm);
   free(lm);
 }
 char custom_game_control() {

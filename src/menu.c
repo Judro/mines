@@ -20,7 +20,7 @@ void m_print(Menu *menu, unsigned int terminal_width,
   for (int i = 0; i < (terminal_height - 10) / 2; i++) {
     printw("\n");
   }
-  printw("%s┌──────────────────┐\n", lm);
+  printw("%s╭──────────────────╮\n", lm);
   if (menu->pos == 0) {
     printw("%s│   > Beginner <   │\n", lm);
   } else {
@@ -51,7 +51,7 @@ void m_print(Menu *menu, unsigned int terminal_width,
   } else {
     printw("%s│       Help       │\n", lm);
   }
-  printw("%s└──────────────────┘\n", lm);
+  printw("%s╰──────────────────╯\n", lm);
   free(lm);
 }
 
