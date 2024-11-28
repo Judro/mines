@@ -1,9 +1,9 @@
 #ifndef HIGHSCORE_H
 #define HIGHSCORE_H
-#include<time.h>
+#include <time.h>
 
 typedef struct Highscore {
-  char* user;
+  char *user;
   unsigned width;
   unsigned height;
   unsigned mines;
@@ -11,7 +11,7 @@ typedef struct Highscore {
 } Highscore;
 
 // last element in array will be NULL
-Highscore* load_highscores();
+Highscore *load_highscores();
 int save_highscore(Highscore);
 void init_state_files();
 #endif
