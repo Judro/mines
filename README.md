@@ -11,7 +11,7 @@
 
 ## Installation
 ### Ubuntu- / Debian-based Systems
-install the deb package: [mines_0.6.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.6.0/mines_0.6.0_amd64.deb)
+install the deb package: [mines_1.0.0_amd64.deb](https://github.com/Judro/mines/releases/download/v1.0.0/mines_1.0.0_amd64.deb)
 
 ### Arch-based Systems
 Install the package from the AUR using an AUR helper like yay:
