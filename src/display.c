@@ -50,10 +50,14 @@ void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
         printw(" ");
         break;
       case Won:
+        attron(COLOR_PAIR(5));
         printw("☆");
+        attroff(COLOR_PAIR(5));
         break;
       case Lost:
+        attron(COLOR_PAIR(3));
         printw("☠");
+        attroff(COLOR_PAIR(3));
       }
       continue;
     }
