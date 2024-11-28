@@ -250,13 +250,12 @@ int field_width(GameInstance g) { return g->width; }
 int field_height(GameInstance g) { return g->height; }
 
 void flag_cell(GameInstance g) {
-  if (is_unveiled(g->mines[g->cord.y * g->width + g->cord.x]))
-    return;
   if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {
     g->mines[g->cord.y * g->width + g->cord.x] ^= FLAGGED;
     g->flagsfound -= 1;
   } else {
-    if (g->flagsfound == g->flagstotal)
+    if (is_unveiled(g->mines[g->cord.y * g->width + g->cord.x]) ||
+        g->flagsfound == g->flagstotal)
       return;
     g->mines[g->cord.y * g->width + g->cord.x] |= FLAGGED;
     g->flagsfound += 1;
