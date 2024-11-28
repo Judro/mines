@@ -10,12 +10,21 @@
 </div>
 
 ## Installation
-(Ubuntu / Linux Mint)install the deb file: [mines_0.6.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.6.0/mines_0.6.0_amd64.deb)
+### Ubuntu- / Debian-based Systems
+install the deb package: [mines_0.6.0_amd64.deb](https://github.com/Judro/mines/releases/download/v0.6.0/mines_0.6.0_amd64.deb)
+
+### Arch-based Systems
+Install the package from the AUR using an AUR helper like yay:
+
+`yay -S mines-tui`
+
 
 ## Controls
 - Movement: `hjkl or ←↓↑→`
 - Place flag: `f`
 - Open tile: `s`
+- Quit: `q`
+- Emphasize neighboring cells `e`
 
 ## Build from source
 1. install dependencies
