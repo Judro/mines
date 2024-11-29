@@ -34,17 +34,11 @@ void print_left_margin(unsigned int terminal_x, unsigned int game_x) {
 }
 
 void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
-  print_left_margin(terminal_x, game_x);
+  print_left_margin(terminal_x, game_x * 2);
   printw("│");
-  int mtw = 15;
-  if (view->width >= 25) {
-    printw("  %03d  │", view->mines);
-    mtw = 17;
-  } else {
-    printw(" %03d │", view->mines);
-  }
-  for (int i = 0; i < view->width - mtw; i++) {
-    if (i == (view->width - mtw) / 2) {
+  printw("    %03d    │", view->mines);
+  for (int i = 0; i < (view->width * 2) - 23; i++) {
+    if (i == (view->width * 2 - 23) / 2) {
       switch (view->state) {
       case Playing:
         printw(" ");
@@ -63,18 +57,15 @@ void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
     }
     printw(" ");
   }
-  printw(" │ %02ld:%02ld │\n", view->time / 60, view->time % 60);
-  print_left_margin(terminal_x, game_x);
+  printw("│   %02ld:%02ld  │\n", view->time / 60, view->time % 60);
+  print_left_margin(terminal_x, game_x * 2);
   printw("╰");
-  int mrb = 5;
-  if (view->width >= 25)
-    mrb = 7;
   for (int i = 0; i < view->width; i++) {
-    if (i == mrb || i == view->width - 8) {
-      printw("┴");
+    if (i == 5 || i == view->width - 6) {
+      printw("─┴");
       continue;
     }
-    printw("─");
+    printw("──");
   }
   printw("╯\n");
 }
@@ -88,10 +79,10 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
   init_pair(4, COLOR_MAGENTA, COLOR_BLACK);
   init_pair(5, COLOR_YELLOW, COLOR_BLACK);
   init_pair(6, COLOR_CYAN, COLOR_BLACK);
-  print_left_margin(terminal_x, game_x);
+  print_left_margin(terminal_x, game_x * 2);
   printw("╭");
   for (int i = 0; i < view->width; i++) {
-    printw("─");
+    printw("──");
   }
   printw("╮\n");
   for (int i = 0; i < view->width * view->height; i++) {
@@ -99,7 +90,7 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
       printw("│\n");
     }
     if (i % view->width == 0) {
-      print_left_margin(terminal_x, game_x);
+      print_left_margin(terminal_x, game_x * 2);
       printw("│");
     }
     if (i == (view->player.y * view->width + view->player.x))
@@ -124,43 +115,51 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
     switch (view->cells[i]) {
     case UNTOUCHED:
       if (is_in_radius) {
-        printw("▒");
+        printw("▒▒");
       } else {
-        printw("░");
+        printw("░░");
       }
       break;
     case UNVEILED:
-      printw(" ");
+      if (i == (view->player.y * view->width + view->player.x)) {
+        attroff(A_STANDOUT);
+        printw("▒▒");
+        attron(A_STANDOUT);
+      } else {
+        printw("　");
+      }
       break;
     case FLAG:
       attron(COLOR_PAIR(6));
-      printw("+");
+      printw("🚩");
       attroff(COLOR_PAIR(6));
       break;
     case FALSE_FLAG:
-      printw("X");
+      attron(COLOR_PAIR(3));
+      printw("💣");
+      attroff(COLOR_PAIR(3));
       break;
     case FLAG_NOT_FOUND:
-      printw("+");
+      printw("💣");
       break;
     case ONE:
       attron(COLOR_PAIR(1));
-      printw("1");
+      printw("１");
       attroff(COLOR_PAIR(1));
       break;
     case TWO:
       attron(COLOR_PAIR(2));
-      printw("2");
+      printw("２");
       attroff(COLOR_PAIR(2));
       break;
     case THREE:
       attron(COLOR_PAIR(3));
-      printw("3");
+      printw("３");
       attroff(COLOR_PAIR(3));
       break;
     case FOUR:
       attron(COLOR_PAIR(4));
-      printw("4");
+      printw("４");
       attroff(COLOR_PAIR(4));
       break;
     case FIVE:
@@ -188,17 +187,14 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
       attroff(A_STANDOUT);
   }
   printw("│\n");
-  print_left_margin(terminal_x, game_x);
+  print_left_margin(terminal_x, game_x * 2);
   printw("├");
-  int mrb = 5;
-  if (view->width >= 25)
-    mrb = 7;
   for (int i = 0; i < view->width; i++) {
-    if (i == mrb || i == view->width - 8) {
-      printw("┬");
+    if (i == 5 || i == view->width - 6) {
+      printw("─┬");
       continue;
     }
-    printw("─");
+    printw("──");
   }
   printw("┤\n");
   print_header(view, terminal_x, game_x);
