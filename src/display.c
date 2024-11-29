@@ -136,7 +136,7 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
       break;
     case FALSE_FLAG:
       attron(COLOR_PAIR(3));
-      printw("💣");
+      printw("Ｘ");
       attroff(COLOR_PAIR(3));
       break;
     case FLAG_NOT_FOUND:
