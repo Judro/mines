@@ -164,22 +164,22 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
       break;
     case FIVE:
       attron(COLOR_PAIR(5));
-      printw("5");
+      printw("５");
       attroff(COLOR_PAIR(5));
       break;
     case SIX:
       attron(COLOR_PAIR(4));
-      printw("6");
+      printw("６");
       attroff(COLOR_PAIR(4));
       break;
     case SEVEN:
       attron(COLOR_PAIR(5));
-      printw("7");
+      printw("７");
       attroff(COLOR_PAIR(5));
       break;
     case EIGHT:
       attron(COLOR_PAIR(5));
-      printw("8");
+      printw("８");
       attroff(COLOR_PAIR(5));
       break;
     }
