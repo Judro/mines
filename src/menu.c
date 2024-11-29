@@ -17,7 +17,7 @@ void m_print(Menu *menu, unsigned int terminal_width,
     lm[i] = ' ';
   }
   lm[lml - 1] = '\0';
-  for (int i = 0; i < (terminal_height - 10) / 2; i++) {
+  for (int i = 0; i < (terminal_height - 8) / 2; i++) {
     printw("\n");
   }
   printw("%s╭──────────────────╮\n", lm);
@@ -27,26 +27,21 @@ void m_print(Menu *menu, unsigned int terminal_width,
     printw("%s│     Beginner     │\n", lm);
   }
   if (menu->pos == 1) {
-    printw("%s│     > Easy <     │\n", lm);
-  } else {
-    printw("%s│       Easy       │\n", lm);
-  }
-  if (menu->pos == 2) {
     printw("%s│ > Intermediate < │\n", lm);
   } else {
     printw("%s│   Intermediate   │\n", lm);
   }
-  if (menu->pos == 3) {
+  if (menu->pos == 2) {
     printw("%s│    > Expert <    │\n", lm);
   } else {
     printw("%s│      Expert      │\n", lm);
   }
-  if (menu->pos == 4) {
+  if (menu->pos == 3) {
     printw("%s│    > Custom <    │\n", lm);
   } else {
     printw("%s│      Custom      │\n", lm);
   }
-  if (menu->pos == 5) {
+  if (menu->pos == 4) {
     printw("%s│     > Help <     │\n", lm);
   } else {
     printw("%s│       Help       │\n", lm);
@@ -75,7 +70,7 @@ char control(Menu *menu) {
   switch (ch) {
   case 'j':
   case 0x42:
-    if (menu->pos + 1 < 6)
+    if (menu->pos + 1 < 5)
       menu->pos += 1;
     break;
   case 'k':
@@ -113,23 +108,21 @@ GameInstance select_mode(unsigned int terminal_width,
       last_selected = menu.pos;
       switch (menu.pos) {
       case 0:
-        return createGameInstance(20, 5, 7);
+        return createGameInstance(14, 7, 12);
       case 1:
-        return createGameInstance(18, 7, 15);
+        return createGameInstance(20, 13, 41);
       case 2:
-        return createGameInstance(40, 10, 46);
+        return createGameInstance(30, 16, 99);
       case 3:
-        return createGameInstance(33, 15, 105);
-      case 4:
         return get_custom_game(terminal_width, terminal_height);
-      case 5:
+      case 4:
         print_help();
         return select_mode(terminal_width, terminal_height);
       default:
         break;
       }
-      return createGameInstance(2, 2, 2);
+      return createGameInstance(9, 9, 10);
     }
   }
-  return createGameInstance(2, 2, 2);
+  return createGameInstance(9, 9, 10);
 }
