@@ -1,12 +1,11 @@
 #include "highscore.h"
 #include <fcntl.h>
 #include <pwd.h>
-#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
 
-void init_state_files() {
+FILE *init_state_files() {
   char username_n[100];
   char *directory = "/var/games/mines/save/";
   char *username = getenv("USER");
@@ -51,4 +50,5 @@ void init_state_files() {
 
     exit(EXIT_SUCCESS);
   }
+  return fopen(save_path, "a+");
 }
