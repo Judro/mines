@@ -103,7 +103,7 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
          i == view->player.y * view->width + view->player.x - 1 - view->width ||
          i == view->player.y * view->width + view->player.x - view->width ||
          i == view->player.y * view->width + view->player.x + view->width) &&
-        i % view->width >= 0 && abs(i % view->width - view->player.x) < 2 &&
+        i % view->width >= 0 && i % view->width - view->player.x < 2 &&
         g_helper_mode) {
       is_in_radius = 1;
       attron(A_BOLD);
