@@ -1,5 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
+#include "highscore.h"
 #include <time.h>
 typedef struct {
   int x;
@@ -54,5 +55,5 @@ void flag_cell(GameInstance);
 void unveil_cell(GameInstance);
 void validate_flags(GameInstance);
 void deleteGameInstance(GameInstance);
-
+Highscore generate_highscore(GameInstance);
 #endif

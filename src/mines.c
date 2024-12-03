@@ -46,7 +46,9 @@ void print_game(GameInstance game, WINDOW *window) {
 }
 
 int main(int argc, char *argv[]) {
-  init_state_files();
+  FILE *local_highscores = init_state_files();
+  if (local_highscores == NULL)
+    exit(EXIT_FAILURE);
   extern char g_helper_mode;
   g_helper_mode = 1;
   time(&fps_timestamp);
@@ -69,8 +71,11 @@ start:
     switch (game_state(game)) {
     case Playing:
       break;
-    case Lost:
     case Won:
+      print_game(game, window);
+      Highscore highscore = generate_highscore(game);
+      save_highscore(highscore, local_highscores);
+    case Lost:
       print_game(game, window);
       while (1) {
         if (cmove(game, window) == -1)
@@ -88,5 +93,6 @@ new_game:
     goto start;
 end:
   endwin();
+  fclose(local_highscores);
   return 0;
 }

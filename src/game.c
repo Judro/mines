@@ -310,3 +310,17 @@ void validate_flags(GameInstance g) {
   if (fit == g->flagstotal)
     g->state = Won;
 }
+
+Highscore generate_highscore(GameInstance g) {
+  time_t current;
+  time(&current);
+  if (g->state != Won)
+    exit(EXIT_FAILURE);
+  Highscore h;
+  h.width = g->width;
+  h.height = g->height;
+  h.mines = g->flagstotal;
+  h.time = current - g->started;
+  h.date = current;
+  return h;
+}

@@ -52,3 +52,8 @@ FILE *init_state_files() {
   }
   return fopen(save_path, "a+");
 }
+
+int save_highscore(Highscore h, FILE *f) {
+  fprintf(f, "%u;%u;%u;%u;%ld\n", h.width, h.height, h.mines, h.time, h.date);
+  return 0;
+}
