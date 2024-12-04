@@ -3,6 +3,7 @@
 #include <pwd.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/stat.h>
 #include <unistd.h>
 
 FILE *init_state_files() {
@@ -32,8 +33,7 @@ FILE *init_state_files() {
       exit(EXIT_FAILURE);
     }
 
-    int file = open(save_path, O_WRONLY | O_CREAT | O_APPEND,
-                    S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
+    int file = open(save_path, O_CREAT);
     if (file == -1) {
       fprintf(stderr, "Unable to create %s\n", save_path);
       fprintf(stderr, "Please check if your user has write access to the file "
@@ -45,6 +45,10 @@ FILE *init_state_files() {
       exit(EXIT_FAILURE);
     }
     close(file);
+    if (chmod(save_path, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) == -1) {
+      perror("Failed to change file permission");
+      exit(EXIT_FAILURE);
+    }
     printf("Game save files have been successfully created. Please restart the "
            "game in non-superuser mode.\n");
 
