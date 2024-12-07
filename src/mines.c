@@ -35,6 +35,7 @@ void limit_fps() {
 
 void print_highscore(unsigned terminal_width, unsigned terminal_height) {
   unsigned scroll_index = 0;
+  UserHighscore *highscores = load_highscores();
   while (1) {
     erase();
     print_top_margin(terminal_height, 0.5 * terminal_height);

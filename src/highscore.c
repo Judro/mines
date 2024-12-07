@@ -66,23 +66,31 @@ UserHighscore *load_highscores() {
   unsigned hs_capacity = 250;
   UserHighscore *highscores =
       malloc(hs_capacity * sizeof(struct user_highscore));
-  while (save_dir != NULL) {
-    struct dirent *dir_ent = readdir(save_dir);
-
+  if (highscores == NULL)
+    exit(EXIT_FAILURE);
+  struct dirent *dir_ent;
+  while ((dir_ent = readdir(save_dir)) != NULL) {
+    if (save_dir == NULL)
+      break;
     if (dir_ent->d_type == DT_REG) {
       char highscore_file[strlen(save_directory) + dir_ent->d_namlen + 1];
       strcpy(highscore_file, save_directory);
       strcpy(highscore_file + strlen(save_directory), dir_ent->d_name);
       highscore_file[strlen(save_directory) + dir_ent->d_namlen] = 0;
       FILE *high_score = fopen(highscore_file, "r");
+      if (high_score == NULL)
+        exit(EXIT_FAILURE);
       while (fscanf(high_score, "%u,%u,%u,%u,%ld%*c", &h.width, &h.height,
                     &h.mines, &h.time, &h.date) != EOF) {
         highscores[hs_counter].user = malloc(dir_ent->d_namlen);
         if (highscores[hs_counter].user == NULL)
           exit(EXIT_FAILURE);
+        strncpy(highscores[hs_counter].user, dir_ent->d_name,
+                dir_ent->d_namlen - 3);
         highscores[hs_counter].user[dir_ent->d_namlen - 3] = 0;
         highscores[hs_counter].highscore = h;
         hs_counter++;
+
         if (hs_counter >= hs_capacity) {
           hs_capacity *= 2;
           UserHighscore *new_hs =
@@ -92,11 +100,13 @@ UserHighscore *load_highscores() {
           highscores = new_hs;
         }
       }
+      fclose(high_score);
     }
   }
   struct user_highscore u;
   u.user = NULL;
   highscores[hs_counter] = u;
+  closedir(save_dir);
   return highscores;
 }
 
