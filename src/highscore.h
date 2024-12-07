@@ -17,7 +17,8 @@ typedef struct user_highscore {
 } UserHighscore;
 
 extern const char *save_directory;
-// last element in array will be NULL
+extern char print_highscore_flag;
+// last element in array will have user set to NULL
 UserHighscore *load_highscores();
 int save_highscore(Highscore, FILE *);
 FILE *init_state_files();

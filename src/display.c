@@ -33,6 +33,17 @@ void print_left_margin(unsigned int terminal_x, unsigned int game_x) {
   free(lm);
 }
 
+void print_scrollable(char **text, unsigned terminal_width,
+                      unsigned text_width) {
+  unsigned padding = 6;
+  print_left_margin(terminal_width, text_width + padding);
+  printw("╭");
+  for (int i = 0; i < text_width + padding - 2; i++) {
+    printw("─");
+  }
+  printw("╮\n");
+}
+
 void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
   print_left_margin(terminal_x, game_x * 2);
   printw("│");

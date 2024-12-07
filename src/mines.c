@@ -4,6 +4,7 @@
 #include "game.h"
 #include "highscore.h"
 #include "menu.h"
+#include <limits.h>
 #include <locale.h>
 #include <ncurses.h>
 #include <stdio.h>
@@ -32,22 +33,53 @@ void limit_fps() {
   usleep(sleep_time);
 }
 
+void print_highscore(unsigned terminal_width, unsigned terminal_height) {
+  unsigned scroll_index = 0;
+  while (1) {
+    erase();
+    print_top_margin(terminal_height, 0.5 * terminal_height);
+    print_scrollable(NULL, terminal_width, 8);
+    char ch = getch();
+    switch (ch) {
+    case 'j':
+    case 0x42:
+      scroll_index++;
+      break;
+    case 0x41:
+    case 'k':
+      scroll_index--;
+      if (scroll_index == UINT_MAX)
+        scroll_index = 0;
+      break;
+    case 0x44:
+      break;
+    case 'q':
+    case 'b':
+      print_highscore_flag ^= 1;
+      return;
+    }
+  }
+}
+
 void print_game(GameInstance game, WINDOW *window) {
   erase();
   print_top_margin(getmaxy(window), field_height(game) + 2);
   GameView view;
-  if (game_state(game) == Lost) {
-    view = createViewGameover(game);
+  if (print_highscore_flag) {
+    print_highscore(getmaxx(window), getmaxy(window));
   } else {
-    view = createView(game);
+    if (game_state(game) == Lost) {
+      view = createViewGameover(game);
+    } else {
+      view = createView(game);
+    }
+    print(view, getmaxx(window), field_width(game));
+    deleteView(view);
   }
-  print(view, getmaxx(window), field_width(game));
-  deleteView(view);
 }
 
 int main(int argc, char *argv[]) {
   FILE *local_highscores = init_state_files();
-  load_highscores();
   if (local_highscores == NULL)
     exit(EXIT_FAILURE);
   extern char g_helper_mode;

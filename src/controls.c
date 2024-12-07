@@ -2,6 +2,7 @@
 #include <ncurses.h>
 int cmove(GameInstance g, WINDOW *window) {
   extern char g_helper_mode;
+  extern char print_highscore_flag;
   nodelay(window, 1);
   char ch = getch();
   Cord old = player_position(g);
@@ -44,6 +45,9 @@ int cmove(GameInstance g, WINDOW *window) {
     break;
   case 'e':
     g_helper_mode ^= 1;
+    break;
+  case 'b':
+    print_highscore_flag ^= 1;
     break;
   }
   return 0;
