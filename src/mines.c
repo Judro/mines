@@ -47,6 +47,7 @@ void print_game(GameInstance game, WINDOW *window) {
 
 int main(int argc, char *argv[]) {
   FILE *local_highscores = init_state_files();
+  load_highscores();
   if (local_highscores == NULL)
     exit(EXIT_FAILURE);
   extern char g_helper_mode;
