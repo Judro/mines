@@ -55,5 +55,6 @@ void flag_cell(GameInstance);
 void unveil_cell(GameInstance);
 void validate_flags(GameInstance);
 void deleteGameInstance(GameInstance);
+unsigned total_mines(GameInstance);
 Highscore generate_highscore(GameInstance);
 #endif

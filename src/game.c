@@ -248,6 +248,7 @@ void set_player_position_x(GameInstance g, int x) { g->cord.x = x; }
 void set_player_position_y(GameInstance g, int y) { g->cord.y = y; }
 int field_width(GameInstance g) { return g->width; }
 int field_height(GameInstance g) { return g->height; }
+unsigned total_mines(GameInstance g) { return g->flagstotal; }
 
 void flag_cell(GameInstance g) {
   if (is_flagged(g->mines[g->cord.y * g->width + g->cord.x])) {

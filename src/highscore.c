@@ -110,6 +110,23 @@ UserHighscore *load_highscores() {
   return highscores;
 }
 
+void filter_highscores(UserHighscore *highscores, struct highscore cmp) {
+  unsigned index = 0;
+  unsigned write_index = 0;
+  while (highscores[index].user != NULL) {
+    if (highscores[index].highscore.width == cmp.width &&
+        highscores[index].highscore.height == cmp.height &&
+        highscores[index].highscore.mines == cmp.mines) {
+      highscores[write_index].user = highscores[index].user;
+      highscores[write_index].highscore = highscores[index].highscore;
+      write_index++;
+    }
+    free(highscores[index].user);
+    index++;
+  }
+  highscores[write_index].user = NULL;
+}
+
 int save_highscore(Highscore h, FILE *f) {
   fprintf(f, "%u,%u,%u,%u,%ld\n", h.width, h.height, h.mines, h.time, h.date);
   return 0;

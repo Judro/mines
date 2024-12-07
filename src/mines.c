@@ -33,9 +33,15 @@ void limit_fps() {
   usleep(sleep_time);
 }
 
-void print_highscore(unsigned terminal_width, unsigned terminal_height) {
+void print_highscore(unsigned terminal_width, unsigned terminal_height,
+                     GameInstance game) {
   unsigned scroll_index = 0;
   UserHighscore *highscores = load_highscores();
+  struct highscore t;
+  t.width = field_width(game);
+  t.height = field_height(game);
+  t.mines = total_mines(game);
+  filter_highscores(highscores, t);
   while (1) {
     erase();
     print_top_margin(terminal_height, 0.5 * terminal_height);
@@ -67,7 +73,7 @@ void print_game(GameInstance game, WINDOW *window) {
   print_top_margin(getmaxy(window), field_height(game) + 2);
   GameView view;
   if (print_highscore_flag) {
-    print_highscore(getmaxx(window), getmaxy(window));
+    print_highscore(getmaxx(window), getmaxy(window), game);
   } else {
     if (game_state(game) == Lost) {
       view = createViewGameover(game);
