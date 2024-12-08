@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <time.h>
 
+extern const unsigned highscore_capacity;
+
 typedef struct highscore {
   unsigned width;
   unsigned height;
@@ -22,6 +24,7 @@ extern char print_highscore_flag;
 UserHighscore *load_highscores();
 void filter_highscores(UserHighscore *highscores, struct highscore cmp);
 int save_highscore(Highscore, FILE *);
+char **userHighscores2string(UserHighscore *highscores);
 FILE *init_state_files();
 
 #endif

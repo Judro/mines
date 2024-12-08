@@ -2,6 +2,8 @@
 #include <time.h>
 #ifndef DISPLAY_H
 #define DISPLAY_H
+extern const unsigned highscore_window_height;
+
 void print(GameView, unsigned int, unsigned int);
 void print_top_margin(unsigned int, unsigned int);
 

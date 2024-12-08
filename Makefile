@@ -9,7 +9,7 @@ all:$(BIN)
 
 $(BIN): $(OBJS)
 	$(CC) $(FLAGS) $(OBJS) -o $@ $(LFLAGS) 
-obj/%.o: src/%.c
+obj/%.o: src/%.c config.h
 	$(CC) $(FLAGS)  -c $< -o $@
 
 clean:

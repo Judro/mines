@@ -2,9 +2,11 @@
 #include <dirent.h>
 #include <fcntl.h>
 #include <pwd.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
+#include <time.h>
 #include <unistd.h>
 
 char print_highscore_flag = 0;
@@ -87,7 +89,7 @@ UserHighscore *load_highscores() {
           exit(EXIT_FAILURE);
         strncpy(highscores[hs_counter].user, dir_ent->d_name,
                 dir_ent->d_namlen - 3);
-        highscores[hs_counter].user[dir_ent->d_namlen - 3] = 0;
+        highscores[hs_counter].user[dir_ent->d_namlen - 4] = 0;
         highscores[hs_counter].highscore = h;
         hs_counter++;
 
@@ -110,6 +112,11 @@ UserHighscore *load_highscores() {
   return highscores;
 }
 
+static int _sort_user_highscore(const void *a, const void *b) {
+  return (long)((struct user_highscore *)a)->highscore.time -
+         (long)((struct user_highscore *)b)->highscore.time;
+}
+
 void filter_highscores(UserHighscore *highscores, struct highscore cmp) {
   unsigned index = 0;
   unsigned write_index = 0;
@@ -120,11 +127,38 @@ void filter_highscores(UserHighscore *highscores, struct highscore cmp) {
       highscores[write_index].user = highscores[index].user;
       highscores[write_index].highscore = highscores[index].highscore;
       write_index++;
+    } else {
+      free(highscores[index].user);
     }
-    free(highscores[index].user);
     index++;
   }
   highscores[write_index].user = NULL;
+  qsort(highscores, index, sizeof(struct user_highscore), _sort_user_highscore);
+}
+
+char **userHighscores2string(UserHighscore *highscores) {
+  char **highscores_str = malloc(highscore_capacity * sizeof(char *));
+  if (highscores_str == NULL)
+    exit(EXIT_FAILURE);
+  unsigned index = 0;
+  while (highscores[index].user != NULL && index < highscore_capacity) {
+    char *tmp;
+    char time[32];
+    struct tm *local_time = localtime(&highscores[index].highscore.date);
+    strftime(time, 32, "%Y-%m-%d", local_time);
+    asprintf(&tmp, " %02u:%02u %s %s ", highscores[index].highscore.time / 60,
+             highscores[index].highscore.time % 60, time,
+             highscores[index].user);
+    if (tmp == NULL)
+      exit(EXIT_FAILURE);
+    free(highscores[index].user);
+    highscores_str[index] = tmp;
+    index++;
+  }
+  free(highscores);
+  if (index < highscore_capacity)
+    highscores_str[index] = NULL;
+  return highscores_str;
 }
 
 int save_highscore(Highscore h, FILE *f) {

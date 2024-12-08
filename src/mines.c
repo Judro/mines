@@ -2,6 +2,7 @@
 #include "controls.h"
 #include "display.h"
 #include "game.h"
+#include "helper.h"
 #include "highscore.h"
 #include "menu.h"
 #include <limits.h>
@@ -42,15 +43,20 @@ void print_highscore(unsigned terminal_width, unsigned terminal_height,
   t.height = field_height(game);
   t.mines = total_mines(game);
   filter_highscores(highscores, t);
+  char **printable_highscores = userHighscores2string(highscores);
+  struct dimension text_max =
+      buff_max_dimensions(printable_highscores, highscore_capacity);
   while (1) {
     erase();
-    print_top_margin(terminal_height, 0.5 * terminal_height);
-    print_scrollable(NULL, terminal_width, 8);
+    print_top_margin(terminal_height, text_max.len + 2);
+    print_scrollable(printable_highscores + scroll_index, terminal_width,
+                     text_max.width);
     char ch = getch();
     switch (ch) {
     case 'j':
     case 0x42:
-      scroll_index++;
+      if (scroll_index + highscore_window_height < text_max.len)
+        scroll_index++;
       break;
     case 0x41:
     case 'k':
@@ -62,6 +68,7 @@ void print_highscore(unsigned terminal_width, unsigned terminal_height,
       break;
     case 'q':
     case 'b':
+      clear_char_buff(printable_highscores, highscore_capacity);
       print_highscore_flag ^= 1;
       return;
     }

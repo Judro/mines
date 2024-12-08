@@ -35,13 +35,30 @@ void print_left_margin(unsigned int terminal_x, unsigned int game_x) {
 
 void print_scrollable(char **text, unsigned terminal_width,
                       unsigned text_width) {
-  unsigned padding = 6;
-  print_left_margin(terminal_width, text_width + padding);
+  print_left_margin(terminal_width, text_width);
   printw("╭");
-  for (int i = 0; i < text_width + padding - 2; i++) {
+  for (int i = 0; i < text_width; i++) {
     printw("─");
   }
   printw("╮\n");
+  char **tmp = text;
+  if (text == NULL)
+    return;
+  unsigned index = 0;
+  while (*tmp != NULL && index < highscore_window_height) {
+    print_left_margin(terminal_width, text_width);
+    printw("│");
+    printw(*tmp);
+    printw("│\n");
+    tmp++;
+    index++;
+  }
+  print_left_margin(terminal_width, text_width);
+  printw("╰");
+  for (int i = 0; i < text_width; i++) {
+    printw("─");
+  }
+  printw("╯\n");
 }
 
 void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
