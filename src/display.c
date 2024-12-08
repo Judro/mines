@@ -1,6 +1,7 @@
 #include "display.h"
 #include <ncurses.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 char *generate_top_margin(unsigned int l) {
@@ -49,6 +50,8 @@ void print_scrollable(char **text, unsigned terminal_width,
     print_left_margin(terminal_width, text_width);
     printw("│");
     printw(*tmp);
+    for (int i = 0; i < text_width - strlen(*tmp); i++)
+      printw(" ");
     printw("│\n");
     tmp++;
     index++;

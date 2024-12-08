@@ -169,7 +169,7 @@ char **userHighscores2string(UserHighscore *highscores) {
     char time[32];
     struct tm *local_time = localtime(&highscores[index].highscore.date);
     strftime(time, 32, "%Y-%m-%d", local_time);
-    asprintf(&tmp, " %02u:%02u %s %s ", highscores[index].highscore.time / 60,
+    asprintf(&tmp, " %02u:%02u  %s  %s ", highscores[index].highscore.time / 60,
              highscores[index].highscore.time % 60, time,
              highscores[index].user);
     if (tmp == NULL)
