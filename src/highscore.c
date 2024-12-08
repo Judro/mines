@@ -117,7 +117,7 @@ static int _sort_user_highscore(const void *a, const void *b) {
          (long)((struct user_highscore *)b)->highscore.time;
 }
 
-void filter_highscores(UserHighscore *highscores, struct highscore cmp) {
+int filter_highscores(UserHighscore *highscores, struct highscore cmp) {
   unsigned index = 0;
   unsigned write_index = 0;
   while (highscores[index].user != NULL) {
@@ -132,14 +132,37 @@ void filter_highscores(UserHighscore *highscores, struct highscore cmp) {
     }
     index++;
   }
+  if (write_index == 0) {
+    free(highscores);
+    return -1;
+  }
   highscores[write_index].user = NULL;
   qsort(highscores, index, sizeof(struct user_highscore), _sort_user_highscore);
+  return 0;
 }
 
 char **userHighscores2string(UserHighscore *highscores) {
   char **highscores_str = malloc(highscore_capacity * sizeof(char *));
   if (highscores_str == NULL)
     exit(EXIT_FAILURE);
+
+  if (highscores == NULL) {
+    char *error_message = "       No highscores yet.      ";
+    char *error_message2 = " Be the first to set a record! ";
+    highscores_str[0] = malloc(strlen(error_message) + 1);
+    highscores_str[1] = malloc(strlen(error_message2) + 1);
+    if (highscores_str[0] == NULL)
+      exit(EXIT_FAILURE);
+    if (highscores_str[1] == NULL)
+      exit(EXIT_FAILURE);
+
+    strcpy(highscores_str[0], error_message);
+    strcpy(highscores_str[1], error_message2);
+
+    highscores_str[2] = NULL;
+    return highscores_str;
+  }
+
   unsigned index = 0;
   while (highscores[index].user != NULL && index < highscore_capacity) {
     char *tmp;

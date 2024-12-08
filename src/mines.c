@@ -42,7 +42,8 @@ void print_highscore(unsigned terminal_width, unsigned terminal_height,
   t.width = field_width(game);
   t.height = field_height(game);
   t.mines = total_mines(game);
-  filter_highscores(highscores, t);
+  if (filter_highscores(highscores, t) == -1)
+    highscores = NULL;
   char **printable_highscores = userHighscores2string(highscores);
   struct dimension text_max =
       buff_max_dimensions(printable_highscores, highscore_capacity);

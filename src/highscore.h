@@ -22,7 +22,7 @@ extern const char *save_directory;
 extern char print_highscore_flag;
 // last element in array will have user set to NULL
 UserHighscore *load_highscores();
-void filter_highscores(UserHighscore *highscores, struct highscore cmp);
+int filter_highscores(UserHighscore *highscores, struct highscore cmp);
 int save_highscore(Highscore, FILE *);
 char **userHighscores2string(UserHighscore *highscores);
 FILE *init_state_files();
