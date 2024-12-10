@@ -49,7 +49,7 @@ void print_highscore(unsigned terminal_width, unsigned terminal_height,
       buff_max_dimensions(printable_highscores, highscore_capacity);
   while (1) {
     erase();
-    print_top_margin(terminal_height, text_max.len + 2);
+    print_top_margin(terminal_height, highscore_window_height + 2);
     print_scrollable(printable_highscores + scroll_index, terminal_width,
                      text_max.width);
     char ch = getch();
@@ -73,6 +73,7 @@ void print_highscore(unsigned terminal_width, unsigned terminal_height,
       print_highscore_flag ^= 1;
       return;
     }
+    limit_fps();
   }
 }
 
