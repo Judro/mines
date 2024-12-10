@@ -1,4 +1,4 @@
-# MINES
+# MINES-TUI
 ![GitHub](https://img.shields.io/github/license/Judro/mines)
 ![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/Judro/mines)
 [![build](https://github.com/Judro/mines/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/Judro/mines/actions/workflows/c-cpp.yml)
@@ -18,13 +18,14 @@ Install the package from the AUR using an AUR helper like yay:
 
 `yay -S mines-tui`
 
-
 ## Controls
 - Movement: `hjkl or ←↓↑→`
 - Place flag: `f`
 - Open tile: `s`
 - Quit: `q`
 - Emphasize neighboring cells `e`
+
+(please read `man mines-tui`)
 
 ## Build from source
 1. install dependencies

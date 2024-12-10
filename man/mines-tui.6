@@ -1,0 +1,61 @@
+.Dd $Mdocdate: December 10 2024 $
+.Dt MINES-TUI 6
+.Os
+.Sh NAME
+.Nm mines-tui
+.Nd a terminal-based Minesweeper like game
+.Sh DESCRIPTION
+.Nm mines-tui
+is a text-based implementation of the classic Minesweeper game for the terminal. 
+The objective is to uncover all tiles that do not contain mines while avoiding 
+those that do. Correctly marking suspected mines with flags helps avoid 
+accidental openings.
+
+When you uncover a tile, one of the following happens:
+.Bl -bullet -offset indent
+.It
+If the tile contains a mine, the game ends.
+.It
+If the tile is empty and adjacent to mines, a number appears indicating how many 
+mines are nearby (1-8).
+.It
+If the tile is empty and has no neighboring mines, nearby tiles are automatically 
+revealed.
+.El
+
+To win, all non-mine tiles must be opened while placing flags on every mine.
+
+The game supports multiple users, with individual save files stored in
+.Pa /var/www/games/mines/save .
+The user's name is normally the same as the $USER environment variable.
+
+.Sh CONTROLS
+.Bl -tag -width indent
+.It Ic hjkl ,  Ic ←↓↑→
+Move the cursor.
+.It Ic s
+Open the current tile.
+.It Ic f
+Place or remove a flag on the current tile.
+.It Ic e
+Emphasize neighboring tiles, helping you assess unopened tiles.
+.It Ic b
+Display high scores for the current game.
+.It Ic q
+Quit the game.
+.El
+
+.Sh FILES
+.Bl -tag -width /var/www/games/mines/save -compact
+.It Pa /var/www/games/mines/save
+Individual save files for each user.
+.El
+
+.Sh AUTHORS
+.An -nosplit
+The game
+.Nm mines-tui
+was developed by
+.An Julius Drodofsky 
+.Aq julius@drodofsky.xyz .
+
