@@ -2,7 +2,7 @@
 #include "custom_game.h"
 #include <ncurses.h>
 #include <stdlib.h>
-typedef struct Menu {
+typedef struct menu {
   unsigned int pos;
   char selected;
 } Menu;

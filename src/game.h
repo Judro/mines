@@ -2,20 +2,20 @@
 #define GAME_H
 #include "highscore.h"
 #include <time.h>
-typedef struct {
+typedef struct cord {
   int x;
   int y;
 } Cord;
 
-typedef struct Game *GameInstance;
+typedef struct game *GameInstance;
 
-typedef enum GameState {
-  Playing,
-  Won,
-  Lost,
+typedef enum game_state {
+  PLAYING,
+  WON,
+  LOST,
 } GameState;
 
-typedef enum CellType {
+typedef enum cell_type {
   UNTOUCHED,
   UNVEILED,
   FALSE_FLAG,
@@ -31,7 +31,7 @@ typedef enum CellType {
   EIGHT,
 } CellType;
 
-typedef struct GameView {
+typedef struct game_view {
   CellType *cells;
   Cord player;
   unsigned width;

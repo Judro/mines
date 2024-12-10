@@ -84,7 +84,7 @@ void print_game(GameInstance game, WINDOW *window) {
   if (print_highscore_flag) {
     print_highscore(getmaxx(window), getmaxy(window), game);
   } else {
-    if (game_state(game) == Lost) {
+    if (game_state(game) == LOST) {
       view = createViewGameover(game);
     } else {
       view = createView(game);
@@ -118,13 +118,13 @@ start:
     if (cmove(game, window) == -1)
       break;
     switch (game_state(game)) {
-    case Playing:
+    case PLAYING:
       break;
-    case Won:
+    case WON:
       print_game(game, window);
       Highscore highscore = generate_highscore(game);
       save_highscore(highscore, local_highscores);
-    case Lost:
+    case LOST:
       print_game(game, window);
       while (1) {
         if (cmove(game, window) == -1)

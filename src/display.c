@@ -71,15 +71,15 @@ void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
   for (int i = 0; i < (view->width * 2) - 23; i++) {
     if (i == (view->width * 2 - 23) / 2) {
       switch (view->state) {
-      case Playing:
+      case PLAYING:
         printw(" ");
         break;
-      case Won:
+      case WON:
         attron(COLOR_PAIR(5));
         printw("☆");
         attroff(COLOR_PAIR(5));
         break;
-      case Lost:
+      case LOST:
         attron(COLOR_PAIR(3));
         printw("☠");
         attroff(COLOR_PAIR(3));
@@ -134,8 +134,8 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
          i == view->player.y * view->width + view->player.x - 1 - view->width ||
          i == view->player.y * view->width + view->player.x - view->width ||
          i == view->player.y * view->width + view->player.x + view->width) &&
-        i % view->width >= 0 && abs(i % view->width - view->player.x) < 2 &&
-        g_helper_mode) {
+        i % view->width >= 0 &&
+        abs(i % (int)view->width - view->player.x) < 2 && g_helper_mode) {
       is_in_radius = 1;
       attron(A_BOLD);
     } else {

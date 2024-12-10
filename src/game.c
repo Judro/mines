@@ -10,7 +10,7 @@
 #define UNVLD 0b0100000
 #define FLAGGED 0b1000000
 
-typedef struct Game {
+typedef struct game {
   char *mines;
   int width;
   int height;
@@ -51,7 +51,7 @@ char is_unveiled(char c) {
 }
 
 GameInstance createGameInstance(int width, int height, int amount_mines) {
-  GameInstance g = calloc(1, sizeof(struct Game));
+  GameInstance g = calloc(1, sizeof(struct game));
   int length = width * height;
   int total = 0;
   char *mines = malloc(length * sizeof(char));
@@ -105,7 +105,7 @@ GameInstance createGameInstance(int width, int height, int amount_mines) {
   g->flagstotal = total;
   g->flagsfound = 0;
   g->unveiled = 0;
-  g->state = Playing;
+  g->state = PLAYING;
   Cord c;
   c.x = 0;
   c.y = 0;
@@ -122,8 +122,8 @@ void deleteGameInstance(GameInstance g) {
 }
 
 GameView createView(GameInstance g) {
-  GameView view = calloc(1, sizeof(struct GameView));
-  CellType *cells = calloc(g->length, sizeof(CellType));
+  GameView view = calloc(1, sizeof(struct game_view));
+  CellType *cells = calloc(g->length, sizeof(enum cell_type));
   view->cells = cells;
   view->player = g->cord;
   time_t current;
@@ -176,8 +176,8 @@ GameView createView(GameInstance g) {
   return view;
 }
 GameView createViewGameover(GameInstance g) {
-  GameView view = calloc(1, sizeof(struct GameView));
-  CellType *cells = calloc(g->length, sizeof(CellType));
+  GameView view = calloc(1, sizeof(struct game_view));
+  CellType *cells = calloc(g->length, sizeof(enum cell_type));
   view->cells = cells;
   view->player = g->cord;
   time_t current;
@@ -269,7 +269,7 @@ void unveil_recursive(GameInstance game, Cord position) {
   game->mines[position.y * game->width + position.x] |= UNVLD;
   game->unveiled++;
   if (game->unveiled + game->flagstotal == game->width * game->height)
-    game->state = Won;
+    game->state = WON;
   if (!is_blank(game->mines[position.y * game->width + position.x])) {
     return;
   }
@@ -290,14 +290,14 @@ void unveil_cell(GameInstance g) {
     return;
   }
   if (is_mine(g->mines[g->cord.y * g->width + g->cord.x])) {
-    g->state = Lost;
+    g->state = LOST;
     return;
   }
   if (g->mines[g->cord.y * g->width + g->cord.x] > 0) {
     g->mines[g->cord.y * g->width + g->cord.x] |= UNVLD;
     g->unveiled++;
     if (g->unveiled + g->flagstotal == g->width * g->height)
-      g->state = Won;
+      g->state = WON;
     return;
   }
   unveil_recursive(g, g->cord);
@@ -309,13 +309,13 @@ void validate_flags(GameInstance g) {
       fit += 1;
   }
   if (fit == g->flagstotal)
-    g->state = Won;
+    g->state = WON;
 }
 
 Highscore generate_highscore(GameInstance g) {
   time_t current;
   time(&current);
-  if (g->state != Won)
+  if (g->state != WON)
     exit(EXIT_FAILURE);
   Highscore h;
   h.width = g->width;
