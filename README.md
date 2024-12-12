@@ -4,8 +4,8 @@
 [![build](https://github.com/Judro/mines/actions/workflows/c-cpp.yml/badge.svg)](https://github.com/Judro/mines/actions/workflows/c-cpp.yml)
 <div>
 <img src="https://github.com/Judro/mines/blob/main/img/game.png" alt="game" width="250px">
-<img src="https://github.com/Judro/mines/blob/main/img/highscores.png" alt="highscores" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game_over.png" alt="game over" width="250px">
+<img src="https://github.com/Judro/mines/blob/main/img/highscores.png" alt="highscores" width="250px">
 </div>
 
 ## Installation
