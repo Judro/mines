@@ -92,10 +92,8 @@ void print_game(GameInstance game, WINDOW *window) {
   }
 }
 
-int main(int argc, char *argv[]) {
-  FILE *local_highscores = init_state_files();
-  if (local_highscores == NULL)
-    exit(EXIT_FAILURE);
+int main(void) {
+  FILE *local_highscores;
   time(&fps_timestamp);
   setlocale(LC_CTYPE, "");
   WINDOW *window = create_window();
@@ -105,6 +103,9 @@ int main(int argc, char *argv[]) {
   }
 
 start:
+  local_highscores = init_state_files();
+  if (local_highscores == NULL)
+    exit(EXIT_FAILURE);
   while (1) {
     print_game(game, window);
     validate_flags(game);
@@ -129,12 +130,12 @@ start:
   }
 new_game:
   deleteGameInstance(game);
+  fclose(local_highscores);
   nodelay(window, 0);
   game = select_mode(&window);
   if (game != NULL)
     goto start;
 end:
   endwin();
-  fclose(local_highscores);
   return 0;
 }
