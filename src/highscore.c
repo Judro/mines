@@ -37,7 +37,7 @@ FILE *init_state_files() {
       exit(EXIT_FAILURE);
     }
 
-    int file = open(save_path, O_CREAT);
+    int file = open(save_path, O_CREAT, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH);
     if (file == -1) {
       fprintf(stderr, "Unable to create %s\n", save_path);
       fprintf(stderr, "Please check if your user has write access to the file "
@@ -49,10 +49,6 @@ FILE *init_state_files() {
       exit(EXIT_FAILURE);
     }
     close(file);
-    if (chmod(save_path, S_IRUSR | S_IWUSR | S_IRGRP | S_IROTH) == -1) {
-      perror("Failed to change file permission");
-      exit(EXIT_FAILURE);
-    }
     printf("Game save files have been successfully created. Please restart the "
            "game in non-superuser mode.\n");
 
@@ -75,21 +71,21 @@ UserHighscore *load_highscores() {
     if (save_dir == NULL)
       break;
     if (dir_ent->d_type == DT_REG) {
-      char highscore_file[strlen(save_directory) + dir_ent->d_namlen + 1];
+      char highscore_file[strlen(save_directory) + strlen(dir_ent->d_name) + 1];
       strcpy(highscore_file, save_directory);
       strcpy(highscore_file + strlen(save_directory), dir_ent->d_name);
-      highscore_file[strlen(save_directory) + dir_ent->d_namlen] = 0;
+      highscore_file[strlen(save_directory) + strlen(dir_ent->d_name)] = 0;
       FILE *high_score = fopen(highscore_file, "r");
       if (high_score == NULL)
         exit(EXIT_FAILURE);
       while (fscanf(high_score, "%u,%u,%u,%u,%ld%*c", &h.width, &h.height,
                     &h.mines, &h.time, &h.date) != EOF) {
-        highscores[hs_counter].user = malloc(dir_ent->d_namlen);
+        highscores[hs_counter].user = malloc(strlen(dir_ent->d_name) + 1);
         if (highscores[hs_counter].user == NULL)
           exit(EXIT_FAILURE);
         strncpy(highscores[hs_counter].user, dir_ent->d_name,
-                dir_ent->d_namlen - 3);
-        highscores[hs_counter].user[dir_ent->d_namlen - 4] = 0;
+                strlen(dir_ent->d_name) - 3);
+        highscores[hs_counter].user[strlen(dir_ent->d_name) - 4] = 0;
         highscores[hs_counter].highscore = h;
         hs_counter++;
 

@@ -99,7 +99,7 @@ int main(int argc, char *argv[]) {
   if (local_highscores == NULL)
     exit(EXIT_FAILURE);
   time(&fps_timestamp);
-  setlocale(LC_CTYPE, "en_US.UTF-8");
+  setlocale(LC_CTYPE, "");
   WINDOW *window = create_window();
   GameInstance game = select_mode(&window);
   if (game == NULL) {

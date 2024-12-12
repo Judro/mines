@@ -72,7 +72,7 @@ char control(Menu *menu) {
     menu->selected = 1;
     break;
   case 'q':
-    return -1;
+    return 1;
   default:
     break;
   }
@@ -89,7 +89,7 @@ GameInstance select_mode(WINDOW **window) {
 
     m_print(&menu, terminal_width, terminal_height);
     char ret = control(&menu);
-    if (ret == -1)
+    if (ret == 1)
       return NULL;
     if (menu.selected == 1) {
       last_selected = menu.pos;
