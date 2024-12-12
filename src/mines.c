@@ -37,13 +37,11 @@ void limit_fps() {
 void print_highscore(unsigned terminal_width, unsigned terminal_height,
                      GameInstance game) {
   unsigned scroll_index = 0;
-  UserHighscore *highscores = load_highscores();
-  struct highscore t;
-  t.width = field_width(game);
-  t.height = field_height(game);
-  t.mines = total_mines(game);
-  if (filter_highscores(highscores, t) == -1)
-    highscores = NULL;
+  struct highscore cmp;
+  cmp.width = field_width(game);
+  cmp.height = field_height(game);
+  cmp.mines = total_mines(game);
+  UserHighscore *highscores = load_highscores(cmp);
   char **printable_highscores = userHighscores2string(highscores);
   struct dimension text_max =
       buff_max_dimensions(printable_highscores, highscore_capacity);

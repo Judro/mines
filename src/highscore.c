@@ -57,7 +57,12 @@ FILE *init_state_files() {
   return fopen(save_path, "a+");
 }
 
-UserHighscore *load_highscores() {
+static int _sort_user_highscore(const void *a, const void *b) {
+  return (long)((struct user_highscore *)a)->highscore.time -
+         (long)((struct user_highscore *)b)->highscore.time;
+}
+
+UserHighscore *load_highscores(struct highscore cmp) {
   DIR *save_dir = opendir(save_directory);
   unsigned hs_counter = 0;
   struct highscore h;
@@ -80,6 +85,9 @@ UserHighscore *load_highscores() {
         exit(EXIT_FAILURE);
       while (fscanf(high_score, "%u,%u,%u,%u,%ld%*c", &h.width, &h.height,
                     &h.mines, &h.time, &h.date) != EOF) {
+        if (h.width != cmp.width || h.height != cmp.height ||
+            h.mines != cmp.mines)
+          continue;
         highscores[hs_counter].user = malloc(strlen(dir_ent->d_name) + 1);
         if (highscores[hs_counter].user == NULL)
           exit(EXIT_FAILURE);
@@ -105,36 +113,13 @@ UserHighscore *load_highscores() {
   u.user = NULL;
   highscores[hs_counter] = u;
   closedir(save_dir);
-  return highscores;
-}
-
-static int _sort_user_highscore(const void *a, const void *b) {
-  return (long)((struct user_highscore *)a)->highscore.time -
-         (long)((struct user_highscore *)b)->highscore.time;
-}
-
-int filter_highscores(UserHighscore *highscores, struct highscore cmp) {
-  unsigned index = 0;
-  unsigned write_index = 0;
-  while (highscores[index].user != NULL) {
-    if (highscores[index].highscore.width == cmp.width &&
-        highscores[index].highscore.height == cmp.height &&
-        highscores[index].highscore.mines == cmp.mines) {
-      highscores[write_index].user = highscores[index].user;
-      highscores[write_index].highscore = highscores[index].highscore;
-      write_index++;
-    } else {
-      free(highscores[index].user);
-    }
-    index++;
-  }
-  if (write_index == 0) {
+  if (hs_counter == 0) {
     free(highscores);
-    return -1;
+    return NULL;
   }
-  highscores[write_index].user = NULL;
-  qsort(highscores, index, sizeof(struct user_highscore), _sort_user_highscore);
-  return 0;
+  qsort(highscores, hs_counter, sizeof(struct user_highscore),
+        _sort_user_highscore);
+  return highscores;
 }
 
 char **userHighscores2string(UserHighscore *highscores) {
