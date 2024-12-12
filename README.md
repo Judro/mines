@@ -18,6 +18,12 @@ Install the package from the AUR using an AUR helper like yay:
 
 `yay -S mines-tui`
 
+## Run
+`mines-tui`
+
+### Get help
+`man mines-tui`
+
 ## Controls
 - Movement: `hjkl or ←↓↑→`
 - Place flag: `f`
