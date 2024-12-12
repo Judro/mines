@@ -98,8 +98,6 @@ int main(int argc, char *argv[]) {
   FILE *local_highscores = init_state_files();
   if (local_highscores == NULL)
     exit(EXIT_FAILURE);
-  extern char g_helper_mode;
-  g_helper_mode = 1;
   time(&fps_timestamp);
   setlocale(LC_CTYPE, "en_US.UTF-8");
   WINDOW *window = create_window();

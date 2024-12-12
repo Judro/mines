@@ -1,1 +1,1 @@
-char g_helper_mode;
+char g_helper_mode = 0;
