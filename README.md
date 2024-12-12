@@ -29,7 +29,7 @@ Install the package from the AUR using an AUR helper like yay:
 - Place flag: `f`
 - Open tile: `s`
 - Quit: `q`
-- Emphasize neighboring cells `e`
+- Emphasize neighbouring cells `e`
 
 (please read `man mines-tui`)
 
