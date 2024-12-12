@@ -6,6 +6,6 @@ NoDisplay=false
 Terminal=true
 Exec=mines-tui %f
 Icon=mines
-Name=Mines
+Name=Mines-TUI
 Comment=A Terminal based Minesweeper implementation
 Categories=Game
