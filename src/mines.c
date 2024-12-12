@@ -109,7 +109,7 @@ start:
   while (1) {
     print_game(game, window);
     validate_flags(game);
-    if (cmove(game, window) == -1)
+    if (cmove(game, &window) == -1)
       break;
     switch (game_state(game)) {
     case PLAYING:
@@ -121,7 +121,7 @@ start:
     case LOST:
       print_game(game, window);
       while (1) {
-        if (cmove(game, window) == -1)
+        if (cmove(game, &window) == -1)
           goto new_game;
         limit_fps();
       }

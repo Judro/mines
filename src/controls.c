@@ -1,9 +1,11 @@
+#include "display.h"
 #include "game.h"
 #include <ncurses.h>
-int cmove(GameInstance g, WINDOW *window) {
+#include <stdlib.h>
+int cmove(GameInstance g, WINDOW **window) {
   extern char g_helper_mode;
   extern char print_highscore_flag;
-  nodelay(window, 1);
+  nodelay(*window, 1);
   char ch = getch();
   Cord old = player_position(g);
   switch (ch) {
@@ -48,6 +50,11 @@ int cmove(GameInstance g, WINDOW *window) {
     break;
   case 'b':
     print_highscore_flag ^= 1;
+    break;
+  case 'm':
+    endwin();
+    system("man mines-tui");
+    *window = create_window();
     break;
   }
   return 0;
