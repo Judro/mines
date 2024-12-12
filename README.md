@@ -7,6 +7,7 @@
 <img src="https://github.com/Judro/mines/blob/main/img/custom_game.png" alt="custom menu" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game.png" alt="game" width="250px">
 <img src="https://github.com/Judro/mines/blob/main/img/game_over.png" alt="game over" width="250px">
+<img src="https://github.com/Judro/mines/blob/main/img/highscores.png" alt="highscores" width="250px">
 </div>
 
 ## Installation
