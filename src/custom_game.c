@@ -95,10 +95,10 @@ char custom_game_control() {
   case ' ':
   case 'f':
   case 's':
-    return 1;
+    return 2;
     break;
   case 'q':
-    return -1;
+    return 1;
   default:
     break;
   }
@@ -113,7 +113,7 @@ GameInstance get_custom_game(WINDOW **window) {
     erase();
     cm_print(terminal_width, terminal_height);
     ret = custom_game_control();
-    if (ret == -1)
+    if (ret == 1)
       return select_mode(window);
   }
   return createGameInstance(custom_game_menu.width, custom_game_menu.height,
