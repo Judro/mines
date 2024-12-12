@@ -2,7 +2,7 @@
 #include "menu.h"
 #include <stdlib.h>
 
-typedef struct CGMenu {
+typedef struct custom_game_menu {
   unsigned width;
   unsigned height;
   unsigned mines;
@@ -105,15 +105,16 @@ char custom_game_control() {
   return 0;
 }
 
-GameInstance get_custom_game(unsigned terminal_width,
-                             unsigned terminal_height) {
+GameInstance get_custom_game(WINDOW **window) {
+  unsigned terminal_width = getmaxx(*window);
+  unsigned terminal_height = getmaxy(*window);
   int ret = 0;
   while (!ret) {
     erase();
     cm_print(terminal_width, terminal_height);
     ret = custom_game_control();
     if (ret == -1)
-      return select_mode(terminal_width, terminal_height);
+      return select_mode(window);
   }
   return createGameInstance(custom_game_menu.width, custom_game_menu.height,
                             custom_game_menu.mines);

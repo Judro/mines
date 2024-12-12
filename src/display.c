@@ -4,6 +4,14 @@
 #include <string.h>
 #include <time.h>
 
+WINDOW *create_window() {
+  WINDOW *window = initscr();
+  start_color();
+  curs_set(0);
+  noecho();
+  return window;
+}
+
 char *generate_top_margin(unsigned int l) {
   if (l > 1000)
     l = 1;

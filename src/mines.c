@@ -102,11 +102,8 @@ int main(int argc, char *argv[]) {
   g_helper_mode = 1;
   time(&fps_timestamp);
   setlocale(LC_CTYPE, "en_US.UTF-8");
-  WINDOW *window = initscr();
-  start_color();
-  curs_set(0);
-  noecho();
-  GameInstance game = select_mode(getmaxx(window), getmaxy(window));
+  WINDOW *window = create_window();
+  GameInstance game = select_mode(&window);
   if (game == NULL) {
     goto end;
   }
@@ -137,7 +134,7 @@ start:
 new_game:
   deleteGameInstance(game);
   nodelay(window, 0);
-  game = select_mode(getmaxx(window), getmaxy(window));
+  game = select_mode(&window);
   if (game != NULL)
     goto start;
 end:

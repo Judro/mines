@@ -1,5 +1,6 @@
 #include "menu.h"
 #include "custom_game.h"
+#include "display.h"
 #include <ncurses.h>
 #include <stdlib.h>
 typedef struct menu {
@@ -50,21 +51,6 @@ void m_print(Menu *menu, unsigned int terminal_width,
   free(lm);
 }
 
-void print_help() {
-  erase();
-  printw("- Movement:                 <hjkl>\n");
-  printw("                            <←↓↑→>>\n");
-  printw("- Place flag:               <f>\n");
-  printw("- Open cell:                <s>\n");
-  printw("- Quit:                     <q>\n");
-  printw("- Emphazise important cells: <e>\n");
-  for (;;) {
-    char ch = getch();
-    if (ch == 'q')
-      return;
-  }
-}
-
 char control(Menu *menu) {
   char ch = getch();
   switch (ch) {
@@ -92,11 +78,12 @@ char control(Menu *menu) {
   }
   return 0;
 }
-GameInstance select_mode(unsigned int terminal_width,
-                         unsigned int terminal_height) {
+GameInstance select_mode(WINDOW **window) {
   Menu menu;
   menu.pos = last_selected;
   menu.selected = 0;
+  unsigned terminal_width = getmaxx(*window);
+  unsigned terminal_height = getmaxy(*window);
   for (;;) {
     erase();
 
@@ -114,10 +101,12 @@ GameInstance select_mode(unsigned int terminal_width,
       case 2:
         return createGameInstance(30, 16, 99);
       case 3:
-        return get_custom_game(terminal_width, terminal_height);
+        return get_custom_game(window);
       case 4:
-        print_help();
-        return select_mode(terminal_width, terminal_height);
+        endwin();
+        system("man mines-tui");
+        *window = create_window();
+        return select_mode(window);
       default:
         break;
       }
