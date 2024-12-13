@@ -294,8 +294,10 @@ void unveil_cell(GameInstance g) {
     return;
   }
   if (g->mines[g->cord.y * g->width + g->cord.x] > 0) {
-    g->mines[g->cord.y * g->width + g->cord.x] |= UNVLD;
-    g->unveiled++;
+    if (!is_unveiled(g->mines[g->cord.y * g->width + g->cord.x])) {
+      g->mines[g->cord.y * g->width + g->cord.x] |= UNVLD;
+      g->unveiled++;
+    }
     if (g->unveiled + g->flagstotal == g->width * g->height)
       g->state = WON;
     return;
