@@ -1,4 +1,4 @@
-.Dd $Mdocdate: December 10 2024 $
+.Dd $Mdocdate: December 16 2024 $
 .Dt MINES-TUI 6
 .Os
 .Sh NAME
@@ -51,6 +51,26 @@ Quit the game.
 .Bl -tag -width /var/www/games/mines/save -compact
 .It Pa /var/www/games/mines/save
 Individual save files for each user.
+.El
+
+.Sh BUGS
+There are a few known issues with
+.Nm mines-tui :
+.Bl -bullet -offset indent
+.It
+Highlighting may not work correctly when running the game inside a
+.Tn tmux
+session.
+.It
+If you encounter Unicode-related errors, ensure that your locale is set correctly.
+This can be done by setting the following environment variables:
+.Bd -literal -offset indent
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+.Ed
+.It
+If you find any other bugs or have feature requests, please open an issue at
+.Lk https://github.com/Judro/mines .
 .El
 
 .Sh AUTHORS
