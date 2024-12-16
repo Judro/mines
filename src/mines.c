@@ -93,7 +93,8 @@ void print_game(GameInstance game, WINDOW *window) {
 }
 
 int main(void) {
-  FILE *local_highscores;
+  FILE *local_highscores = init_state_files();
+  fclose(local_highscores);
   time(&fps_timestamp);
   setlocale(LC_CTYPE, "");
   WINDOW *window = create_window();
