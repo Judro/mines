@@ -34,7 +34,8 @@ FILE *init_state_files() {
 
     struct passwd *pw = getpwnam(username);
     if (!pw) {
-      perror("Failed to get user info");
+      fprintf(stderr, "Failed to get user info. The user %s may not exist.\n",
+              username);
       exit(EXIT_FAILURE);
     }
 
