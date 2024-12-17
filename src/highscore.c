@@ -14,11 +14,13 @@ char print_highscore_flag = 0;
 FILE *init_state_files() {
   char username_n[100];
   char *username = getenv("USER");
+  char is_root = 0;
   if (strcmp(username, "root") == 0) {
     printf("Please enter your username ($USER): ");
     while (scanf("%s[^\n]", username_n) != 1)
       ;
     username = username_n;
+    is_root = 1;
   }
   char save_path[strlen(save_directory) + strlen(username) + 5];
   strcpy(save_path, save_directory);
@@ -51,10 +53,13 @@ FILE *init_state_files() {
       exit(EXIT_FAILURE);
     }
     close(file);
-    printf("Game save files have been successfully created. Please restart the "
-           "game in non-superuser mode.\n");
+    if (is_root) {
+      printf(
+          "Game save files have been successfully created. Please restart the "
+          "game in non-superuser mode.\n");
 
-    exit(EXIT_SUCCESS);
+      exit(EXIT_SUCCESS);
+    }
   }
   return fopen(save_path, "a+");
 }
