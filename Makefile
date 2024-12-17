@@ -17,6 +17,4 @@ clean:
 
 install: 
 	cp bin/mines-tui /usr/local/bin/
-	cp deb/mines_1.0.0_amd64/usr/share/applications/mines.desktop /usr/share/applications/
-	cp deb/mines_1.0.0_amd64/usr/share/icons/hicolor/128x128/apps/mines.png /usr/share/icons/hicolor/128x128/apps/
 	cp man/mines-tui.6 /usr/share/man/man6/
