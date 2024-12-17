@@ -53,7 +53,11 @@ int cmove(GameInstance g, WINDOW **window) {
     break;
   case 'm':
     endwin();
-    system("man mines-tui");
+    if (system("man mines-tui") != 0) {
+      printf("Please press enter to continue.\n");
+      while (getchar() == 0)
+        ;
+    }
     *window = create_window();
     break;
   }

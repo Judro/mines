@@ -16,7 +16,8 @@ FILE *init_state_files() {
   char *username = getenv("USER");
   if (strcmp(username, "root") == 0) {
     printf("Please enter your username ($USER): ");
-    scanf("%s[^\n]", username_n);
+    while (scanf("%s[^\n]", username_n) != 1)
+      ;
     username = username_n;
   }
   char save_path[strlen(save_directory) + strlen(username) + 5];
@@ -150,9 +151,12 @@ char **userHighscores2string(UserHighscore *highscores) {
     char time[32];
     struct tm *local_time = localtime(&highscores[index].highscore.date);
     strftime(time, 32, "%Y-%m-%d", local_time);
-    asprintf(&tmp, " %02u:%02u  %s  %s ", highscores[index].highscore.time / 60,
-             highscores[index].highscore.time % 60, time,
-             highscores[index].user);
+    if (asprintf(&tmp, " %02u:%02u  %s  %s ",
+                 highscores[index].highscore.time / 60,
+                 highscores[index].highscore.time % 60, time,
+                 highscores[index].user) == -1)
+      exit(EXIT_FAILURE);
+
     if (tmp == NULL)
       exit(EXIT_FAILURE);
     free(highscores[index].user);

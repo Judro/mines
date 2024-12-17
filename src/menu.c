@@ -104,7 +104,11 @@ GameInstance select_mode(WINDOW **window) {
         return get_custom_game(window);
       case 4:
         endwin();
-        system("man mines-tui");
+        if (system("man mines-tui") != 0) {
+          printf("Please press enter to continue.\n");
+          while (getchar() == 0)
+            ;
+        }
         *window = create_window();
         return select_mode(window);
       default:

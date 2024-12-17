@@ -57,7 +57,7 @@ void print_scrollable(char **text, unsigned terminal_width,
   while (*tmp != NULL && index < highscore_window_height) {
     print_left_margin(terminal_width, text_width);
     printw("│");
-    printw(*tmp);
+    printw("%s", *tmp);
     for (int i = 0; i < text_width - strlen(*tmp); i++)
       printw(" ");
     printw("│\n");
