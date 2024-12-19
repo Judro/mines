@@ -225,6 +225,7 @@ void print(GameView view, unsigned int terminal_x, unsigned int game_x) {
     if (i == (view->player.y * view->width + view->player.x))
       attroff(A_STANDOUT);
   }
+  attroff(A_BOLD);
   printw("│\n");
   print_left_margin(terminal_x, game_x * 2);
   printw("├");
