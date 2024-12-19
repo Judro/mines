@@ -96,7 +96,7 @@ void print_header(GameView view, unsigned int terminal_x, unsigned int game_x) {
     }
     printw(" ");
   }
-  printw("│   %02ld:%02ld  │\n", view->time / 60, view->time % 60);
+  printw("│   %02ld:%02ld  │\n", (long)view->time / 60, (long)view->time % 60);
   print_left_margin(terminal_x, game_x * 2);
   printw("╰");
   for (int i = 0; i < view->width; i++) {

@@ -74,6 +74,7 @@ UserHighscore *load_highscores(struct highscore cmp) {
   unsigned hs_counter = 0;
   struct highscore h;
   unsigned hs_capacity = 250;
+  long long tmp_date;
   UserHighscore *highscores =
       malloc(hs_capacity * sizeof(struct user_highscore));
   if (highscores == NULL)
@@ -90,11 +91,12 @@ UserHighscore *load_highscores(struct highscore cmp) {
       FILE *high_score = fopen(highscore_file, "r");
       if (high_score == NULL)
         exit(EXIT_FAILURE);
-      while (fscanf(high_score, "%u,%u,%u,%u,%ld%*c", &h.width, &h.height,
-                    &h.mines, &h.time, &h.date) != EOF) {
+      while (fscanf(high_score, "%u,%u,%u,%u,%lld%*c", &h.width, &h.height,
+                    &h.mines, &h.time, &tmp_date) != EOF) {
         if (h.width != cmp.width || h.height != cmp.height ||
             h.mines != cmp.mines)
           continue;
+        h.date = (time_t)tmp_date;
         highscores[hs_counter].user = malloc(strlen(dir_ent->d_name) + 1);
         if (highscores[hs_counter].user == NULL)
           exit(EXIT_FAILURE);
@@ -176,6 +178,7 @@ char **userHighscores2string(UserHighscore *highscores) {
 }
 
 int save_highscore(Highscore h, FILE *f) {
-  fprintf(f, "%u,%u,%u,%u,%ld\n", h.width, h.height, h.mines, h.time, h.date);
+  fprintf(f, "%u,%u,%u,%u,%lld\n", h.width, h.height, h.mines, h.time,
+          (long long)h.date);
   return 0;
 }
