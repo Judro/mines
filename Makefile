@@ -18,3 +18,5 @@ clean:
 install: 
 	cp bin/mines-tui /usr/local/bin/
 	cp man/mines-tui.6 /usr/share/man/man6/
+	mkdir -p /var/games/mines/save/
+	chmod -R 777 /var/games/mines/save/
