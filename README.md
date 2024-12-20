@@ -29,6 +29,7 @@ Install the package from the AUR using an AUR helper like yay:
 - Movement: `hjkl or ←↓↑→`
 - Place flag: `f`
 - Open tile: `s`
+- Display highscores: `b`
 - Emphasize neighbouring cells `e`
 - Open the game manual: `m`
 - Quit: `q`
