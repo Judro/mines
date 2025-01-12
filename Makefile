@@ -20,3 +20,8 @@ install:
 	cp man/mines-tui.6 /usr/share/man/man6/
 	mkdir -p /var/games/mines/save/
 	chmod -R 777 /var/games/mines/save/
+
+uninstall: 
+	rm /usr/local/bin/mines-tui
+	rm /usr/share/man/man6/mines-tui.6
+	rm -r /var/games/mines
