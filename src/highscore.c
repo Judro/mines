@@ -22,10 +22,13 @@ FILE *init_state_files() {
     username = username_n;
     is_root = 1;
   }
-  char save_path[strlen(save_directory) + strlen(username) + 5];
-  strcpy(save_path, save_directory);
-  strcpy(save_path + strlen(save_directory), username);
-  strcpy(save_path + strlen(username) + strlen(save_directory), ".asc");
+  size_t save_path_len = strlen(save_directory) + strlen(username) + 5;
+  char save_path[save_path_len];
+  strlcpy(save_path, save_directory, save_path_len);
+  strlcpy(save_path + strlen(save_directory), username,
+          save_path_len - strlen(save_directory));
+  strlcpy(save_path + strlen(username) + strlen(save_directory), ".asc",
+          save_path_len - strlen(username) - strlen(save_directory));
 
   if (access(save_path, F_OK) != 0 || access(save_path, W_OK) != 0) {
     int ret = system("mkdir -p /var/games/mines/save");
@@ -84,9 +87,12 @@ UserHighscore *load_highscores(struct highscore cmp) {
     if (save_dir == NULL)
       break;
     if (dir_ent->d_type == DT_REG) {
-      char highscore_file[strlen(save_directory) + strlen(dir_ent->d_name) + 1];
-      strcpy(highscore_file, save_directory);
-      strcpy(highscore_file + strlen(save_directory), dir_ent->d_name);
+      size_t highscore_file_len =
+          strlen(save_directory) + strlen(dir_ent->d_name) + 1;
+      char highscore_file[highscore_file_len];
+      strlcpy(highscore_file, save_directory, highscore_file_len);
+      strlcpy(highscore_file + strlen(save_directory), dir_ent->d_name,
+              highscore_file_len - strlen(save_directory));
       highscore_file[strlen(save_directory) + strlen(dir_ent->d_name)] = 0;
       FILE *high_score = fopen(highscore_file, "r");
       if (high_score == NULL)
@@ -146,8 +152,8 @@ char **userHighscores2string(UserHighscore *highscores) {
     if (highscores_str[1] == NULL)
       exit(EXIT_FAILURE);
 
-    strcpy(highscores_str[0], error_message);
-    strcpy(highscores_str[1], error_message2);
+    strlcpy(highscores_str[0], error_message, strlen(error_message) + 1);
+    strlcpy(highscores_str[1], error_message2, strlen(error_message2) + 1);
 
     highscores_str[2] = NULL;
     return highscores_str;

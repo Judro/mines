@@ -93,6 +93,17 @@ void print_game(GameInstance game, WINDOW *window) {
 }
 
 int main(void) {
+  pledge("stdio rpath wpath cpath tty proc exec unveil chown", NULL);
+  unveil("/usr/share/terminfo", "r");
+  unveil("/usr/share/locale", "r");
+  unveil("/var/games/mines", "rwc");
+  unveil("/bin/sh", "rx");
+  unveil("/etc/spwd.db", "r");
+  unveil("/etc/pwd.db", "r");
+  unveil("/etc/passwd", "r");
+  unveil("/etc/master.passwd", "r");
+  unveil(NULL, NULL);
+
   FILE *local_highscores = init_state_files();
   fclose(local_highscores);
   time(&fps_timestamp);
